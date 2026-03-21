@@ -25,8 +25,8 @@ with tab1:
     zkp_module = st.radio("Select a Module:", ["Extension Field", "ECC Visualizer"])
     
     if zkp_module == "Extension Field":
-        st.subheader("Groth16 Protocol")
-        st.write("Groth16 is one of the most efficient zk-SNARK constructions.")
+        st.subheader("Extension Field")
+        st.write("Extension Field is ...")
         
     elif zkp_module == "ECC Visualizer":
         st.subheader("Elliptic Curve Cryptography")
