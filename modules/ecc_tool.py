@@ -6,37 +6,37 @@ def run_ecc_visualizer():
     st.subheader("Elliptic Curve Visualizer")
     st.latex(r"y^2 = x^3 + ax + b")
     
-    # Create two narrow columns to put inputs side-by-side like your image
+    # Inputs in two columns
     col1, col2 = st.columns([1, 1])
-    
     with col1:
-        # Using a short label to keep it clean
         a = st.number_input("a", value=-1.0, step=0.1, format="%.1f")
-        
     with col2:
-        # Using a short label to keep it clean
         b = st.number_input("b", value=1.0, step=0.1, format="%.1f")
 
-    # Math Logic: Discriminant check to avoid singular curves
-    # Formula: Δ = 4a³ + 27b²
+    # Math Logic: Discriminant check
     discriminant = 4*(a**3) + 27*(b**2)
     
     if discriminant == 0:
-        st.warning("⚠️ Singular curve (Δ=0). Please change a or b.")
+        st.warning("⚠️ Singular curve (Δ=0).")
     else:
-        # Setup the mathematical grid for the plot
+        # Define grid for the plot
         y, x = np.ogrid[-5:5:100j, -5:5:100j]
-        fig, ax = plt.subplots(figsize=(8, 4))
         
-        # Draw the curve based on the equation: y² - x³ - ax - b = 0
+        # KEY CHANGE: Reduced figsize to (4, 3) to make it half size
+        fig, ax = plt.subplots(figsize=(4, 3))
+        
+        # Plotting logic
         ax.contour(x.ravel(), y.ravel(), y**2 - x**3 - a*x - b, [0], colors='royalblue')
         
-        # Grid and axis styling
-        ax.grid(True, linestyle='--', alpha=0.6)
-        ax.axhline(0, color='black', linewidth=0.8)
-        ax.axvline(0, color='black', linewidth=0.8)
-        ax.set_title(f"Curve for a={a}, b={b}")
+        # Styling the plot
+        ax.grid(True, linestyle='--', alpha=0.5)
+        ax.axhline(0, color='black', linewidth=0.5)
+        ax.axvline(0, color='black', linewidth=0.5)
+        ax.tick_params(axis='both', which='major', labelsize=8) # Smaller labels
         
-        # Display the finalized plot
-        st.pyplot(fig)
+        # Center the plot using Streamlit columns
+        empty_col1, center_col, empty_col2 = st.columns([1, 2, 1])
+        with center_col:
+            st.pyplot(fig)
+            
         st.info(f"Discriminant (Δ): {discriminant:.2f}")
