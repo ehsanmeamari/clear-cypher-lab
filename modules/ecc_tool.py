@@ -22,20 +22,22 @@ def run_ecc_visualizer():
         # Define grid for the plot
         y, x = np.ogrid[-5:5:100j, -5:5:100j]
         
-        # KEY CHANGE: Reduced figsize to (4, 3) to make it half size
-        fig, ax = plt.subplots(figsize=(4, 3))
+        # KEY CHANGE: Size reduced to (2.5, 2) for a very compact look
+        fig, ax = plt.subplots(figsize=(2.5, 2))
         
-        # Plotting logic
+        # Plotting the curve
         ax.contour(x.ravel(), y.ravel(), y**2 - x**3 - a*x - b, [0], colors='royalblue')
         
-        # Styling the plot
-        ax.grid(True, linestyle='--', alpha=0.5)
+        # Compact styling
+        ax.grid(True, linestyle='--', alpha=0.4)
         ax.axhline(0, color='black', linewidth=0.5)
         ax.axvline(0, color='black', linewidth=0.5)
-        ax.tick_params(axis='both', which='major', labelsize=8) # Smaller labels
         
-        # Center the plot using Streamlit columns
-        empty_col1, center_col, empty_col2 = st.columns([1, 2, 1])
+        # Smaller fonts for a smaller frame
+        ax.tick_params(axis='both', which='major', labelsize=7)
+        
+        # Center the small plot using columns
+        _, center_col, _ = st.columns([2, 1, 2])
         with center_col:
             st.pyplot(fig)
             
