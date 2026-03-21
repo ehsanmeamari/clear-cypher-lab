@@ -29,8 +29,8 @@ def run_ecc_visualizer():
         if discriminant != 0:
             y, x = np.ogrid[-5:5:100j, -5:5:100j]
             
-            # SIZE: Changed to (3.5, 2.5) for a compact look
-            fig, ax = plt.subplots(figsize=(0.5, 0.5))
+            # SIZE: Changed to (1.0, 1.0) for a compact look
+            fig, ax = plt.subplots(figsize=(1.0, 1.0))
             
             # Curve plotting
             ax.contour(x.ravel(), y.ravel(), y**2 - x**3 - a*x - b, [0], colors='royalblue')
