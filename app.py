@@ -5,7 +5,7 @@ st.set_page_config(page_title="Clear Cypher Lab", page_icon="🛡️")
 
 # Styling for a professional look
 st.title("🛡️ Clear Cypher Lab")
-st.subheader("Welcome to the Transparent Cryptography Lab")
+st.subheader("Welcome to the ClearCypherLab")
 
 st.markdown("""
 This lab is designed for interactive learning of complex security concepts, 
