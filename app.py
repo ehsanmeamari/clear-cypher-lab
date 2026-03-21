@@ -20,10 +20,10 @@ st.markdown("Welcome to the interactive cryptography and blockchain learning env
 tab1, tab2 = st.tabs(["🌐 Clear ZKP", "⛓️ Blockchain"])
 
 with tab1:
-    st.header("Zero-Knowledge Proofs (ZKP)")
-    zkp_module = st.radio("Select a Module:", ["Groth16", "ECC Visualizer"])
+    st.header("Groth16")
+    zkp_module = st.radio("Select a Module:", ["Extension Field", "ECC Visualizer"])
     
-    if zkp_module == "Groth16":
+    if zkp_module == "Extension Field":
         st.subheader("Groth16 Protocol")
         st.write("Groth16 is one of the most efficient zk-SNARK constructions.")
         
