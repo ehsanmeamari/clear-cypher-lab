@@ -1,44 +1,40 @@
 import streamlit as st
-import re
 
-st.set_page_config(page_title="Clear Cypher Lab", page_icon="🛡️")
+st.set_page_config(page_title="Clear Cypher Lab", page_icon="🛡️", layout="wide")
 
-# Styling for a professional look
 st.title("🛡️ Clear Cypher Lab")
-st.subheader("Welcome to the ClearCypherLab")
+st.markdown("Welcome to the interactive cryptography and blockchain learning environment.")
 
-st.markdown("""
-This lab is designed for interactive learning of complex security concepts, 
-Blockchain, and Cyber Security.
-""")
+# Creating the two main tabs
+tab1, tab2 = st.tabs(["🌐 Clear ZKP", "⛓️ Blockchain"])
 
-st.divider()
-
-# Tool: Password Strength Checker
-st.header("🕵️ Password Strength Analyzer")
-password = st.text_input("Enter a password to test (Local test, not stored):", type="password")
-
-if password:
-    # Calculating score
-    score = 0
-    if len(password) >= 8: score += 1
-    if re.search("[a-z]", password) and re.search("[A-Z]", password): score += 1
-    if re.search("[0-9]", password): score += 1
-    if re.search("[!@#$%^&*]", password): score += 1
-
-    # Displaying Results
-    results = [
-        {"label": "Very Weak ❌", "color": "error"},
-        {"label": "Weak ⚠️", "color": "warning"},
-        {"label": "Medium ✅", "color": "info"},
-        {"label": "Strong 🟢", "color": "success"},
-        {"label": "Excellent 💪", "color": "success"}
-    ]
+with tab1:
+    st.header("Zero-Knowledge Proofs (ZKP)")
+    st.info("Explore the world of privacy-preserving proofs.")
     
-    res = results[score]
-    if score <= 1: st.error(f"Status: {res['label']}")
-    elif score == 2: st.warning(f"Status: {res['label']}")
-    else: st.success(f"Status: {res['label']}")
+    # Sub-sections for ZKP
+    zkp_module = st.radio("Select a Module:", ["Groth16", "ECC (Elliptic Curve Cryptography)"])
+    
+    if zkp_module == "Groth16":
+        st.subheader("Groth16 Protocol")
+        st.write("Groth16 is one of the most widely used zk-SNARK protocols in blockchain projects like Zcash.")
+        # You can add interactive logic for Groth16 here later
+        
+    elif zkp_module == "ECC (Elliptic Curve Cryptography)":
+        st.subheader("Elliptic Curve Cryptography")
+        st.write("ECC provides the same level of security as RSA but with much smaller key sizes.")
+
+with tab2:
+    st.header("Blockchain Infrastructure")
+    st.info("Foundational algorithms for distributed ledgers.")
+    
+    # Sub-section for Blockchain
+    blc_module = st.radio("Select a Module:", ["RSA Encryption"])
+    
+    if blc_module == "RSA Encryption":
+        st.subheader("RSA Algorithm")
+        st.write("RSA is a public-key cryptosystem that is widely used for secure data transmission.")
+        # We can add an RSA generator here in the next step
 
 st.divider()
-st.info("Stay tuned for upcoming modules: AES Encryption, RSA Visualizer, and Blockchain Explorer.")
+st.caption("Clear Cypher Lab © 2026 - Educational Purpose")
