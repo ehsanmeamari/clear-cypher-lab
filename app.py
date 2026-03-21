@@ -1,16 +1,22 @@
 import streamlit as st
+import re
 
 st.set_page_config(page_title="Clear Cypher Lab", page_icon="🛡️")
-
 st.title("🛡️ Clear Cypher Lab")
-st.header("به آزمایشگاه شفاف رمزنگاری خوش آمدید")
+st.subheader("به آزمایشگاه شفاف رمزنگاری خوش آمدید")
 
-st.markdown("""
-اینجا محلی برای یادگیری ساده و تعاملی مفاهیم پیچیده امنیت و بلاک‌چین است.
-### دوره ۶ هفته‌ای ما به زودی آغاز می‌شود:
-1. **هفته اول:** آشنایی با مفاهیم پایه پول و رمزنگاری
-2. **هفته دوم:** درک عمیق بلاک‌چین و دفتر کل توزیع شده
-3. ...
-""")
+st.divider()
+st.header("🕵️ ابزار تست قدرت گذرواژه")
+password = st.text_input("یک پسورد وارد کنید:", type="password")
 
-st.info("کارمندان بانک و دانش‌آموزان عزیز، منتظر محتوای اختصاصی ما باشید.")
+if password:
+    score = sum([len(password) >= 8, 
+                 bool(re.search("[a-z]", password) and re.search("[A-Z]", password)),
+                 bool(re.search("[0-9]", password)),
+                 bool(re.search("[!@#$%^&*]", password))])
+    
+    results = ["بسیار ضعیف ❌", "ضعیف ⚠️", "متوسط ✅", "خوب 🟢", "عالی و امن 💪"]
+    st.write(f"وضعیت: {results[score]}")
+
+st.divider()
+st.info("این آزمایشگاه محلی برای یادگیری تعاملی امنیت است.")
