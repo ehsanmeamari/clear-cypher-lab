@@ -4,41 +4,48 @@ import numpy as np
 
 def run_ecc_visualizer():
     st.subheader("Elliptic Curve Visualizer")
+    
+    # Mathematical formula display
     st.latex(r"y^2 = x^3 + ax + b")
     
-    # Inputs in two columns
-    col1, col2 = st.columns([1, 1])
-    with col1:
-        a = st.number_input("a", value=-1.0, step=0.1, format="%.1f")
-    with col2:
-        b = st.number_input("b", value=1.0, step=0.1, format="%.1f")
-
-    # Math Logic: Discriminant check
-    discriminant = 4*(a**3) + 27*(b**2)
+    # Layout: Left column for settings (Vertical), Right column for the plot
+    # Ratio [1, 3] to keep the plot larger
+    col_input, col_plot = st.columns([1, 3])
     
-    if discriminant == 0:
-        st.warning("⚠️ Singular curve (Δ=0).")
-    else:
-        # Define grid for the plot
-        y, x = np.ogrid[-5:5:100j, -5:5:100j]
+    with col_input:
+        st.write("### Parameters")
+        # Inputs are placed one after another to stay vertical
+        a = st.number_input("a", value=-1.0, step=0.1, format="%.1f")
+        b = st.number_input("b", value=1.0, step=0.1, format="%.1f")
         
-        # KEY CHANGE: Size reduced to (2.5, 2) for a very compact look
-        fig, ax = plt.subplots(figsize=(2.5, 2))
+        # Calculate Discriminant to check for singularity
+        # Formula: Δ = 4a³ + 27b²
+        discriminant = 4*(a**3) + 27*(b**2)
         
-        # Plotting the curve
-        ax.contour(x.ravel(), y.ravel(), y**2 - x**3 - a*x - b, [0], colors='royalblue')
-        
-        # Compact styling
-        ax.grid(True, linestyle='--', alpha=0.4)
-        ax.axhline(0, color='black', linewidth=0.5)
-        ax.axvline(0, color='black', linewidth=0.5)
-        
-        # Smaller fonts for a smaller frame
-        ax.tick_params(axis='both', which='major', labelsize=7)
-        
-        # Center the small plot using columns
-        _, center_col, _ = st.columns([2, 1, 2])
-        with center_col:
-            st.pyplot(fig)
+        if discriminant == 0:
+            st.error("Δ=0: Singular Curve")
+        else:
+            st.info(f"Δ = {discriminant:.1f}")
+
+    with col_plot:
+        if discriminant != 0:
+            # Generate meshgrid for the plot
+            y, x = np.ogrid[-5:5:100j, -5:5:100j]
             
-        st.info(f"Discriminant (Δ): {discriminant:.2f}")
+            # Figure size for a compact look
+            fig, ax = plt.subplots(figsize=(5, 3))
+            
+            # Draw the elliptic curve contour
+            ax.contour(x.ravel(), y.ravel(), y**2 - x**3 - a*x - b, [0], colors='royalblue')
+            
+            # Chart aesthetics (English comments)
+            ax.set_title(f"Curve: a={a}, b={b}", fontsize=10)
+            ax.grid(True, linestyle='--', alpha=0.5)
+            ax.axhline(0, color='black', linewidth=0.8)
+            ax.axvline(0, color='black', linewidth=0.8)
+            ax.tick_params(labelsize=8)
+            
+            # Display the plot in the right column
+            st.pyplot(fig)
+
+    st.divider()
