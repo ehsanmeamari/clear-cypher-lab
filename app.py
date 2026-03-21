@@ -21,6 +21,7 @@ tab1, tab2 = st.tabs(["🌐 Clear ZKP", "⛓️ Blockchain"])
 
 with tab1:
     st.header("Groth16")
+    st.write("Groth16 is one of the most efficient zk-SNARK constructions.")
     zkp_module = st.radio("Select a Module:", ["Extension Field", "ECC Visualizer"])
     
     if zkp_module == "Extension Field":
