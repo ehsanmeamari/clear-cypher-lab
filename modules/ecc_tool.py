@@ -5,21 +5,19 @@ import numpy as np
 def run_ecc_visualizer():
     st.subheader("Elliptic Curve Visualizer")
     
-    # Mathematical formula display
+    # Formula display
     st.latex(r"y^2 = x^3 + ax + b")
     
-    # Layout: Left column for settings (Vertical), Right column for the plot
-    # Ratio [1, 3] to keep the plot larger
-    col_input, col_plot = st.columns([1, 3])
+    # Column layout: Settings on the left, Plot on the right
+    col_input, col_plot = st.columns([1, 2.5])
     
     with col_input:
         st.write("### Parameters")
-        # Inputs are placed one after another to stay vertical
+        # Inputs stacked vertically
         a = st.number_input("a", value=-1.0, step=0.1, format="%.1f")
         b = st.number_input("b", value=1.0, step=0.1, format="%.1f")
         
-        # Calculate Discriminant to check for singularity
-        # Formula: Δ = 4a³ + 27b²
+        # Discriminant calculation
         discriminant = 4*(a**3) + 27*(b**2)
         
         if discriminant == 0:
@@ -29,23 +27,24 @@ def run_ecc_visualizer():
 
     with col_plot:
         if discriminant != 0:
-            # Generate meshgrid for the plot
             y, x = np.ogrid[-5:5:100j, -5:5:100j]
             
-            # Figure size for a compact look
-            fig, ax = plt.subplots(figsize=(5, 3))
+            # REDUCED SIZE: Changed to (3.5, 2.5) for a compact look
+            fig, ax = plt.subplots(figsize=(3.5, 2.5))
             
-            # Draw the elliptic curve contour
+            # Curve plotting
             ax.contour(x.ravel(), y.ravel(), y**2 - x**3 - a*x - b, [0], colors='royalblue')
             
-            # Chart aesthetics (English comments)
-            ax.set_title(f"Curve: a={a}, b={b}", fontsize=10)
-            ax.grid(True, linestyle='--', alpha=0.5)
-            ax.axhline(0, color='black', linewidth=0.8)
-            ax.axvline(0, color='black', linewidth=0.8)
-            ax.tick_params(labelsize=8)
+            # Formatting the small plot
+            ax.set_title(f"Curve: a={a}, b={b}", fontsize=9)
+            ax.grid(True, linestyle='--', alpha=0.4)
+            ax.axhline(0, color='black', linewidth=0.6)
+            ax.axvline(0, color='black', linewidth=0.6)
             
-            # Display the plot in the right column
+            # Shrink tick labels to fit the small frame
+            ax.tick_params(labelsize=7)
+            
+            # Displaying the plot
             st.pyplot(fig)
 
     st.divider()
