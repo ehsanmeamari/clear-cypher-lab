@@ -2,11 +2,11 @@ import streamlit as st
 
 st.set_page_config(page_title="Clear Cypher Lab", page_icon="🛡️", layout="wide")
 
-# CSS to inject for removing top padding
+# Corrected CSS: Added 2rem to top padding
 st.markdown("""
     <style>
            .block-container {
-                padding-top: 0rem;
+                padding-top: 2rem; 
                 padding-bottom: 0rem;
                 padding-left: 5rem;
                 padding-right: 5rem;
@@ -17,32 +17,30 @@ st.markdown("""
 st.title("🛡️ Clear Cypher Lab")
 st.markdown("Welcome to the interactive cryptography and blockchain learning environment.")
 
-# Creating the two main tabs
 tab1, tab2 = st.tabs(["🌐 Clear ZKP", "⛓️ Blockchain"])
 
 with tab1:
     st.header("Zero-Knowledge Proofs (ZKP)")
-    st.info("Explore the world of privacy-preserving proofs.")
-    
-    zkp_module = st.radio("Select a Module:", ["Groth16", "ECC (Elliptic Curve Cryptography)"])
+    zkp_module = st.radio("Select a Module:", ["Groth16", "ECC Visualizer"])
     
     if zkp_module == "Groth16":
         st.subheader("Groth16 Protocol")
-        st.write("Groth16 is one of the most widely used zk-SNARK protocols.")
+        st.write("Groth16 is one of the most efficient zk-SNARK constructions.")
         
-    elif zkp_module == "ECC (Elliptic Curve Cryptography)":
+    elif zkp_module == "ECC Visualizer":
         st.subheader("Elliptic Curve Cryptography")
-        st.write("ECC provides high security with smaller key sizes.")
+        st.latex(r"y^2 = x^3 + ax + b")
 
 with tab2:
     st.header("Blockchain Infrastructure")
-    st.info("Foundational algorithms for distributed ledgers.")
+    blc_module = st.radio("Select a Module:", ["RSA Practical"])
     
-    blc_module = st.radio("Select a Module:", ["RSA Encryption"])
-    
-    if blc_module == "RSA Encryption":
-        st.subheader("RSA Algorithm")
-        st.write("RSA is a fundamental public-key cryptosystem.")
+    if blc_module == "RSA Practical":
+        st.subheader("RSA Encryption Demo")
+        message = st.text_input("Enter message:", "Hello")
+        if message:
+            # Simplified ASCII shift for visual demo
+            st.success(f"Encrypted Result: {'-'.join([hex(ord(c)) for c in message])}")
 
 st.divider()
 st.caption("Clear Cypher Lab © 2026")
