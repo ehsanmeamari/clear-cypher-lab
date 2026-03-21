@@ -1,6 +1,7 @@
 import streamlit as st
 from modules.styles import apply_styles
 from modules.ecc_tool import run_ecc_visualizer
+from modules.rsa_tool import run_rsa_tool # این خط را حتماً اضافه کن
 
 # Setup Page
 st.set_page_config(page_title="Clear Cypher Lab", page_icon="🛡️", layout="wide")
@@ -24,7 +25,8 @@ with tab1:
 
 with tab2:
     st.header("Blockchain Infrastructure")
-    st.info("RSA Module is coming to the next update!")
-
-st.divider()
-st.caption("Clear Cypher Lab © 2026")
+    # اضافه کردن منو برای انتخاب RSA
+    blc_module = st.radio("Select a Module:", ["RSA Practical"])
+    
+    if blc_module == "RSA Practical":
+        run_rsa_tool() # حالا اینجا تابع از فایل rsa_tool اجرا می‌شود
