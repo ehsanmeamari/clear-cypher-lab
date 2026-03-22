@@ -1,4 +1,3 @@
-# --- فایل app.py ---
 import streamlit as st
 from modules.styles import apply_styles
 from views.header_view import render_header_view
@@ -12,26 +11,46 @@ st.set_page_config(
     layout="wide"
 )
 
-# حذف کامل هدر سیستم و کاهش پدینگ محتوا به صفر
+# این بخش تمام فضاهای مخفی سیستم را حذف می‌کند
 st.markdown("""
     <style>
-        /* مخفی کردن هدر پیش‌فرض استریم‌لیت */
-        header {visibility: hidden;}
+        /* ۱. حذف نوار ابزار بالای صفحه (Header) */
+        header[data-testid="stHeader"] {
+            display: none !important;
+        }
+
+        /* ۲. حذف پدینگ بدنه اصلی و چسباندن محتوا به سقف */
+        .main .block-container {
+            padding-top: 0rem !important;
+            padding-bottom: 0rem !important;
+            margin-top: -30px !important; /* جبران فاصله باقی‌مانده */
+        }
+
+        /* ۳. حذف فضای خالی خودکار بین المان‌ها */
+        [data-testid="stVerticalBlock"] > div {
+            gap: 0rem !important;
+        }
+
+        /* ۴. مخفی کردن دکمه منو و موارد اضافه برای تمیزی */
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
         
-        /* حذف فضای خالی بالای صفحه */
-        .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
-        [data-testid="stVerticalBlock"] > div { gap: 0rem !important; }
-        div[data-testid="stRadio"] { margin-bottom: -25px !important; }
-        hr { margin-top: 2px !important; margin-bottom: 2px !important; }
+        /* ۵. کاهش ارتفاع تب‌ها برای فشردگی بیشتر */
+        button[data-baseweb="tab"] {
+            height: 40px !important;
+        }
     </style>
     """, unsafe_allow_html=True)
 
+# اجرای استایل‌های جانبی
 apply_styles()
+
+# فراخوانی هدر
 render_header_view()
 
+# نوار تب‌ها
 tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
+
 with tab1: render_cryptography_tab()
 with tab2: render_blockchain_tab()
 with tab3: render_zkp_tab()
