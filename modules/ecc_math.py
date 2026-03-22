@@ -43,18 +43,25 @@ def ecc_fp():
         if op == "Point Addition (P + Q)":
             st.write("**Enter Coordinates for P and Q:**")
             
-            # ۱. تعریف هر ۶ ستون برای جلوگیری از NameError
-            ix1, iy1, ix2, iy2, ix3, iy3 = st.columns(6)
+            # ۱. ایجاد ۸ ستون (۶ تا برای اعداد، ۲ تا برای علائم ریاضی)
+            ix1, iy1, i_plus, ix2, iy2, i_equal, ix3, iy3 = st.columns([1, 1, 0.4, 1, 1, 0.4, 1, 1])
             
-            with ix1: x1 = st.number_input("xP", value=5, key="xP")
-            with iy1: y1 = st.number_input("yP", value=1, key="yP")
+            with ix1: xP = st.number_input("xP", value=5, key="xP")
+            with iy1: yP = st.number_input("yP", value=1, key="yP")
             
-            with ix2: x2 = st.number_input("xQ", value=6, key="xQ")
-            with iy2: y2 = st.number_input("yQ", value=3, key="yQ")
+            # ستون علامت پلاس
+            with i_plus: 
+                st.markdown("<h3 style='text-align: center; padding-top: 25px;'>+</h3>", unsafe_allow_html=True)
             
-            # ۲. استفاده از کلیدهای متفاوت (xR, yR) برای جلوگیری از تداخل
-            with ix3: x3 = st.number_input("xR", value=0, key="xR")
-            with iy3: y3 = st.number_input("yR", value=0, key="yR")           
+            with ix2: xQ = st.number_input("xQ", value=6, key="xQ")
+            with iy2: yQ = st.number_input("yQ", value=3, key="yQ")
+            
+            # ستون علامت مساوی
+            with i_equal: 
+                st.markdown("<h3 style='text-align: center; padding-top: 25px;'>=</h3>", unsafe_allow_html=True)
+            
+            with ix3: xR = st.number_input("xR", value=0, key="xR")
+            with iy3: yR = st.number_input("yR", value=0, key="yR")           
             
         else:
             st.write("**Enter Point P and Scalar n:**")
