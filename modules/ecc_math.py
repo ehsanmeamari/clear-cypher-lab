@@ -8,7 +8,7 @@ def ecc_fp():
         st.subheader("🔢 Curve Definition")
         
         # ایجاد ۴ ستون: ۳ تا برای ورودی‌ها و یکی پهن‌تر برای نمایش فرمول
-        c1, c2, c3, c4 = st.columns([1, 1, 1, 2])
+        c1, c2, c3, c4 = st.columns([1, 1, 1, 3])
         
         with c1: 
             p = st.number_input("Prime Field (p)", value=17, step=1)
