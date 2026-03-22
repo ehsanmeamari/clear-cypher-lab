@@ -35,11 +35,11 @@ def run_ecc_visualizer():
             ax.contour(x.ravel(), y.ravel(), y**2 - x**3 - a*x - b, [0], 
                        colors='#3498db', linewidths=2)
             
-            # Professional LaTeX Title
+            # Writting the formula (Title) over the curve using LaTeX
             a_sign = "-" if a < 0 else "+"
             b_sign = "-" if b < 0 else "+"
             title_text = fr"$y^2 = x^3 {a_sign} {abs(a)}x {b_sign} {abs(b)}$"
-            ax.set_title(title_text, fontsize=12, pad=15)
+            ax.set_title(title_text, fontsize=5, pad=15)
             
             # Minimalist styling (like the reference site)
             ax.grid(True, linestyle='-', alpha=0.1, color='#bdc3c7')
