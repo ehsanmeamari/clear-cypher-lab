@@ -37,7 +37,7 @@ def ecc_fp():
         st.divider()
 
         # ۲. انتقال بخش عملیات به ستون سمت راست (کادر قرمز مورد نظر شما)
-        op = st.radio("Choose Operation:", ["Point Addition (P + Q)", "Scalar Multiplication (kP)"], horizontal=True)
+        op = st.radio("Choose Operation:", ["Point Addition (P + Q)", "Scalar Multiplication (nP)"], horizontal=True)
         
         # قرار دادن ورودی‌های نقاط در زیر رادیو باتن (درون ستون سمت راست)
         inner_col1, inner_col2 = st.columns(2)
@@ -53,8 +53,8 @@ def ecc_fp():
         else:
             with inner_col1:
                 st.write("**Point P**")
-                x1 = st.number_input("x1_k", value=5)
-                y1 = st.number_input("y1_k", value=1)
+                x1 = st.number_input("x1_n", value=5)
+                y1 = st.number_input("y1_n", value=1)
             with inner_col2:
                 st.write("**Scalar Value**")
-                k = st.number_input("k (integer)", value=2)
+                n = st.number_input("n (integer)", value=2)
