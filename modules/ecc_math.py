@@ -43,11 +43,13 @@ def ecc_fp():
         if op == "Point Addition (P + Q)":
             st.write("**Enter Coordinates for P and Q:**")
             # ایجاد 4 ستون برای x1, y1, x2, y2 در یک خط
-            ix1, iy1, ix2, iy2 = st.columns(4)
+            ix1, iy1, ix2, iy2 = st.columns(6)
             with ix1: x1 = st.number_input("xP", value=5, key="x1")
             with iy1: y1 = st.number_input("yP", value=1, key="y1")
-            with ix2: x2 = st.number_input("xR", value=6, key="x2")
-            with iy2: y2 = st.number_input("yR", value=3, key="y2")
+            with ix2: x2 = st.number_input("xQ", value=6, key="x2")
+            with iy2: y2 = st.number_input("yQ", value=3, key="y2")
+            with ix3: x3 = st.number_input("xR", value=0, key="x2")
+            with iy3: y3 = st.number_input("yR", value=0, key="y2")            
             
         else:
             st.write("**Enter Point P and Scalar n:**")
