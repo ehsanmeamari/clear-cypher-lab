@@ -36,15 +36,11 @@ with tab1:
     st.header("Groth16")
     
     # First level: Main Module Selection
-    zkp_module = st.radio("Select a Module:", ["Extension Field", "Weil Pairing", "ECC"], key="zkp_main")
+    zkp_module = st.radio("Select a Module:", ["Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation"], key="zkp_main")
     
     if zkp_module == "Extension Field":
         st.subheader("Extension Field")
-        st.write("Extension Fields are fundamental in ZKP pairing-based cryptography.")
-    
-    elif zkp_module == "Weil Pairing":
-        st.subheader("Weil Pairing")
-        st.write("Weil Pairing comming soon.")        
+        st.write("Extension Fields are fundamental in ZKP pairing-based cryptography.")       
         
     elif zkp_module == "ECC":
         st.markdown("---")
@@ -62,6 +58,14 @@ with tab1:
         elif ecc_sub_module == "Scalar Multiplication":
             st.subheader("ECC Scalar Multiplication")
             st.info("Scalar Multiplication (nP) - Module under development.")
+
+    elif zkp_module == "Weil Pairing":
+        st.subheader("Weil Pairing")
+        st.write("Weil Pairing comming soon.")
+
+    elif zkp_module == "Lagrange Interpolation":
+        st.subheader("Lagrange Interpolation")
+        st.write("Lagrange Interpolation comming soon.") 
 
 with tab2:
     st.header("Blockchain Infrastructure")
