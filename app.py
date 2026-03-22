@@ -1,7 +1,7 @@
 import streamlit as st
 from modules.styles import apply_styles
 from modules.ecc_tool import run_ecc_visualizer
-from modules.modular_math import run_modular_math  # Import the new module
+from modules.modular_math import run_modular_math
 
 # 1. Page Configuration
 st.set_page_config(page_title="Clear Cypher Lab", page_icon="🛡️", layout="wide")
@@ -46,57 +46,81 @@ with st.sidebar:
             unsafe_allow_html=True)
     st.markdown("---")
 
-# 4. Main Content Header
+# 4. Main Header
 st.title("🛡️ Clear Cypher Lab")
 st.markdown("Interactive Cryptography Learning Environment")
 
-# Defining Tabs
+# 5. Top-Level Tabs
 tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
 
 with tab1:
     st.header("Cryptography")
-    st.info("🚀 Advanced cryptography modules are under development.")
+    st.info("🚀 Advanced modules coming soon.")
 
 with tab2:
     st.header("Blockchain Infrastructure")
-    st.info("🚀 Blockchain simulation tools coming soon.")
+    st.info("🚀 Simulation tools coming soon.")
 
 with tab3:
-    st.header("Groth 16")
+    st.header("Zero-Knowledge Proofs (ZKP)")
     
-    # Main ZKP Navigation (Label Hidden)
-    zkp_module = st.radio(
-        label="Select a Module:",
-        options=["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation"], 
-        key="zkp_main",
+    # LEVEL 1: Protocol Selection
+    zkp_protocol = st.radio(
+        label="Select Protocol:",
+        options=["Groth16", "Plonk", "Sumcheck"],
+        key="zkp_protocol_selection",
         horizontal=True,
         label_visibility="collapsed"
     )
     
     st.divider()
 
-    # Module Logic
-    if zkp_module == "Modular Arithmetic":
-        run_modular_math()  # Using the imported function
+    # --- LOGIC FOR GROTH16 ---
+    if zkp_protocol == "Groth16":
+        st.subheader("Groth16 Protocol Stack")
+        # LEVEL 2: Groth16 Sub-modules
+        zkp_module = st.radio(
+            label="Groth16 Modules",
+            options=["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation"], 
+            key="groth16_sub",
+            horizontal=True,
+            label_visibility="collapsed"
+        )
+        st.divider()
         
-    elif zkp_module == "Extension Field":
-        st.subheader("Extension Field")
-        st.info("Field extension operations (Fp^k) coming soon.")
-        
-    elif zkp_module == "ECC":
-        st.subheader("Elliptic Curve Cryptography")
-        ecc_sub = st.selectbox("ECC Operations:", ["Visualizer", "Point Addition", "Scalar Multiplication"])
-        if ecc_sub == "Visualizer":
+        if zkp_module == "Modular Arithmetic":
+            run_modular_math()
+        elif zkp_module == "ECC":
             run_ecc_visualizer()
         else:
-            st.info(f"{ecc_sub} tool is under development.")
+            st.info(f"{zkp_module} for Groth16 is currently under development.")
 
-    elif zkp_module == "Weil Pairing":
-        st.subheader("Weil Pairing")
-        st.info("Bilinear pairings and Miller's algorithm coming soon.")
+    # --- LOGIC FOR PLONK ---
+    elif zkp_protocol == "Plonk":
+        st.subheader("Plonk Protocol Stack")
+        # LEVEL 2: Plonk Sub-modules
+        plonk_sub = st.radio(
+            label="Plonk Modules",
+            options=["Tate Pairing", "KZG Commitment"],
+            key="plonk_sub",
+            horizontal=True,
+            label_visibility="collapsed"
+        )
+        st.divider()
+        st.info(f"{plonk_sub} module for Plonk is coming soon.")
 
-    elif zkp_module == "Lagrange Interpolation":
-        st.subheader("Lagrange Interpolation")
-        st.info("Polynomial interpolation for ZK-proofs coming soon.")
+    # --- LOGIC FOR SUMCHECK ---
+    elif zkp_protocol == "Sumcheck":
+        st.subheader("Sumcheck Protocol Stack")
+        # LEVEL 2: Sumcheck Sub-modules
+        sumcheck_sub = st.radio(
+            label="Sumcheck Modules",
+            options=["Summation", "Multilinear Extension"],
+            key="sumcheck_sub",
+            horizontal=True,
+            label_visibility="collapsed"
+        )
+        st.divider()
+        st.info(f"{sumcheck_sub} module for Sumcheck is coming soon.")
 
 st.divider()
