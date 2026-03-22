@@ -48,6 +48,7 @@ with st.sidebar:
 
 # 4. Main Header
 st.title("🛡️ Clear Cypher Lab")
+# We use a div to force this specific line to the left
 st.markdown('<div style="text-align: left;">Interactive Cryptography Learning Environment</div>', unsafe_allow_html=True)
 
 # 5. Top-Level Tabs
