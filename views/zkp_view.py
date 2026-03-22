@@ -3,7 +3,7 @@ from modules.ecc_tool import run_ecc_visualizer
 from modules.modular_math import run_modular_math
 
 def render_zkp_tab():
-    zkp_protocol = st.radio(label="P", options=["Groth16", "Plonk", "Spartan"], key="zkp_p", horizontal=True, label_visibility="collapsed")
+    zkp_protocol = st.radio(label="P", options=["Groth16", "Plonk", "Spartan", "Nova"], key="zkp_p", horizontal=True, label_visibility="collapsed")
     st.divider()
 
     if zkp_protocol == "Groth16":
@@ -32,3 +32,7 @@ def render_zkp_tab():
         spartan_sub = st.radio(label="SP", options=["Spartan Protocol", "Multilinear Extension"], key="spartan_s", horizontal=True, label_visibility="collapsed")
         st.divider()
         st.info(f"{spartan_sub} module for Spartan is coming soon.")
+
+    elif zkp_protocol == "Nova":
+        st.divider()
+        st.info(f"{Nova_sub} module for Nova is coming soon.")
