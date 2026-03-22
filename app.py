@@ -41,6 +41,10 @@ with tab1:
     if zkp_module == "Extension Field":
         st.subheader("Extension Field")
         st.write("Extension Fields are fundamental in ZKP pairing-based cryptography.")
+    
+    elif zkp_module == "Weil Pairing":
+        st.subheader("Weil Pairing")
+        st.write("Weil Pairing comming soon.")        
         
     elif zkp_module == "ECC":
         st.markdown("---")
