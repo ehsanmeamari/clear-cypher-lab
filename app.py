@@ -32,19 +32,21 @@ col_left, col_center, col_right = st.columns([1, 1, 1])
 with col_left:
     st.empty() 
 
-with col_center:
-    # Everything inside one centered div for perfect alignment
-    st.markdown(
-        """
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-            <img src="https://raw.githubusercontent.com/ehsanmeamari/clear-cypher-lab/main/logo.png" width="160">
-            <div style="font-size: 1em; color: #334e68; margin-top: 15px; font-weight: 500; text-align: center;">
-                Interactive Cybersecurity Learning Environment
-            </div>
+with col_right:
+    # 1. Right-aligned Header for Social Media
+    st.markdown('<p style="text-align: right; font-weight: bold; font-size: 0.8em; color: #555; margin-bottom: 5px; padding-right: 5px;">🔗 Social Media</p>', unsafe_allow_html=True)
+    
+    # 2. Buttons in a right-aligned HTML block
+    st.markdown("""
+        <div style="display: flex; flex-direction: column; gap: 5px; align-items: flex-end; padding-right: 5px;">
+            <a href="https://www.youtube.com/@ClearCypherLab" target="_blank" style="text-decoration: none;">
+                <div style="background-color: #FF0000; color: white; padding: 5px 10px; text-align: center; border-radius: 4px; font-weight: bold; font-size: 0.75em; width: 100px;">📺 YOUTUBE</div>
+            </a>
+            <a href="https://www.linkedin.com/company/113012501/" target="_blank" style="text-decoration: none;">
+                <div style="background-color: #0077B5; color: white; padding: 5px 10px; text-align: center; border-radius: 4px; font-weight: bold; font-size: 0.75em; width: 100px;">🔗 LINKEDIN</div>
+            </a>
         </div>
-        """, 
-        unsafe_allow_html=True
-    )
+        """, unsafe_allow_html=True)
     
 with col_right:
     # A single container that forces everything to the far right
