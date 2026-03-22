@@ -1,99 +1,47 @@
-import streamlit as st
-from modules.styles import apply_styles
-from modules.ecc_tool import run_ecc_visualizer
-
-# 1. Page Configuration
-st.set_page_config(page_title="Clear Cypher Lab", page_icon="🛡️", layout="wide")
-apply_styles()
-
-# 2. Sidebar Navigation
-with st.sidebar:
-    st.title("🛡️ Clear Cypher Lab")
-    st.markdown("---")
-    st.write("🔗 **Social Media:**")
-    
-    col_yt, col_li = st.columns(2)
-    with col_yt:
-        st.markdown(
-            """<a href="https://www.youtube.com/@ClearCypherLab" target="_blank">
-            <img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" width="100%"></a>""", 
-            unsafe_allow_html=True)
-    with col_li:
-        st.markdown(
-            """<a href="https://www.linkedin.com/company/113012501/" target="_blank">
-            <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" width="100%"></a>""", 
-            unsafe_allow_html=True)
-    st.markdown("---")
-
-# 3. Main Content
-st.title("🛡️ Clear Cypher Lab")
-st.markdown("Interactive Cryptography Learning Environment")
-
-tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
-
-with tab1:
-    st.header("Cryptography")
-    st.info("Advanced cryptography modules are under development.")
-
-with tab2:
-    st.header("Blockchain Infrastructure")
-    st.info("Blockchain simulation tools coming soon.")
-
-with tab3:
-    st.header("Groth 16")
-    
-    # Updated Radio Button without visible label
-    zkp_module = st.radio(
-        label="Select a Module:",
-        options=["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation"], 
-        key="zkp_main",
-        horizontal=True,
-        label_visibility="collapsed"
-    )
-    
-    st.divider()
-
-    if zkp_module == "Modular Arithmetic":
+if zkp_module == "Modular Arithmetic":
         st.subheader("Modular Arithmetic")
         
-        # استفاده از Radio به جای Selectbox برای انتخاب mod1 و mod2
+        # Horizontal radio buttons for sub-modules
         mod_sub_module = st.radio(
-            label="Select Mod Operation:",
-            options=["mod1", "mod2"],
+            label="Select Operation:",
+            options=["Modulo Calculator", "Modular Inverse"],
             key="mod_sub_selection",
-            horizontal=True, # برای نمایش افقی گزینه‌ها
-            label_visibility="collapsed" # برای حذف نوشته اضافی بالای گزینه‌ها
+            horizontal=True,
+            label_visibility="collapsed"
         )
         
-        st.divider() # یک خط جداکننده برای زیبایی بیشتر
+        st.divider()
         
-        if mod_sub_module == "mod1":
-            st.write("### Modular Operation (mod1)")
-            num_a = st.number_input("Enter a:", value=17, key="mod1_a")
-            num_n = st.number_input("Enter mod n:", value=5, key="mod1_n")
-            st.code(f"{num_a} mod {num_n} = {num_a % num_n}", language="text")
+        if mod_sub_module == "Modulo Calculator":
+            st.write("### 🔢 Modulo Calculator")
+            col1, col2 = st.columns(2)
+            with col1:
+                num_a = st.number_input("Enter number (a):", value=17, key="mod_calc_a")
+            with col2:
+                num_n = st.number_input("Enter modulo (n):", value=5, key="mod_calc_n")
             
-        elif mod_sub_module == "mod2":
-            st.write("### Advanced Modular Math (mod2)")
-            st.info("Additional modular arithmetic tools coming soon.")
-
-    elif zkp_module == "Extension Field":
-        st.subheader("Extension Field")
-        st.info("Module coming soon.")
-        
-    elif zkp_module == "ECC":
-        ecc_sub = st.selectbox("ECC Operations:", ["Visualizer", "Point Addition", "Scalar Multiplication"])
-        if ecc_sub == "Visualizer":
-            run_ecc_visualizer()
-        else:
-            st.info(f"{ecc_sub} is under development.")
-
-    elif zkp_module == "Weil Pairing":
-        st.subheader("Weil Pairing")
-        st.info("Coming soon.")
-
-    elif zkp_module == "Lagrange Interpolation":
-        st.subheader("Lagrange Interpolation")
-        st.info("Coming soon.")
-
-st.divider()
+            if num_n != 0:
+                result = num_a % num_n
+                st.code(f"{num_a} mod {num_n} = {result}", language="text")
+            else:
+                st.error("Modulo by zero is not defined!")
+            
+        elif mod_sub_module == "Modular Inverse":
+            st.write("### 🔄 Modular Multiplicative Inverse")
+            st.write("Find $x$ such that: $a \\cdot x \\equiv 1 \\pmod{n}$")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                inv_a = st.number_input("Enter number (a):", value=3, key="inv_a")
+            with col2:
+                inv_n = st.number_input("Enter modulo (n):", value=11, key="inv_n")
+            
+            # Logic to find modular inverse
+            try:
+                # pow(a, -1, n) finds the modular inverse in Python 3.8+
+                res_inv = pow(int(inv_a), -1, int(inv_n))
+                st.success(f"The modular inverse is: {res_inv}")
+                st.code(f"{inv_a} * {res_inv} ≡ 1 (mod {inv_n})", language="text")
+            except ValueError:
+                st.error(f"Modular inverse does not exist for {inv_a} mod {inv_n}.")
+                st.info("Inverse exists only if gcd(a, n) = 1 (they are coprime).")
