@@ -1,25 +1,44 @@
+import streamlit as st
+from modules.styles import apply_styles
+from views.cryptography_view import render_cryptography_tab
+from views.blockchain_view import render_blockchain_tab
+from views.zkp_view import render_zkp_tab
+
+# 1. Page Configuration
+st.set_page_config(
+    page_title="Clear Cypher Lab", 
+    page_icon="logo.png", 
+    layout="wide"
+)
+
+# ULTRA-COMPACT CSS
+st.markdown("""
+    <style>
+        .block-container { padding-top: 0.5rem !important; padding-bottom: 0rem !important; }
+        [data-testid="stVerticalBlock"] > div { gap: 0rem !important; }
+        div[data-testid="stRadio"] { margin-bottom: -25px !important; }
+        hr { margin-top: 2px !important; margin-bottom: 2px !important; }
+        [data-testid="stImage"] { display: flex; justify-content: center; margin-bottom: -15px !important; }
+        button[data-baseweb="tab"] { padding-top: 0px !important; padding-bottom: 0px !important; height: 35px !important; }
+        .stMarkdown div p { margin-bottom: 0px !important; }
+    </style>
+    """, unsafe_allow_html=True)
+
+apply_styles()
+
 # 2. Header Section
-# Using 1-3-1 ratio to give the center more room and ensure absolute centering
 col_left, col_center, col_right = st.columns([1, 3, 1])
 
 with col_left:
-    st.write("") # Spacer
+    st.empty() 
 
 with col_center:
-    # Centering the logo image using a div container
-    st.markdown(
-        """
-        <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-            <img src="app/static/logo.png" width="160">
-        </div>
-        """, 
-        unsafe_allow_html=True
-    )
-    # Centered subtitle directly under the logo
+    # Logo and Subtitle Centered
+    st.image("logo.png", width=160) 
     st.markdown('<div style="text-align: center; font-size: 1em; color: #334e68; margin-top: 10px; font-weight: 500;">Interactive Cryptography Learning Environment</div>', unsafe_allow_html=True)
 
 with col_right:
-    # Social Media pinned to the right side as shown in your layout
+    # Social Media on the Right
     st.markdown('<div style="text-align: right;">', unsafe_allow_html=True)
     st.markdown('<p style="margin-bottom: 5px; font-weight: bold; font-size: 0.8em; color: #555;">🔗 Social Media</p>', unsafe_allow_html=True)
     st.markdown("""
@@ -33,3 +52,19 @@ with col_right:
         </div>
         """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
+
+st.divider()
+
+# 3. Navigation Tabs
+tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
+
+with tab1:
+    render_cryptography_tab()
+
+with tab2:
+    render_blockchain_tab()
+
+with tab3:
+    render_zkp_tab()
+
+st.divider()
