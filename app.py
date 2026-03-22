@@ -77,7 +77,6 @@ with tab3:
 
     # --- LOGIC FOR GROTH16 ---
     if zkp_protocol == "Groth16":
-        st.subheader("Groth16 Protocol Stack")
         # LEVEL 2: Groth16 Sub-modules
         zkp_module = st.radio(
             label="Groth16 Modules",
@@ -110,7 +109,6 @@ with tab3:
 
     # --- LOGIC FOR SUMCHECK ---
     elif zkp_protocol == "Sumcheck":
-        st.subheader("Sumcheck Protocol Stack")
         # LEVEL 2: Sumcheck Sub-modules
         sumcheck_sub = st.radio(
             label="Sumcheck Modules",
