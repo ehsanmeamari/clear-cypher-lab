@@ -73,8 +73,15 @@ with tab1:
 
 with tab2:
     st.header("Blockchain Infrastructure")
-    blc_module = st.radio("Select a Module:", ["RSA Practical"], key="blc")
-    if blc_module == "RSA Practical":
-        run_rsa_tool()
+    # Display a clean "Coming Soon" message without any sub-modules
+    st.info("🚀 Interactive Blockchain modules are under development. Stay tuned!")
+    
+    # Optional: You can add a small description of what will be here
+    st.write("""
+    This section will soon include:
+    * Hash Functions & Merkle Trees
+    * RSA & Digital Signatures
+    * Proof of Work/Stake Simulations
+    """)
 
 st.divider()
