@@ -27,7 +27,7 @@ st.markdown("""
 apply_styles()
 
 # 2. Header Section
-col_left, col_center, col_right = st.columns([1, 3, 1])
+col_left, col_center, col_right = st.columns([1, 1, 1])
 
 with col_left:
     st.empty() 
