@@ -12,25 +12,30 @@ def ecc_fp():
     with left_col:
         # ایجاد ۵ ستون: ستون اول برای عنوان و بقیه برای پارامترها و فرمول
         # نسبت‌ها را طوری تنظیم می‌کنیم که فضای کافی برای هر بخش باشد
-        c_title, c1, c2, c3, c4 = st.columns([1.5, 0.7, 0.7, 0.7, 2])
-        
+        # تنظیم نسبت ستون‌ها (کمی فضای ستون اول را برای ظرافت بیشتر کم کردیم)
+        c_title, c1, c2, c3, c4 = st.columns([1.2, 0.7, 0.7, 0.7, 2.3])
+                
         with c_title:
-            # استفاده از markdown به جای subheader برای کنترل بهتر روی تراز شدن
-            st.markdown("<h3 style='margin-top: 3px;'> Curve Definition</h3>", unsafe_allow_html=True)
-        
+            # استفاده از font-size برای کنترل دقیق اندازه (مثلاً 20px) و تنظیم فاصله از بالا
+            st.markdown("""
+                <div style='margin-top: 32px; font-size: 20px; font-weight: bold;'>
+                    🔢 Curve Definition
+                </div>
+                """, unsafe_allow_html=True)
+                
         with c1: 
             p = st.number_input("Prime Field (p)", value=17, step=1)
         with c2: 
             a = st.number_input("Parameter (a)", value=2, step=1)
         with c3: 
             b = st.number_input("Parameter (b)", value=13, step=1)
-        
+                
         with c4:
-            # تراز کردن عمودی فرمول لاتک با فیلدها
+            # تراز کردن عمودی فرمول لاتک
             st.markdown("<div style='margin-top: 35px;'>", unsafe_allow_html=True)
             st.latex(f"E: y^2 \\equiv x^3 + {a}x + {b} \\pmod{{{p}}}")
             st.markdown("</div>", unsafe_allow_html=True)
-                
+                        
         st.divider()
 
         # ۱. محاسبات نقاط منحنی
