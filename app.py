@@ -11,24 +11,24 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom CSS - Clean and minimal
+# Custom CSS for perfect alignment
 st.markdown("""
     <style>
         .block-container { 
             padding-top: 0.5rem !important; 
             padding-bottom: 0rem !important; 
         }
-        [data-testid="stVerticalBlock"] > div { gap: 0rem !important; }
         
-        /* Center the logo with slight right shift */
-        .logo-container {
+        /* Logo and subtitle container */
+        .header-center {
             display: flex;
-            justify-content: center;
-            margin-right: -40px;   /* کمی به راست می‌برد */
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
         }
         
         [data-testid="stImage"] {
-            margin-bottom: 8px !important;
+            margin-bottom: 5px !important;   /* خیلی کم کردن فاصله بین لوگو و متن */
         }
     </style>
     """, unsafe_allow_html=True)
@@ -42,18 +42,20 @@ with col_left:
     st.empty()
 
 with col_center:
-    # Logo container - centered with slight right shift
-    st.markdown('<div class="logo-container">', unsafe_allow_html=True)
+    st.markdown('<div class="header-center">', unsafe_allow_html=True)
+    
+    # Logo
     st.image("logo.png", width=220)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # Subtitle directly under the logo
+    
+    # Subtitle - directly under the logo with minimal spacing
     st.markdown('''
         <div style="text-align: center; font-size: 1.05em; color: #334e68; 
-                    margin-top: 12px; font-weight: 500;">
+                    margin-top: 6px; font-weight: 500;">
             Interactive Cryptography Learning Environment
         </div>
     ''', unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with col_right:
     # Social Media
