@@ -3,7 +3,7 @@ from modules.styles import apply_styles
 from modules.ecc_tool import run_ecc_visualizer
 from modules.modular_math import run_modular_math
 
-# 1. Page Configuration
+# 1. Page Configuration (No changes here)
 st.set_page_config(
     page_title="Clear Cypher Lab", 
     page_icon="logo.png", 
@@ -13,15 +13,18 @@ st.set_page_config(
 apply_styles()
 
 # 2. Header Section: Logo (Left) and Social Media (Right)
-# Creating two columns to match your uploaded image layout
 col_main, col_social = st.columns([4, 1])
 
 with col_main:
-    # Display the new logo on the main page instead of sidebar
-    st.image("logo.png", width=450)
-    st.markdown('<div style="text-align: left; padding-left: 20px; font-size: 1.2em; color: #334e68;">Interactive Cryptography Learning Environment</div>', unsafe_allow_html=True)
+    # --- LOGO SIZE REDUCED HERE ---
+    # Width changed from 450 to 225 (half size)
+    st.image("logo.png", width=225) 
+    
+    # Styled subtitle (No changes, but kept for context)
+    st.markdown('<div style="text-align: left; padding-left: 10px; font-size: 1.1em; color: #334e68; font-weight: 500;">Interactive Cryptography Learning Environment</div>', unsafe_allow_html=True)
 
 with col_social:
+    # Social Media section (No changes here)
     st.write("🔗 **Social Media:**")
     # YouTube Button
     st.markdown(
