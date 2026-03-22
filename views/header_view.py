@@ -22,9 +22,6 @@ def render_header_view():
                 <div style="font-size: 1.25em; color: #1a365d; margin-top: 8px; font-weight: 700; text-align: center;">
                     Demystifying the Math of Cybersecurity
                 </div>
-                <div style="font-size: 0.9em; color: #4a5568; margin-top: 2px; font-weight: 400; text-align: center;">
-                    Interactive Learning Environment for ZKP, ECC & Blockchain
-                </div>
             </div>
             """, 
             unsafe_allow_html=True
