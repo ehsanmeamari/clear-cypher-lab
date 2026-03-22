@@ -36,7 +36,16 @@ def run_ecc_visualizer():
             ax.contour(x.ravel(), y.ravel(), y**2 - x**3 - a*x - b, [0], colors='royalblue')
             
             # Formatting the small plot
-            ax.set_title(fr"$y^2 = x^3 + {a}x + {b}$", fontsize=11, pad=10)
+            a_sign = "" if a < 0 else "+"
+            b_sign = "" if b < 0 else "+"
+        
+            # Plotting the title with Computer Modern math font
+            ax.set_title(fr"$y^2 = x^3 {a_sign} {a}x {b_sign} {b}$", 
+                     fontsize=10, 
+                     pad=12)
+
+            # Set math font set to 'cm' (Computer Modern) to match st.latex
+            plt.rcParams['mathtext.fontset'] = 'cm'
             ax.grid(True, linestyle='--', alpha=0.4)
             ax.axhline(0, color='black', linewidth=0.6)
             ax.axvline(0, color='black', linewidth=0.6)
