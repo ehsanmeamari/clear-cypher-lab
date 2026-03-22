@@ -55,9 +55,24 @@ with tab3:
 
     if zkp_module == "Modular Arithmetic":
         st.subheader("Modular Arithmetic")
-        num_a = st.number_input("Enter a:", value=17)
-        num_n = st.number_input("Enter mod n:", value=5)
-        st.code(f"{num_a} mod {num_n} = {num_a % num_n}", language="text")
+        
+        # Adding sub-modules for Modular Arithmetic
+        mod_sub_module = st.selectbox(
+            "Select Operation:",
+            ["mod1", "mod2"]
+        )
+        
+        st.markdown("---")
+        
+        if mod_sub_module == "mod1":
+            st.write("### Modular Operation (mod1)")
+            num_a = st.number_input("Enter a:", value=17, key="mod1_a")
+            num_n = st.number_input("Enter mod n:", value=5, key="mod1_n")
+            st.code(f"{num_a} mod {num_n} = {num_a % num_n}", language="text")
+            
+        elif mod_sub_module == "mod2":
+            st.write("### Advanced Modular Math (mod2)")
+            st.info("Additional modular arithmetic tools coming soon.")
 
     elif zkp_module == "Extension Field":
         st.subheader("Extension Field")
