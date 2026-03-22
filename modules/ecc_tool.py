@@ -45,7 +45,7 @@ def run_ecc_visualizer():
             b_sign = "-" if b < 0 else "+"            
             # We use abs(a) and abs(b) to avoid double signs like "+ -1.0"
             title_text = fr"$y^2 = x^3 {a_sign} {abs(a)}x {b_sign} {abs(b)}$"        
-            ax.set_title(title_text, fontsize=12, pad=15)
+            ax.set_title(title_text, fontsize=6, pad=15)
 
             # Drawing the curve
             ax.grid(True, linestyle='--', alpha=0.4)
