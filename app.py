@@ -1,37 +1,47 @@
-# در فایل app.py، بخشی که با with st.sidebar شروع می‌شود را پیدا کن و به این شکل تغییر بده:
+import streamlit as st
+from modules.styles import apply_styles
+from modules.ecc_tool import run_ecc_visualizer
+from modules.rsa_tool import run_rsa_tool
 
+# Page Configuration
+st.set_page_config(page_title="Clear Cypher Lab", page_icon="🛡️", layout="wide")
+apply_styles()
+
+# Sidebar Navigation & Social Media
 with st.sidebar:
-    st.title("🛡️ Navigation")
-    st.markdown("---") # خط جداکننده
-    
+    st.title("🛡️ Clear Cypher Lab")
+    st.markdown("---")
     st.write("🔗 **Social Media:**")
     
-    # ایجاد دو ستون برای قرارگیری آیکون‌ها کنار هم
     col_yt, col_li = st.columns(2)
-    
     with col_yt:
-        # دکمه یوتیوب
         st.markdown(
-            """
-            <a href="https://www.youtube.com/@ClearCypherLab" target="_blank">
-                <img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" width="100%">
-            </a>
-            """, 
-            unsafe_allow_html=True
-        )
-        
+            """<a href="https://www.youtube.com/@ClearCypherLab" target="_blank">
+            <img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" width="100%"></a>""", 
+            unsafe_allow_html=True)
     with col_li:
-        # دکمه لینکدین (لینک عددی که فرستادی را اینجا گذاشتم)
         st.markdown(
-            """
-            <a href="https://www.linkedin.com/company/113012501/" target="_blank">
-                <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" width="100%">
-            </a>
-            """, 
-            unsafe_allow_html=True
-        )
-    
+            """<a href="https://www.linkedin.com/company/113012501/" target="_blank">
+            <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" width="100%"></a>""", 
+            unsafe_allow_html=True)
     st.markdown("---")
-    
-    # ادامه کدهای رادیو باتن برای انتخاب ماژول‌ها
-    # ...
+
+# Main Content
+st.title("🛡️ Clear Cypher Lab")
+st.markdown("Welcome to the interactive cryptography learning environment.")
+
+tab1, tab2 = st.tabs(["🌐 Clear ZKP", "⛓️ Blockchain"])
+
+with tab1:
+    st.header("Groth16 & ECC")
+    zkp_module = st.radio("Select a Module:", ["Extension Field", "ECC Visualizer"], key="zkp")
+    if zkp_module == "ECC Visualizer":
+        run_ecc_visualizer()
+    else:
+        st.write("Extension Fields coming soon...")
+
+with tab2:
+    st.header("Blockchain Infrastructure")
+    blc_module = st.radio("Select a Module:", ["RSA Practical"], key="blc")
+    if blc_module == "RSA Practical":
+        run_rsa_tool()
