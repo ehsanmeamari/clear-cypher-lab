@@ -5,52 +5,60 @@ from views.cryptography_view import render_cryptography_tab
 from views.blockchain_view import render_blockchain_tab
 from views.zkp_view import render_zkp_tab
 
+# تنظیمات اولیه صفحه
 st.set_page_config(
     page_title="Clear Cypher Lab", 
     page_icon="logo.png", 
     layout="wide"
 )
 
-# این بخش تمام فضاهای مخفی سیستم را حذف می‌کند
+# حذف تهاجمی هدر و پدینگ‌های اضافه
 st.markdown("""
     <style>
-        /* ۱. حذف نوار ابزار بالای صفحه (Header) */
+        /* حذف نوار بالایی استریم‌لیت */
         header[data-testid="stHeader"] {
             display: none !important;
         }
 
-        /* ۲. حذف پدینگ بدنه اصلی و چسباندن محتوا به سقف */
+        /* حذف پدینگ بدنه اصلی و کشیدن محتوا به سقف */
         .main .block-container {
             padding-top: 0rem !important;
             padding-bottom: 0rem !important;
-            margin-top: -30px !important; /* جبران فاصله باقی‌مانده */
+            margin-top: -45px !important; /* جبران فضای خالی سیستم */
         }
 
-        /* ۳. حذف فضای خالی خودکار بین المان‌ها */
+        /* حذف فاصله خودکار بین ویجت‌ها برای فشرده‌سازی */
         [data-testid="stVerticalBlock"] > div {
-            gap: 0rem !important;
+            gap: 0.1rem !important;
         }
 
-        /* ۴. مخفی کردن دکمه منو و موارد اضافه برای تمیزی */
+        /* مخفی کردن منوی تنظیمات و فوتر */
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
         
-        /* ۵. کاهش ارتفاع تب‌ها برای فشردگی بیشتر */
+        /* تنظیم ارتفاع تب‌ها برای ظرافت بیشتر */
         button[data-baseweb="tab"] {
             height: 40px !important;
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
         }
     </style>
     """, unsafe_allow_html=True)
 
-# اجرای استایل‌های جانبی
+# اعمال استایل‌های اختصاصی پدینگ کناره‌ها
 apply_styles()
 
-# فراخوانی هدر
+# نمایش هدر سایت
 render_header_view()
 
-# نوار تب‌ها
+# ایجاد تب‌های اصلی ناوبری
 tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
 
-with tab1: render_cryptography_tab()
-with tab2: render_blockchain_tab()
-with tab3: render_zkp_tab()
+with tab1: 
+    render_cryptography_tab()
+with tab2: 
+    render_blockchain_tab()
+with tab3: 
+    render_zkp_tab()
+
+st.divider()
