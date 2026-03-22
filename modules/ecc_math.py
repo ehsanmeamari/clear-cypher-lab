@@ -40,21 +40,19 @@ def ecc_fp():
         op = st.radio("Choose Operation:", ["Point Addition (P + Q)", "Scalar Multiplication (nP)"], horizontal=True)
         
         # قرار دادن ورودی‌های نقاط در زیر رادیو باتن (درون ستون سمت راست)
-        inner_col1, inner_col2 = st.columns(2)
         if op == "Point Addition (P + Q)":
-            with inner_col1:
-                st.write("**Point P**")
-                x1 = st.number_input("x1", value=5, key="x1")
-                y1 = st.number_input("y1", value=1, key="y1")
-            with inner_col2:
-                st.write("**Point Q**")
-                x2 = st.number_input("x2", value=6, key="x2")
-                y2 = st.number_input("y2", value=3, key="y2")
+            st.write("**Point P**")
+            x1 = st.number_input("x1", value=5, key="x1")
+            y1 = st.number_input("y1", value=1, key="y1")
+            
+            st.write("**Point Q**")
+            x2 = st.number_input("x2", value=6, key="x2")
+            y2 = st.number_input("y2", value=3, key="y2")
+            
         else:
-            with inner_col1:
-                st.write("**Point P**")
-                x1 = st.number_input("x1", value=5)
-                y1 = st.number_input("y1", value=1)
-            with inner_col2:
-                st.write("**Scalar Value**")
-                n = st.number_input("n (integer)", value=2)
+            st.write("**Point P**")
+            x1 = st.number_input("x1_k", value=5)
+            y1 = st.number_input("y1_k", value=1)
+            
+            st.write("**Scalar Value**")
+            n = st.number_input("n (integer)", value=2)
