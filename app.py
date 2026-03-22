@@ -93,7 +93,7 @@ with tab3:
             # New sub-menu for ECC
             ecc_sub_module = st.radio(
                 label="ECC Operations:",
-                options=["Elliptic Curve Visualizer", "Addition over R", "Multiplication over R", "Addition over Fp", "Multiplication over Fp"],
+                options=["Visualizer over R", "Addition over R", "Multiplication over R", "Visualizer over Fp", "Addition over Fp", "Multiplication over Fp"],
                 key="ecc_sub_selection",
                 horizontal=True,
                 label_visibility="collapsed"
@@ -101,7 +101,7 @@ with tab3:
             
             st.divider()
             
-            if ecc_sub_module == "Elliptic Curve Visualizer":
+            if ecc_sub_module == "Visualizer over R":
                 run_ecc_visualizer() # Your existing function
 
             elif ecc_sub_module == "Addition over R":
@@ -109,6 +109,9 @@ with tab3:
 
             elif ecc_sub_module == "Multiplication over R":
                 st.info("Scalar Multiplication over R is coming soon.")
+
+            elif ecc_sub_module == "Visualizer over Fp":
+                st.info("Visualizer over Fp is coming soon.")            
                 
             elif ecc_sub_module == "Addition over Fp":
                 st.info("Point Addition logic ($P + Q = R$) over a finite field is coming soon.")
