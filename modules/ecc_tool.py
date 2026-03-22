@@ -35,17 +35,19 @@ def run_ecc_visualizer():
             # Curve plotting
             ax.contour(x.ravel(), y.ravel(), y**2 - x**3 - a*x - b, [0], colors='royalblue')
             
-            # Formatting the small plot
-            a_sign = "" if a < 0 else "+"
-            b_sign = "" if b < 0 else "+"
-        
-            # Plotting the title with Computer Modern math font
-            ax.set_title(fr"$y^2 = x^3 {a_sign} {a}x {b_sign} {b}$", 
-                     fontsize=10, 
-                     pad=12)
+            # Drawing the Curve
+            # Force Matplotlib to use LaTeX-style font for all math text
+            plt.rcParams['mathtext.fontset'] = 'stix'
+            plt.rcParams['font.family'] = 'STIXGeneral'
+    
+            # Writting the formulla over the Curve
+            a_sign = "-" if a < 0 else "+"
+            b_sign = "-" if b < 0 else "+"            
+            # We use abs(a) and abs(b) to avoid double signs like "+ -1.0"
+            title_text = fr"$y^2 = x^3 {a_sign} {abs(a)}x {b_sign} {abs(b)}$"        
+            ax.set_title(title_text, fontsize=12, pad=15)
 
-            # Set math font set to 'cm' (Computer Modern) to match st.latex
-            plt.rcParams['mathtext.fontset'] = 'cm'
+            # Drawing the curve
             ax.grid(True, linestyle='--', alpha=0.4)
             ax.axhline(0, color='black', linewidth=0.6)
             ax.axvline(0, color='black', linewidth=0.6)
