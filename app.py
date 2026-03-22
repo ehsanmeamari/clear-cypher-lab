@@ -56,13 +56,16 @@ with tab3:
     if zkp_module == "Modular Arithmetic":
         st.subheader("Modular Arithmetic")
         
-        # Adding sub-modules for Modular Arithmetic
-        mod_sub_module = st.selectbox(
-            "Select Operation:",
-            ["mod1", "mod2"]
+        # استفاده از Radio به جای Selectbox برای انتخاب mod1 و mod2
+        mod_sub_module = st.radio(
+            label="Select Mod Operation:",
+            options=["mod1", "mod2"],
+            key="mod_sub_selection",
+            horizontal=True, # برای نمایش افقی گزینه‌ها
+            label_visibility="collapsed" # برای حذف نوشته اضافی بالای گزینه‌ها
         )
         
-        st.markdown("---")
+        st.divider() # یک خط جداکننده برای زیبایی بیشتر
         
         if mod_sub_module == "mod1":
             st.write("### Modular Operation (mod1)")
