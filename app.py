@@ -6,30 +6,21 @@ from views.zkp_view import render_zkp_tab
 
 # 1. Page Configuration
 st.set_page_config(
-    page_title="Clear Cypher Lab",
-    page_icon="logo.png",
+    page_title="Clear Cypher Lab", 
+    page_icon="logo.png", 
     layout="wide"
 )
 
-# Custom CSS for perfect alignment
+# ULTRA-COMPACT CSS
 st.markdown("""
     <style>
-        .block-container { 
-            padding-top: 0.5rem !important; 
-            padding-bottom: 0rem !important; 
-        }
-        
-        /* Logo and subtitle container */
-        .header-center {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 10px;
-        }
-        
-        [data-testid="stImage"] {
-            margin-bottom: 5px !important;   /* خیلی کم کردن فاصله بین لوگو و متن */
-        }
+        .block-container { padding-top: 0.5rem !important; padding-bottom: 0rem !important; }
+        [data-testid="stVerticalBlock"] > div { gap: 0rem !important; }
+        div[data-testid="stRadio"] { margin-bottom: -25px !important; }
+        hr { margin-top: 2px !important; margin-bottom: 2px !important; }
+        [data-testid="stImage"] { display: flex; justify-content: center; margin-bottom: -15px !important; }
+        button[data-baseweb="tab"] { padding-top: 0px !important; padding-bottom: 0px !important; height: 35px !important; }
+        .stMarkdown div p { margin-bottom: 0px !important; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -39,29 +30,17 @@ apply_styles()
 col_left, col_center, col_right = st.columns([1, 3, 1])
 
 with col_left:
-    st.empty()
+    st.empty() 
 
 with col_center:
-    st.markdown('<div class="header-center">', unsafe_allow_html=True)
-    
-    # Logo
-    st.image("logo.png", width=220)
-    
-    # Subtitle - directly under the logo with minimal spacing
-    st.markdown('''
-        <div style="text-align: center; font-size: 1.05em; color: #334e68; 
-                    margin-top: 6px; font-weight: 500;">
-            Interactive Cryptography Learning Environment
-        </div>
-    ''', unsafe_allow_html=True)
-    
-    st.markdown('</div>', unsafe_allow_html=True)
+    # Logo and Subtitle Centered
+    st.image("logo.png", width=160) 
+    st.markdown('<div style="text-align: center; font-size: 1em; color: #334e68; margin-top: 10px; font-weight: 500;">Interactive Cryptography Learning Environment</div>', unsafe_allow_html=True)
 
 with col_right:
-    # Social Media
+    # Social Media on the Right
     st.markdown('<div style="text-align: right;">', unsafe_allow_html=True)
     st.markdown('<p style="margin-bottom: 5px; font-weight: bold; font-size: 0.8em; color: #555;">🔗 Social Media</p>', unsafe_allow_html=True)
-    
     st.markdown("""
         <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-end;">
             <a href="https://www.youtube.com/@ClearCypherLab" target="_blank" style="text-decoration: none;">
@@ -81,8 +60,10 @@ tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"
 
 with tab1:
     render_cryptography_tab()
+
 with tab2:
     render_blockchain_tab()
+
 with tab3:
     render_zkp_tab()
 
