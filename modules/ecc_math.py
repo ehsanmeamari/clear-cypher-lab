@@ -49,8 +49,6 @@ def ecc_fp():
                 k = st.number_input("k (integer)", value=2)
 
     with side_col:
-        st.subheader("📖 Math Reference")
-        st.info("Elliptic Curves over finite fields are crucial for ZK-SNARKs.")
         
         # نمایش فرمول زنده بر اساس مقادیر ورودی
         st.latex(f"E: y^2 \\equiv x^3 + {a if a else 'a'}x + {b if b else 'b'} \\pmod{{{p if p else 'p'}}}")
