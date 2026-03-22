@@ -7,14 +7,21 @@ def ecc_fp():
     with left_col:
         st.subheader("🔢 Curve Definition")
         
-        # ۱. دریافت ورودی‌های منحنی
-        c1, c2, c3 = st.columns(3)
-        with c1: p = st.number_input("Prime Field (p)", value=17, step=1)
-        with c2: a = st.number_input("Parameter (a)", value=2, step=1)
-        with c3: b = st.number_input("Parameter (b)", value=2, step=1)
-
-        # نمایش فرمول منحنی
-        st.latex(f"E: y^2 \\equiv x^3 + {a}x + {b} \\pmod{{{p}}}")
+        # ایجاد ۴ ستون: ۳ تا برای ورودی‌ها و یکی پهن‌تر برای نمایش فرمول
+        c1, c2, c3, c4 = st.columns([1, 1, 1, 2])
+        
+        with c1: 
+            p = st.number_input("Prime Field (p)", value=17, step=1)
+        with c2: 
+            a = st.number_input("Parameter (a)", value=2, step=1)
+        with c3: 
+            b = st.number_input("Parameter (b)", value=2, step=1)
+        
+        # نمایش فرمول در ستون چهارم برای اینکه در همان خط باشد
+        with c4:
+            st.write(" ") # ایجاد فاصله اندک برای تراز شدن عمودی با فیلدها
+            st.latex(f"E: y^2 \\equiv x^3 + {a}x + {b} \\pmod{{{p}}}")
+        
         st.divider()
 
         # نمایش لیست نقاط در ستون سمت چپ
