@@ -33,13 +33,18 @@ with col_left:
     st.empty() 
 
 with col_center:
-    # Use standard Streamlit image command but wrapped in a div for centering
-    st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
-    st.image("logo.png", width=150)
-    st.markdown("</div>", unsafe_allow_html=True)
-    
-    # Centered subtitle
-    st.markdown('<div style="text-align: center; font-size: 1em; color: #334e68; margin-top: 10px; font-weight: 500;">Interactive Cybersecurity Learning Environment</div>', unsafe_allow_html=True)
+    # Everything inside one centered div for perfect alignment
+    st.markdown(
+        """
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <img src="https://raw.githubusercontent.com/ehsanmeamari/clear-cypher-lab/main/logo.png" width="160">
+            <div style="font-size: 1em; color: #334e68; margin-top: 15px; font-weight: 500; text-align: center;">
+                Interactive Cybersecurity Learning Environment
+            </div>
+        </div>
+        """, 
+        unsafe_allow_html=True
+    )
     
 with col_right:
     # Social Media on the Right
