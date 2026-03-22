@@ -47,16 +47,21 @@ def ecc_fp():
                         x_coords.append(x)
                         y_coords.append(y)
 
-        # ۲. نمایش لیست نقاط (قبل از نمودار) با سایز بزرگ
+        # ۲. نمایش لیست نقاط (قبل از نمودار) در یک خط واحد
         if points_list:
-            st.write(f"**Points on curve ({len(points_list)} points):**")
             str_points = [f"({pt[0]},{pt[1]})" for pt in points_list]
-            # نمایش ۳۰ نقطه اول برای جلوگیری از شلوغی بیش از حد
+            # محدود کردن تعداد نقاط برای خوانایی
             points_text = ", ".join(str_points[:30]) + ("..." if len(str_points) > 30 else "")
             
-            # استایل‌دهی برای فونت ۱۸ پیکسل و تراز مناسب
-            st.markdown(f"<div style='font-size: 18px; line-height: 1.6; color: #555; margin-bottom: 20px;'>{points_text}</div>", unsafe_allow_html=True)
-
+            # ترکیب عنوان و نقاط در یک استایل واحد
+            combined_html = f"""
+                <div style='font-size: 18px; line-height: 1.6; margin-bottom: 20px;'>
+                    <span style='font-weight: bold; color: #31333F;'>Points on curve ({len(points_list)} points):</span>
+                    <span style='color: #555; margin-left: 5px;'>{points_text}</span>
+                </div>
+            """
+            st.markdown(combined_html, unsafe_allow_html=True)
+            
         # ۳. رسم نمودار بصری
         st.write(f"**Visualization over Fp (p={p}):**")
         fig, ax = plt.subplots(figsize=(6, 6))
