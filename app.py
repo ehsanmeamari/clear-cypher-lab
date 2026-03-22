@@ -46,8 +46,7 @@ with tab3:
     st.header("Groth 16")
     
     # ZKP Roadmap Selection
-    zkp_module = st.radio(
-        "Select a Module:", 
+    zkp_module = st.radio( 
         ["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation"], 
         key="zkp_main",
         horizontal=True
