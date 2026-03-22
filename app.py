@@ -59,6 +59,8 @@ st.markdown("""
     </div>
     """, unsafe_allow_html=True)
 
+st.divider()
+
 # 3. Navigation Tabs
 tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
 
