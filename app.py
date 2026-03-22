@@ -24,22 +24,31 @@ st.markdown("""
 
 apply_styles()
 
-# 2. Header Section
-# استفاده از کانتینر اصلی برای جلوگیری از تداخل
-st.markdown("""
-    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 10px 0px;">
-        
-        <div style="flex: 1;"></div>
+# 2. Header Section - Optimized with st.columns to prevent raw code display
+col_left, col_center, col_right = st.columns([1, 2.5, 1.2])
 
-        <div style="flex: 2; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+with col_left:
+    st.empty()
+
+with col_center:
+    # Logo and Subtitle
+    st.markdown(
+        """
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
             <img src="https://raw.githubusercontent.com/ehsanmeamari/clear-cypher-lab/main/logo.png" width="160">
-            <div style="font-size: 1.1em; color: #334e68; margin-top: 10px; font-weight: 500; text-align: center; white-space: nowrap;">
+            <div style="font-size: 1.1em; color: #334e68; margin-top: 10px; font-weight: 500; text-align: center;">
                 Interactive Cybersecurity Learning Environment
             </div>
         </div>
+        """, 
+        unsafe_allow_html=True
+    )
 
-        <div style="flex: 1; display: flex; flex-direction: column; align-items: flex-end; padding-right: 25px;">
-            <div style="font-weight: bold; font-size: 0.85em; color: #555; margin-bottom: 8px; white-space: nowrap;">
+with col_right:
+    # Social Media Section - Fixed Right Alignment
+    st.markdown("""
+        <div style="display: flex; flex-direction: column; align-items: flex-end; width: 100%;">
+            <div style="font-weight: bold; font-size: 0.85em; color: #555; margin-bottom: 8px;">
                 🔗 Social Media
             </div>
             <div style="display: flex; flex-direction: column; gap: 5px; align-items: flex-end;">
@@ -55,9 +64,9 @@ st.markdown("""
                 </a>
             </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
+# Divider between Header and Tabs
 st.divider()
 
 # 3. Navigation Tabs
