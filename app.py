@@ -18,17 +18,16 @@ st.markdown("""
         [data-testid="stVerticalBlock"] > div { gap: 0rem !important; }
         div[data-testid="stRadio"] { margin-bottom: -25px !important; }
         hr { margin-top: 2px !important; margin-bottom: 2px !important; }
-        [data-testid="stImage"] { display: flex; justify-content: center; margin-bottom: -15px !important; }
         button[data-baseweb="tab"] { padding-top: 0px !important; padding-bottom: 0px !important; height: 35px !important; }
-        .stMarkdown div p { margin-bottom: 0px !important; }
     </style>
     """, unsafe_allow_html=True)
 
 apply_styles()
 
-# 2. Header Section - THE FINAL DEFIANT VERSION
+# 2. Header Section
+# استفاده از کانتینر اصلی برای جلوگیری از تداخل
 st.markdown("""
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%; padding: 10px 0px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 10px 0px;">
         
         <div style="flex: 1;"></div>
 
@@ -39,7 +38,7 @@ st.markdown("""
             </div>
         </div>
 
-        <div style="flex: 1; display: flex; flex-direction: column; align-items: flex-end;">
+        <div style="flex: 1; display: flex; flex-direction: column; align-items: flex-end; padding-right: 25px;">
             <div style="font-weight: bold; font-size: 0.85em; color: #555; margin-bottom: 8px; white-space: nowrap;">
                 🔗 Social Media
             </div>
