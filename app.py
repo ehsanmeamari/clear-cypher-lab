@@ -54,11 +54,9 @@ st.markdown("Interactive Cryptography Learning Environment")
 tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
 
 with tab1:
-    st.header("Cryptography")
     st.info("🚀 Advanced modules coming soon.")
 
 with tab2:
-    st.header("Blockchain Infrastructure")
     st.info("🚀 Simulation tools coming soon.")
 
 with tab3:
