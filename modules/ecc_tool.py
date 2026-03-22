@@ -6,7 +6,7 @@ def run_ecc_visualizer():
     st.subheader("Elliptic Curve Visualizer")
     st.latex(r"y^2 = x^3 + ax + b")
     
-    col_input, col_plot = st.columns([1, 2])
+    col_input, col_plot = st.columns([1, 9])
     
     with col_input:
         st.write("### Parameters")
