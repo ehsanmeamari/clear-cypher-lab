@@ -85,8 +85,7 @@ def ecc_fp():
         ax.set_yticks(range(0, p, max(1, p // 10)))
         st.pyplot(fig)
 
-    with right_col:        
-        st.subheader("📖 Mathematical Context")
+    with right_col:                
         with st.expander("Point Addition Formulas", expanded=True):
             st.latex(r"s = \frac{y_Q - y_P}{x_Q - x_P} \pmod{p}")
             st.latex(r"x_R = s^2 - x_P - x_Q \pmod{p}")
