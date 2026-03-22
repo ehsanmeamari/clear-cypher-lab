@@ -43,7 +43,7 @@ with tab2:
     st.write("Upcoming: Merkle Trees and Consensus Algorithms.")
 
 with tab3:
-    st.header("Zero-Knowledge Proofs (ZKP)")
+    st.header("Groth 16")
     
     # ZKP Roadmap Selection
     zkp_module = st.radio(
