@@ -3,29 +3,23 @@ from modules.styles import apply_styles
 from modules.ecc_tool import run_ecc_visualizer
 from modules.modular_math import run_modular_math
 
-# 1. Page Configuration
-st.set_page_config(page_title="Clear Cypher Lab", page_icon="🛡️", layout="wide")
+# 1. Page Configuration (Icon changed to your new logo file)
+st.set_page_config(
+    page_title="Clear Cypher Lab", 
+    page_icon="logo.png", 
+    layout="wide"
+)
+
 apply_styles()
 
-# 2. RTL (Right-to-Left) Support CSS
-st.markdown(
-    """
-    <style>
-    .main, div[data-testid="stSidebar"] {
-        direction: rtl;
-        text-align: right;
-    }
-    div[data-testid="stMarkdownContainer"] p {
-        text-align: right;
-    }
-    div.row-widget.stRadio > div {
-        flex-direction: row-reverse;
-        justify-content: flex-end;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+# 2. Sidebar Logo
+# Make sure "logo.png" is in the same directory as this file
+try:
+    st.sidebar.image("logo.png", use_container_width=True)
+except Exception:
+    st.sidebar.warning("Logo file not found. Check filename.")
+
+st.sidebar.markdown("---")
 
 # 3. Sidebar Navigation
 with st.sidebar:
