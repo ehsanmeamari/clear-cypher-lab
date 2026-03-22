@@ -30,9 +30,9 @@ def ecc_fp():
     with right_col:        
         st.subheader("📖 Mathematical Context")
         with st.expander("Show Addition Law", expanded=True):
-            st.latex(r"s = \frac{y_2 - y_1}{x_2 - x_1} \pmod{p}")
-            st.latex(r"x_3 = s^2 - x_1 - x_2 \pmod{p}")
-            st.latex(r"y_3 = s(x_1 - x_3) - y_1 \pmod{p}")
+            st.latex(r"s = \frac{y_Q - y_P}{x_Q - x_P} \pmod{p}")
+            st.latex(r"x_R = s^2 - x_P - x_Q \pmod{p}")
+            st.latex(r"y_R = s(x_P - x_R) - y_P \pmod{p}")
 
         st.divider()
 
