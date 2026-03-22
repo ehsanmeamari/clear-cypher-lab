@@ -112,7 +112,7 @@ with tab3:
         # LEVEL 2: Sumcheck Sub-modules
         sumcheck_sub = st.radio(
             label="Sumcheck Modules",
-            options=["Summation", "Multilinear Extension"],
+            options=["SumCheck Protocol", "Multilinear Extension"],
             key="sumcheck_sub",
             horizontal=True,
             label_visibility="collapsed"
