@@ -26,19 +26,17 @@ st.markdown("""
 
 apply_styles()
 
-# 2. Header Section
-col_left, col_center, col_right = st.columns([1, 1, 1])
+# 2. Header Section - Fixed Final Version
+# Using 2 columns instead of 3 to prevent right-side clipping
+col_main, col_social = st.columns([4, 1])
 
-with col_left:
-    st.empty() 
-
-with col_center:
-    # Absolute centering for Logo and Subtitle
+with col_main:
+    # Centering the logo and text manually using margin-left
     st.markdown(
         """
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-left: 20%;">
             <img src="https://raw.githubusercontent.com/ehsanmeamari/clear-cypher-lab/main/logo.png" width="160">
-            <div style="font-size: 1.1em; color: #334e68; margin-top: 15px; font-weight: 500; text-align: center;">
+            <div style="font-size: 1.1em; color: #334e68; margin-top: 10px; font-weight: 500; text-align: center;">
                 Interactive Cybersecurity Learning Environment
             </div>
         </div>
@@ -46,21 +44,21 @@ with col_center:
         unsafe_allow_html=True
     )
 
-with col_right:
-    # Creating a single container for all right-side elements
+with col_social:
+    # Forced alignment to the absolute right with no room for error
     st.markdown("""
-        <div style="display: flex; flex-direction: column; align-items: flex-end; width: 100%;">
-            <div style="font-weight: bold; font-size: 0.8em; color: #555; margin-bottom: 8px; text-align: right;">
+        <div style="text-align: right; width: 100%; display: flex; flex-direction: column; align-items: flex-end;">
+            <p style="font-weight: bold; font-size: 0.85em; color: #555; margin-bottom: 8px; margin-top: 0px;">
                 🔗 Social Media
-            </div>
+            </p>
             <div style="display: flex; flex-direction: column; gap: 5px;">
                 <a href="https://www.youtube.com/@ClearCypherLab" target="_blank" style="text-decoration: none;">
-                    <div style="background-color: #FF0000; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.75em; width: 100px; text-align: center;">
+                    <div style="background-color: #FF0000; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.75em; width: 95px; text-align: center;">
                         📺 YOUTUBE
                     </div>
                 </a>
                 <a href="https://www.linkedin.com/company/113012501/" target="_blank" style="text-decoration: none;">
-                    <div style="background-color: #0077B5; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.75em; width: 100px; text-align: center;">
+                    <div style="background-color: #0077B5; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.75em; width: 95px; text-align: center;">
                         🔗 LINKEDIN
                     </div>
                 </a>
