@@ -47,24 +47,22 @@ with col_center:
     )
     
 with col_right:
-    # Encapsulating everything in a right-aligned div
-    st.markdown('<div style="text-align: right; width: 100%;">', unsafe_allow_html=True)
-    
-    # Text now explicitly aligned to the right
-    st.markdown('<p style="font-weight: bold; font-size: 0.85em; color: #555; margin-bottom: 5px;">🔗 Social Media</p>', unsafe_allow_html=True)
-    
-    # Button container using flex-end to push buttons to the far right
+    # A single container that forces everything to the far right
     st.markdown("""
-        <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-end;">
-            <a href="https://www.youtube.com/@ClearCypherLab" target="_blank" style="text-decoration: none;">
-                <div style="background-color: #FF0000; color: white; padding: 4px 12px; text-align: center; border-radius: 4px; font-weight: bold; font-size: 0.7em; min-width: 90px;">📺 YOUTUBE</div>
-            </a>
-            <a href="https://www.linkedin.com/company/113012501/" target="_blank" style="text-decoration: none;">
-                <div style="background-color: #0077B5; color: white; padding: 4px 12px; text-align: center; border-radius: 4px; font-weight: bold; font-size: 0.7em; min-width: 90px;">🔗 LINKEDIN</div>
-            </a>
+        <div style="display: flex; flex-direction: column; align-items: flex-end; width: 100%; padding-right: 10px;">
+            <p style="font-weight: bold; font-size: 0.8em; color: #555; margin-bottom: 5px; text-align: right; width: 100%;">
+                🔗 Social Media
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <a href="https://www.youtube.com/@ClearCypherLab" target="_blank" style="text-decoration: none;">
+                    <div style="background-color: #FF0000; color: white; padding: 4px 12px; text-align: center; border-radius: 4px; font-weight: bold; font-size: 0.7em; min-width: 95px;">📺 YOUTUBE</div>
+                </a>
+                <a href="https://www.linkedin.com/company/113012501/" target="_blank" style="text-decoration: none;">
+                    <div style="background-color: #0077B5; color: white; padding: 4px 12px; text-align: center; border-radius: 4px; font-weight: bold; font-size: 0.7em; min-width: 95px;">🔗 LINKEDIN</div>
+                </a>
+            </div>
         </div>
         """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 st.divider()
 
