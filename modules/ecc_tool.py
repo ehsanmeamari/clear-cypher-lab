@@ -2,11 +2,12 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
 
+st.subheader("Elliptic Curve Visualizer")
+# Formula display
+st.latex(r"y^2 = x^3 + ax + b")
+
 def run_ecc_visualizer():
-    st.subheader("Elliptic Curve Visualizer")
-    
-    # Formula display
-    st.latex(r"y^2 = x^3 + ax + b")
+
     
     # Column layout: Settings on the left, Plot on the right
     col_input, col_plot = st.columns([1, 2.5])
