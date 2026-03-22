@@ -39,7 +39,7 @@ def ecc_fp():
         st.divider()
 
         # ۱. محاسبات نقاط منحنی
-        if p and p < 100:
+        if p and p < 1000:
             for x in range(p):
                 for y in range(p):
                     if (y**2 - (x**3 + a*x + b)) % p == 0:
