@@ -24,15 +24,21 @@ def ecc_fp():
         
         st.divider()
 
-        # نمایش لیست نقاط در ستون سمت چپ
+        # نمایش لیست نقاط با سایز بزرگتر
         if p and p < 100:
             points = []
             for x in range(p):
                 for y in range(p):
                     if (y**2 - (x**3 + a*x + b)) % p == 0:
                         points.append(f"({x},{y})")
+            
             st.write(f"**Points on curve ({len(points)}):**")
-            st.caption(", ".join(points[:30]) + ("..." if len(points) > 30 else ""))
+            
+            # ایجاد رشته متنی از نقاط
+            points_text = ", ".join(points[:30]) + ("..." if len(points) > 30 else "")
+            
+            # استفاده از Markdown برای تغییر سایز فونت (مثلاً 18px)
+            st.markdown(f"<div style='font-size: 18px; line-height: 1.6;'>{points_text}</div>", unsafe_allow_html=True)
 
     with right_col:        
         st.subheader("📖 Mathematical Context")
