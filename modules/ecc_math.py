@@ -47,17 +47,24 @@ def ecc_fp():
                         x_coords.append(x)
                         y_coords.append(y)
 
-        # ۲. نمایش لیست نقاط (قبل از نمودار) در یک خط واحد
+        # ۲. نمایش لیست نقاط (قبل از نمودار) محصور در آکولاد
         if points_list:
             str_points = [f"({pt[0]},{pt[1]})" for pt in points_list]
-            # محدود کردن تعداد نقاط برای خوانایی
-            points_text = ", ".join(str_points[:30]) + ("..." if len(str_points) > 30 else "")
             
-            # ترکیب عنوان و نقاط در یک استایل واحد
+            # ایجاد متن نقاط؛ اگر تعداد زیاد بود "..." را قبل از بستن آکولاد می‌گذاریم
+            if len(str_points) > 30:
+                core_points = ", ".join(str_points[:30]) + ", ..."
+            else:
+                core_points = ", ".join(str_points)
+            
+            # قرار دادن کل لیست در آکولاد
+            points_in_brackets = f"{{ {core_points} }}"
+            
+            # ترکیب عنوان و نقاط با استایل یکپارچه
             combined_html = f"""
                 <div style='font-size: 18px; line-height: 1.6; margin-bottom: 20px;'>
                     <span style='font-weight: bold; color: #31333F;'>Points on curve ({len(points_list)} points):</span>
-                    <span style='color: #555; margin-left: 5px;'>{points_text}</span>
+                    <span style='color: #555; margin-left: 5px; font-family: monospace;'>{points_in_brackets}</span>
                 </div>
             """
             st.markdown(combined_html, unsafe_allow_html=True)
