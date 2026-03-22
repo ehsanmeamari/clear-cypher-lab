@@ -1,16 +1,18 @@
 import streamlit as st
 from modules.ecc_tool import run_ecc_visualizer
 from modules.modular_math import run_modular_math
-# اضافه کردن ایمپورت جدید برای بخش ریاضیات ECC
 from modules.ecc_math import ecc_fp
 
 def render_zkp_tab():
-    # CSS to reduce vertical gaps globally in this tab
+    # CSS متعادل شده برای ظاهر پرتر
     st.markdown("""
         <style>
-            div[data-testid="stRadio"] { margin-top: -20px !important; }
-            hr { margin-top: 5px !important; margin-bottom: 10px !important; }
-            [data-testid="stVerticalBlock"] > div { gap: 0.5rem !important; }
+            /* کاهش شدت منفی بودن مارجین برای جلوگیری از "خالی" دیده شدن پایین صفحه */
+            div[data-testid="stRadio"] { margin-top: -10px !important; margin-bottom: 10px !important; }
+            /* ایجاد فضای مناسب برای جداکننده‌ها */
+            hr { margin-top: 10px !important; margin-bottom: 15px !important; opacity: 0.2; }
+            /* افزایش فاصله بین المان‌های عمودی برای پر شدن بصری صفحه */
+            [data-testid="stVerticalBlock"] > div { gap: 1rem !important; }
         </style>
         """, unsafe_allow_html=True)
 
@@ -52,28 +54,10 @@ def render_zkp_tab():
             )
             st.divider()
             
-            if ecc_sub == "Visualizer over R":
-                run_ecc_visualizer()
-            
-            elif ecc_sub == "Addition over Fp":
-                # فراخوانی تابع از فایل ecc_math.py
+            if ecc_sub == "Addition over Fp":
+                # فراخوانی تابع اصلی
                 ecc_fp()
-                
+            elif ecc_sub == "Visualizer over R":
+                run_ecc_visualizer()
             else:
                 st.info(f"{ecc_sub} logic is coming soon.")
-        else:
-            st.info(f"{zkp_module} for Groth16 is under development.")
-
-    elif zkp_protocol == "Plonk":
-        # ... (بقیه کد بدون تغییر باقی می‌ماند)
-        plonk_sub = st.radio(
-            label="Plonk Sub", 
-            options=["Tate Pairing", "KZG Commitment Scheme"], 
-            key="plonk_s", 
-            horizontal=True, 
-            label_visibility="collapsed"
-        )
-        st.divider()
-        st.info(f"{plonk_sub} module for Plonk is coming soon.")
-    
-    # ... (بقیه کد)
