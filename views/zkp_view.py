@@ -37,6 +37,7 @@ def render_zkp_tab():
         st.divider()
         
         if zkp_module == "Modular Arithmetic":
+            # عنوان اضافی حذف شد و مستقیماً تابع فراخوانی می‌شود
             run_modular_math()
             
         elif zkp_module == "ECC":
@@ -56,9 +57,8 @@ def render_zkp_tab():
             if ecc_sub == "Visualizer over R":
                 run_ecc_visualizer()
             elif ecc_sub == "Addition over Fp":
-                st.subheader("ECC Addition over Finite Field ($F_p$)")
+                # این بخش رو برای گام بعدی آماده نگه می‌داریم
                 st.info("Point Addition logic (P + Q = R) implementation is next.")
-                # We will add the logic here in the next step
             else:
                 st.info(f"{ecc_sub} logic is coming soon.")
         else:
