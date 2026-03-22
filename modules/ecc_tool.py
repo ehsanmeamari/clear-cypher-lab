@@ -36,7 +36,7 @@ def run_ecc_visualizer():
             ax.contour(x.ravel(), y.ravel(), y**2 - x**3 - a*x - b, [0], colors='royalblue')
             
             # Formatting the small plot
-            ax.set_title(fr"$y^2 = x^3 + ({a})x + ({b})$", fontsize=10, fontname='Times New Roman')
+            ax.set_title(fr"$y^2 = x^3 + {a}x + {b}$", fontsize=11, pad=10)
             ax.grid(True, linestyle='--', alpha=0.4)
             ax.axhline(0, color='black', linewidth=0.6)
             ax.axvline(0, color='black', linewidth=0.6)
