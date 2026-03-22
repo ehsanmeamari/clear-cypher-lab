@@ -16,7 +16,7 @@ def ecc_fp():
         
         with c_title:
             # استفاده از markdown به جای subheader برای کنترل بهتر روی تراز شدن
-            st.markdown("<h3 style='margin-top: 25px;'>🔢 Curve Definition</h3>", unsafe_allow_html=True)
+            st.markdown("<h3 style='margin-top: 15px;'>🔢 Curve Definition</h3>", unsafe_allow_html=True)
         
         with c1: 
             p = st.number_input("Prime Field (p)", value=17, step=1)
