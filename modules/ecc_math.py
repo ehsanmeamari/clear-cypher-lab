@@ -1,6 +1,11 @@
 import streamlit as st
+import matplotlib.pyplot as plt
 
 def ecc_fp():
+    points_list = []
+    x_coords = []
+    y_coords = []
+    
     # تقسیم صفحه به دو ستون مساوی
     left_col, right_col = st.columns([1, 1])
 
@@ -26,19 +31,38 @@ def ecc_fp():
 
         # نمایش لیست نقاط با سایز بزرگتر
         if p and p < 100:
-            points = []
             for x in range(p):
                 for y in range(p):
                     if (y**2 - (x**3 + a*x + b)) % p == 0:
-                        points.append(f"({x},{y})")
-            
-            st.write(f"**Points on curve ({len(points)}):**")
-            
-            # ایجاد رشته متنی از نقاط
-            points_text = ", ".join(points[:30]) + ("..." if len(points) > 30 else "")
-            
-            # استفاده از Markdown برای تغییر سایز فونت (مثلاً 18px)
-            st.markdown(f"<div style='font-size: 18px; line-height: 1.6;'>{points_text}</div>", unsafe_allow_html=True)
+                        points_list.append((x, y))
+                        x_coords.append(x)
+                        y_coords.append(y)
+
+        # --- بخش جدید: رسم نمودار ---
+        st.write(f"**Visualization over Fp (p={p}):**")
+        
+        fig, ax = plt.subplots(figsize=(6, 6))
+        
+        # رسم نقاط با رنگ آبی و استایل دایره‌های توخالی مشابه تصویر
+        ax.scatter(x_coords, y_coords, s=50, facecolors='none', edgecolors='#3498db', linewidth=1.5, label='Curve Points')
+        
+        # تنظیم محدوده مختصات بین 0 و p
+        ax.set_xlim(-0.5, p - 0.5)
+        ax.set_ylim(-0.5, p - 0.5)
+        
+        # اضافه کردن خطوط شطرنجی (Grid) مشابه تصویر ارسالی
+        ax.grid(True, linestyle='-', alpha=0.3)
+        
+        # نام‌گذاری محورها
+        ax.set_xlabel("x")
+        ax.set_ylabel("y")
+        
+        # تنظیم فواصل اعداد روی محورها (Ticks)
+        ax.set_xticks(range(0, p, max(1, p // 10)))
+        ax.set_yticks(range(0, p, max(1, p // 10)))
+    
+        # نمایش نمودار در استریم‌لیت
+        st.pyplot(fig)
 
     with right_col:        
         st.subheader("📖 Mathematical Context")
