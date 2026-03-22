@@ -87,7 +87,7 @@ def ecc_fp():
 
     with right_col:        
         st.subheader("📖 Mathematical Context")
-        with st.expander("Show Addition Law", expanded=True):
+        with st.expander("Point Addition Formulas", expanded=True):
             st.latex(r"s = \frac{y_Q - y_P}{x_Q - x_P} \pmod{p}")
             st.latex(r"x_R = s^2 - x_P - x_Q \pmod{p}")
             st.latex(r"y_R = s(x_P - x_R) - y_P \pmod{p}")
