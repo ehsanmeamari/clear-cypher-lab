@@ -9,7 +9,7 @@ st.latex(r"y^2 = x^3 + ax + b")
 def run_ecc_visualizer():
     
     # Column layout: Settings on the left, Plot on the right
-    col_input, col_plot = st.columns([1, 2.5])
+    col_input, col_plot = st.columns([1, 5])
     
     with col_input:
         st.write("### Parameters")
