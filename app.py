@@ -48,10 +48,12 @@ with st.sidebar:
 
 # 4. Main Header
 st.title("🛡️ Clear Cypher Lab")
-st.markdown("Interactive Cryptography Learning Environment")
+st.markdown('<div style="text-align: left;">Interactive Cryptography Learning Environment</div>', unsafe_allow_html=True)
 
 # 5. Top-Level Tabs
 tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
+
+
 
 with tab1:
     st.info("🚀 Advanced modules coming soon.")
