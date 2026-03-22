@@ -3,6 +3,9 @@ from modules.ecc_tool import run_ecc_visualizer
 from modules.modular_math import run_modular_math
 
 def render_zkp_tab():
+    # 1. Custom Divider to reduce gap after tabs
+    st.markdown('<hr style="margin-top: -15px; margin-bottom: 10px; opacity: 0.3;">', unsafe_allow_html=True)
+
     # Primary Protocol Selection
     zkp_protocol = st.radio(
         label="P", 
@@ -11,7 +14,9 @@ def render_zkp_tab():
         horizontal=True, 
         label_visibility="collapsed"
     )
-    st.divider()
+    
+    # Custom Divider after first radio
+    st.markdown('<hr style="margin-top: 5px; margin-bottom: 10px; opacity: 0.3;">', unsafe_allow_html=True)
 
     if zkp_protocol == "Groth16":
         zkp_module = st.radio(
@@ -21,7 +26,7 @@ def render_zkp_tab():
             horizontal=True, 
             label_visibility="collapsed"
         )
-        st.divider()
+        st.markdown('<hr style="margin-top: 5px; margin-bottom: 10px; opacity: 0.3;">', unsafe_allow_html=True)
         
         if zkp_module == "Modular Arithmetic":
             run_modular_math()
@@ -33,7 +38,7 @@ def render_zkp_tab():
                 horizontal=True, 
                 label_visibility="collapsed"
             )
-            st.divider()
+            st.markdown('<hr style="margin-top: 5px; margin-bottom: 10px; opacity: 0.3;">', unsafe_allow_html=True)
             
             if ecc_sub == "Visualizer over R":
                 run_ecc_visualizer()
@@ -50,7 +55,7 @@ def render_zkp_tab():
             horizontal=True, 
             label_visibility="collapsed"
         )
-        st.divider()
+        st.markdown('<hr style="margin-top: 5px; margin-bottom: 10px; opacity: 0.3;">', unsafe_allow_html=True)
         st.info(f"{plonk_sub} module for Plonk is coming soon.")
 
     elif zkp_protocol == "Spartan":
@@ -61,9 +66,8 @@ def render_zkp_tab():
             horizontal=True, 
             label_visibility="collapsed"
         )
-        st.divider()
+        st.markdown('<hr style="margin-top: 5px; margin-bottom: 10px; opacity: 0.3;">', unsafe_allow_html=True)
         st.info(f"{spartan_sub} module for Spartan is coming soon.")
 
     elif zkp_protocol == "Nova":
-        # Fixed NameError by removing undefined variable Nova_sub
         st.info("Nova protocol module is coming soon.")
