@@ -41,15 +41,20 @@ def ecc_fp():
         
         # قرار دادن ورودی‌های نقاط در زیر رادیو باتن (درون ستون سمت راست)
         if op == "Point Addition (P + Q)":
-            st.write("**Enter Coordinates for P and Q:**")
-            # ایجاد 4 ستون برای x1, y1, x2, y2 در یک خط
-            ix1, iy1, ix2, iy2 = st.columns(6)
-            with ix1: x1 = st.number_input("xP", value=5, key="x1")
-            with iy1: y1 = st.number_input("yP", value=1, key="y1")
-            with ix2: x2 = st.number_input("xQ", value=6, key="x2")
-            with iy2: y2 = st.number_input("yQ", value=3, key="y2")
-            with ix3: x3 = st.number_input("xR", value=0, key="x2")
-            with iy3: y3 = st.number_input("yR", value=0, key="y2")            
+            st.write("**Enter Coordinates for P, Q and R:**")
+            
+            # ۱. تعریف هر ۶ ستون برای جلوگیری از NameError
+            ix1, iy1, ix2, iy2, ix3, iy3 = st.columns(6)
+            
+            with ix1: x1 = st.number_input("xP", value=5, key="xP")
+            with iy1: y1 = st.number_input("yP", value=1, key="yP")
+            
+            with ix2: x2 = st.number_input("xQ", value=6, key="xQ")
+            with iy2: y2 = st.number_input("yQ", value=3, key="yQ")
+            
+            # ۲. استفاده از کلیدهای متفاوت (xR, yR) برای جلوگیری از تداخل
+            with ix3: x3 = st.number_input("xR", value=0, key="xR")
+            with iy3: y3 = st.number_input("yR", value=0, key="yR")           
             
         else:
             st.write("**Enter Point P and Scalar n:**")
