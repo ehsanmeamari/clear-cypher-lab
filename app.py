@@ -66,7 +66,7 @@ with tab3:
     # LEVEL 1: Protocol Selection
     zkp_protocol = st.radio(
         label="Select Protocol:",
-        options=["Groth16", "Plonk", "Sumcheck"],
+        options=["Groth16", "Plonk", "Spartan"],
         key="zkp_protocol_selection",
         horizontal=True,
         label_visibility="collapsed"
@@ -132,17 +132,17 @@ with tab3:
         st.divider()
         st.info(f"{plonk_sub} module for Plonk is coming soon.")
 
-    # --- LOGIC FOR SUMCHECK ---
-    elif zkp_protocol == "Sumcheck":
-        # LEVEL 2: Sumcheck Sub-modules
-        sumcheck_sub = st.radio(
-            label="Sumcheck Modules",
-            options=["SumCheck Protocol", "Multilinear Extension"],
-            key="sumcheck_sub",
+    # --- LOGIC FOR Spartan ---
+    elif zkp_protocol == "Spartan":
+        # LEVEL 2: Spartan Sub-modules
+        Spartan_sub = st.radio(
+            label="Spartan Modules",
+            options=["Spartan Protocol", "Multilinear Extension"],
+            key="Spartan_sub",
             horizontal=True,
             label_visibility="collapsed"
         )
         st.divider()
-        st.info(f"{sumcheck_sub} module for Sumcheck is coming soon.")
+        st.info(f"{Spartan_sub} module for Spartan is coming soon.")
 
 st.divider()
