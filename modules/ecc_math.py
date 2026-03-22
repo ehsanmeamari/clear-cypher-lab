@@ -43,39 +43,46 @@ def ecc_fp():
         if op == "Point Addition (P + Q)":
             st.write("**Enter Coordinates for P and Q:**")
             
-            # تعریف ستون‌ها با عرض‌های متفاوت (ستون‌های عددی پهن‌تر، علائم باریک‌تر)
-            # [ ( , xP , , , yP , ) , + , ( , xQ , , , yQ , ) , = , ( , xR , , , yR , ) ]
-            cols = st.columns([0.3, 1, 0.2, 1, 0.3, 0.5, 0.3, 1, 0.2, 1, 0.3, 0.5, 0.3, 1, 0.2, 1, 0.3])
+            # ایجاد ۱۷ ستون با نسبت‌های دقیق برای تراز شدن
+            cols = st.columns([0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4])
             
-            # تنظیم استایل برای تراز عمودی علائم
-            symbol_style = "<h3 style='text-align: center; margin-top: 30px; color: #444;'>"
+            # استایل CSS برای حذف فاصله و تراز کردن دقیق متن‌ها
+            # مقدار vertical-align و line-height کمک می‌کند تا پرانتزها دقیقاً روبروی جعبه‌ها باشند
+            symbol_style = """
+                <div style='
+                    text-align: center; 
+                    font-size: 24px; 
+                    font-weight: bold; 
+                    line-height: 45px; 
+                    height: 45px;
+                    vertical-align: middle;'>"""
         
             # --- Point P ---
-            with cols[0]: st.markdown(f"{symbol_style}(</h3>", unsafe_allow_html=True)
+            with cols[0]: st.markdown(f"{symbol_style}(</div>", unsafe_allow_html=True)
             with cols[1]: xP = st.number_input("xP", value=5, key="xP", label_visibility="collapsed")
-            with cols[2]: st.markdown(f"{symbol_style},</h3>", unsafe_allow_html=True)
+            with cols[2]: st.markdown(f"{symbol_style},</div>", unsafe_allow_html=True)
             with cols[3]: yP = st.number_input("yP", value=1, key="yP", label_visibility="collapsed")
-            with cols[4]: st.markdown(f"{symbol_style})</h3>", unsafe_allow_html=True)
+            with cols[4]: st.markdown(f"{symbol_style})</div>", unsafe_allow_html=True)
         
             # --- Operator + ---
-            with cols[5]: st.markdown(f"{symbol_style}+</h3>", unsafe_allow_html=True)
+            with cols[5]: st.markdown(f"{symbol_style}+</div>", unsafe_allow_html=True)
         
             # --- Point Q ---
-            with cols[6]: st.markdown(f"{symbol_style}(</h3>", unsafe_allow_html=True)
+            with cols[6]: st.markdown(f"{symbol_style}(</div>", unsafe_allow_html=True)
             with cols[7]: xQ = st.number_input("xQ", value=6, key="xQ", label_visibility="collapsed")
-            with cols[8]: st.markdown(f"{symbol_style},</h3>", unsafe_allow_html=True)
+            with cols[8]: st.markdown(f"{symbol_style},</div>", unsafe_allow_html=True)
             with cols[9]: yQ = st.number_input("yQ", value=3, key="yQ", label_visibility="collapsed")
-            with cols[10]: st.markdown(f"{symbol_style})</h3>", unsafe_allow_html=True)
+            with cols[10]: st.markdown(f"{symbol_style})</div>", unsafe_allow_html=True)
         
             # --- Operator = ---
-            with cols[11]: st.markdown(f"{symbol_style}=</h3>", unsafe_allow_html=True)
+            with cols[11]: st.markdown(f"{symbol_style}=</div>", unsafe_allow_html=True)
         
             # --- Point R (Result) ---
-            with cols[12]: st.markdown(f"{symbol_style}(</h3>", unsafe_allow_html=True)
+            with cols[12]: st.markdown(f"{symbol_style}(</div>", unsafe_allow_html=True)
             with cols[13]: xR = st.number_input("xR", value=0, key="xR", label_visibility="collapsed")
-            with cols[14]: st.markdown(f"{symbol_style},</h3>", unsafe_allow_html=True)
+            with cols[14]: st.markdown(f"{symbol_style},</div>", unsafe_allow_html=True)
             with cols[15]: yR = st.number_input("yR", value=0, key="yR", label_visibility="collapsed")
-            with cols[16]: st.markdown(f"{symbol_style})</h3>", unsafe_allow_html=True)          
+            with cols[16]: st.markdown(f"{symbol_style})</div>", unsafe_allow_html=True)         
             
         else:
             st.write("**Enter Point P and Scalar n:**")
