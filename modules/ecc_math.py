@@ -9,9 +9,9 @@ def is_on_curve(P, a, b, p):
     return (y**2 - (x**3 + a*x + b)) % p == 0
 
 def ecc_fp():
-    main_col, side_col = st.columns([2, 1])
+    left_col, right_col = st.columns([1, 1])
 
-    with main_col:
+    with left_col:
         st.subheader("🔢 Curve Definition") # اصلاح غلط املایی Definition
         
         # ۱. ابتدا ورودی‌ها را بگیرید تا متغیرها تعریف شوند
@@ -24,6 +24,15 @@ def ecc_fp():
         st.latex(f"E: y^2 \\equiv x^3 + {a if a is not None else 'a'}x + {b if b is not None else 'b'} \\pmod{{{p if p is not None else 'p'}}}")
 
         st.divider()
+
+        if p and p < 100: # افزایش محدوده برای نمایش بهتر
+            points = []
+            for x in range(p):
+                for y in range(p):
+                    if (y**2 - (x**3 + a*x + b)) % p == 0:
+                        points.append(f"({x},{y})")
+            st.write(f"**Points on curve ({len(points)}):**")
+            st.caption(", ".join(points[:30]) + ("..." if len(points) > 30 else ""))
 
         op = st.radio("Choose Operation:", ["Point Addition (P + Q)", "Scalar Multiplication (kP)"], horizontal=True)
         
@@ -46,17 +55,8 @@ def ecc_fp():
                 st.write("**Scalar Value**")
                 k = st.number_input("k (integer)", value=2)
 
-    with side_col:        
+    with right_col:        
         with st.expander("Show Addition Law", expanded=True):
             st.latex(r"s = \frac{y_2 - y_1}{x_2 - x_1} \pmod{p}")
             st.latex(r"x_3 = s^2 - x_1 - x_2 \pmod{p}")
             st.latex(r"y_3 = s(x_1 - x_3) - y_1 \pmod{p}")
-
-        if p and p < 100: # افزایش محدوده برای نمایش بهتر
-            points = []
-            for x in range(p):
-                for y in range(p):
-                    if (y**2 - (x**3 + a*x + b)) % p == 0:
-                        points.append(f"({x},{y})")
-            st.write(f"**Points on curve ({len(points)}):**")
-            st.caption(", ".join(points[:30]) + ("..." if len(points) > 30 else ""))
