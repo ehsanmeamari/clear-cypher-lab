@@ -53,8 +53,8 @@ def ecc_fp():
         else:
             with inner_col1:
                 st.write("**Point P**")
-                x1 = st.number_input("x1_n", value=5)
-                y1 = st.number_input("y1_n", value=1)
+                x1 = st.number_input("x1", value=5)
+                y1 = st.number_input("y1", value=1)
             with inner_col2:
                 st.write("**Scalar Value**")
                 n = st.number_input("n (integer)", value=2)
