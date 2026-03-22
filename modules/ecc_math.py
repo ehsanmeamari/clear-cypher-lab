@@ -25,6 +25,19 @@ def ecc_fp():
         st.latex(f"E: y^2 \\equiv x^3 + {a}x + {b} \\pmod{{{p}}}")
         st.divider()
 
+        # نمایش لیست نقاط در ستون سمت راست برای پر کردن فضا
+        if p and p < 100:
+            points = []
+            for x in range(p):
+                for y in range(p):
+                    if (y**2 - (x**3 + a*x + b)) % p == 0:
+                        points.append(f"({x},{y})")
+            
+            st.write(f"**Points on this curve ({len(points)}):**")
+            # نمایش نقاط به صورت تگ‌های کوچک برای زیبایی
+            st.caption(", ".join(points[:50]) + ("..." if len(points) > 50 else ""))
+
+        
         # بخش انتخاب عملیات (بدون فاصله اضافه - رفع خطا)
         op = st.radio("Choose Operation:", ["Point Addition (P + Q)", "Scalar Multiplication (kP)"], horizontal=True)
         
@@ -55,15 +68,3 @@ def ecc_fp():
             st.latex(r"y_3 = s(x_1 - x_3) - y_1 \pmod{p}")
         
         st.divider()
-        
-        # نمایش لیست نقاط در ستون سمت راست برای پر کردن فضا
-        if p and p < 100:
-            points = []
-            for x in range(p):
-                for y in range(p):
-                    if (y**2 - (x**3 + a*x + b)) % p == 0:
-                        points.append(f"({x},{y})")
-            
-            st.write(f"**Points on this curve ({len(points)}):**")
-            # نمایش نقاط به صورت تگ‌های کوچک برای زیبایی
-            st.caption(", ".join(points[:50]) + ("..." if len(points) > 50 else ""))
