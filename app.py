@@ -47,9 +47,13 @@ with col_center:
     )
     
 with col_right:
-    # Social Media on the Right
-    st.markdown('<div style="text-align: right;">', unsafe_allow_html=True)
-    st.markdown('<p style="margin-bottom: 5px; font-weight: bold; font-size: 0.8em; color: #555;">🔗 Social Media</p>', unsafe_allow_html=True)
+    # Encapsulating everything in a right-aligned div
+    st.markdown('<div style="text-align: right; width: 100%;">', unsafe_allow_html=True)
+    
+    # Text now explicitly aligned to the right
+    st.markdown('<p style="font-weight: bold; font-size: 0.85em; color: #555; margin-bottom: 5px;">🔗 Social Media</p>', unsafe_allow_html=True)
+    
+    # Button container using flex-end to push buttons to the far right
     st.markdown("""
         <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-end;">
             <a href="https://www.youtube.com/@ClearCypherLab" target="_blank" style="text-decoration: none;">
