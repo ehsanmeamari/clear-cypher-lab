@@ -33,7 +33,7 @@ st.markdown("Welcome to the interactive cryptography learning environment.")
 tab1, tab2 = st.tabs(["🌐 Clear ZKP", "⛓️ Blockchain"])
 
 with tab1:
-    st.header("Groth16 & ECC")
+    st.header("Groth16")
     
     # First level: Main Module Selection
     zkp_module = st.radio("Select a Module:", ["Extension Field", "ECC"], key="zkp_main")
