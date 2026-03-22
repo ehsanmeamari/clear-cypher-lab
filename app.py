@@ -30,9 +30,35 @@ with st.sidebar:
 st.title("🛡️ Clear Cypher Lab")
 st.markdown("Welcome to the interactive cryptography learning environment.")
 
-tab1, tab2 = st.tabs(["🌐 Clear ZKP", "⛓️ Blockchain"])
+tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain"], "🌐 ZKP",)
+
 
 with tab1:
+    st.header("Cryptography")
+    # Display a clean "Coming Soon" message without any sub-modules
+    st.info("🚀 Cryptography is under development. Stay tuned!")
+
+    # Optional: You can add a small description of what will be here
+    st.write("""
+    This section will soon include:
+    * RSA & Digital Signatures    
+    * Hash Functions & Merkle Trees
+    * Proof of Work/Stake Simulations
+    """)
+
+with tab2:
+    st.header("Blockchain Infrastructure")
+    # Display a clean "Coming Soon" message without any sub-modules
+    st.info("🚀 Interactive Blockchain modules are under development. Stay tuned!")
+    
+    # Optional: You can add a small description of what will be here
+    st.write("""
+    This section will soon include:
+    * Hash Functions & Merkle Trees
+    * Proof of Work/Stake Simulations
+    """)
+
+with tab3:
     st.header("Groth16")
     
     # First level: Main Module Selection
@@ -71,17 +97,5 @@ with tab1:
         st.subheader("Lagrange Interpolation")
         st.write("Lagrange Interpolation comming soon.") 
 
-with tab2:
-    st.header("Blockchain Infrastructure")
-    # Display a clean "Coming Soon" message without any sub-modules
-    st.info("🚀 Interactive Blockchain modules are under development. Stay tuned!")
-    
-    # Optional: You can add a small description of what will be here
-    st.write("""
-    This section will soon include:
-    * Hash Functions & Merkle Trees
-    * RSA & Digital Signatures
-    * Proof of Work/Stake Simulations
-    """)
 
 st.divider()
