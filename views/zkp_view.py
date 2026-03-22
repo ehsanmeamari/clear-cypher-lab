@@ -40,6 +40,9 @@ def render_zkp_tab():
         if zkp_module == "Modular Arithmetic":
             run_modular_math()
             
+        elif zkp_module == "Extension Field":
+            st.info("Extension Field logic is coming soon.")
+        
         elif zkp_module == "ECC":
             # --- 3. ECC Sub-module Selection ---
             ecc_sub = st.radio(
