@@ -43,25 +43,25 @@ def ecc_fp():
         if op == "Point Addition (P + Q)":
             st.write("**Enter Coordinates for P and Q:**")
             
-            # ۱. ایجاد ۸ ستون (۶ تا برای اعداد، ۲ تا برای علائم ریاضی)
-            ix1, iy1, i_plus, ix2, iy2, i_equal, ix3, iy3 = st.columns([1, 1, 0.4, 1, 1, 0.4, 1, 1])
+            # تنظیم عرض ستون‌ها: به ستون‌های علامت (Index 2 و 5) فضای بیشتری دادیم
+            cols = st.columns([1, 1, 0.5, 1, 1, 0.5, 1, 1])
             
-            with ix1: xP = st.number_input("xP", value=5, key="xP")
-            with iy1: yP = st.number_input("yP", value=1, key="yP")
+            with cols[0]: xP = st.number_input("xP", value=5, key="xP")
+            with cols[1]: yP = st.number_input("yP", value=1, key="yP")
             
-            # ستون علامت پلاس
-            with i_plus: 
-                st.markdown("<h3 style='text-align: center; padding-top: 25px;'>+</h3>", unsafe_allow_html=True)
+            # نمایش علامت + (با استفاده از مارک‌داون و استایل برای تراز وسط)
+            with cols[2]: 
+                st.markdown("<h2 style='text-align: center; margin-top: 20px;'>+</h2>", unsafe_allow_html=True)
             
-            with ix2: xQ = st.number_input("xQ", value=6, key="xQ")
-            with iy2: yQ = st.number_input("yQ", value=3, key="yQ")
+            with cols[3]: xQ = st.number_input("xQ", value=6, key="xQ")
+            with cols[4]: yQ = st.number_input("yQ", value=3, key="yQ")
             
-            # ستون علامت مساوی
-            with i_equal: 
-                st.markdown("<h3 style='text-align: center; padding-top: 25px;'>=</h3>", unsafe_allow_html=True)
+            # نمایش علامت =
+            with cols[5]: 
+                st.markdown("<h2 style='text-align: center; margin-top: 20px;'>=</h2>", unsafe_allow_html=True)
             
-            with ix3: xR = st.number_input("xR", value=0, key="xR")
-            with iy3: yR = st.number_input("yR", value=0, key="yR")           
+            with cols[6]: xR = st.number_input("xR", value=0, key="xR")
+            with cols[7]: yR = st.number_input("yR", value=0, key="yR")          
             
         else:
             st.write("**Enter Point P and Scalar n:**")
