@@ -60,7 +60,11 @@ def ecc_fp():
         # ۳. رسم نمودار بصری
         st.write(f"**Visualization over Fp (p={p}):**")
         fig, ax = plt.subplots(figsize=(6, 6))
-        ax.scatter(x_coords, y_coords, s=50, facecolors='none', edgecolors='#3498db', linewidth=1.5)
+        
+        # مقدار s از 50 به 20 تغییر یافت (برای دایره‌های کوچکتر)
+        # مقدار linewidth از 1.5 به 1.0 تغییر یافت (برای ظرافت بیشتر در سایز کوچک)
+        ax.scatter(x_coords, y_coords, s=20, facecolors='none', edgecolors='#3498db', linewidth=1.0)
+        
         ax.set_xlim(-0.5, p - 0.5)
         ax.set_ylim(-0.5, p - 0.5)
         ax.grid(True, linestyle='-', alpha=0.3)
