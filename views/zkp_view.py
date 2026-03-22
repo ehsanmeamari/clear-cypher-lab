@@ -4,15 +4,20 @@ from modules.modular_math import run_modular_math
 from modules.ecc_math import ecc_fp
 
 def render_zkp_tab():
-    # CSS متعادل شده برای ظاهر پرتر
+    # CSS بهینه‌سازی شده برای حذف فضاهای خالی اضافی و فشرده‌سازی المان‌ها
     st.markdown("""
         <style>
-            /* کاهش شدت منفی بودن مارجین برای جلوگیری از "خالی" دیده شدن پایین صفحه */
-            div[data-testid="stRadio"] { margin-top: -10px !important; margin-bottom: 10px !important; }
-            /* ایجاد فضای مناسب برای جداکننده‌ها */
-            hr { margin-top: 10px !important; margin-bottom: 15px !important; opacity: 0.2; }
-            /* افزایش فاصله بین المان‌های عمودی برای پر شدن بصری صفحه */
-            [data-testid="stVerticalBlock"] > div { gap: 1rem !important; }
+            /* 1. کاهش فاصله بین تمام بلوک‌های عمودی Streamlit */
+            [data-testid="stVerticalBlock"] > div { gap: 0.1rem !important; padding-top: 0rem; }
+            
+            /* 2. حذف مارجین‌های بالا و پایین دکمه‌های رادیویی برای چسبیدن به جداکننده‌ها */
+            div[data-testid="stRadio"] { margin-top: -18px !important; margin-bottom: -12px !important; }
+            
+            /* 3. به حداقل رساندن ضخامت و فاصله خطوط جداکننده */
+            hr { margin-top: 2px !important; margin-bottom: 5px !important; opacity: 0.1; }
+
+            /* 4. حذف فضای خالی بالای صفحه */
+            .main .block-container { padding-top: 0rem; }
         </style>
         """, unsafe_allow_html=True)
 
@@ -60,10 +65,8 @@ def render_zkp_tab():
             if ecc_sub == "Visualizer over R":
                 run_ecc_visualizer()
             elif ecc_sub == "Addition over Fp":
-                # فراخوانی تابع اصلی
                 ecc_fp()
             elif ecc_sub == "Multiplication over Fp":
-                # فراخوانی تابع اصلی
                 ecc_fp()                
             else:
                 st.info(f"{ecc_sub} logic is coming soon.")
