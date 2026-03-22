@@ -27,7 +27,7 @@ def run_ecc_visualizer():
 
     with col_plot:
         if discriminant != 0:
-            y, x = np.ogrid[-5:1:100j, -5:1:100j]
+            y, x = np.ogrid[-5:5:100j, -5:5:100j]
             
             # SIZE: Changed to (1.0, 1.0) for a compact look
             fig, ax = plt.subplots(figsize=(1.0, 1.0))
