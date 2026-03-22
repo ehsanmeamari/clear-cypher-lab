@@ -97,11 +97,10 @@ with tab3:
 
     # --- LOGIC FOR PLONK ---
     elif zkp_protocol == "Plonk":
-        st.subheader("Plonk Protocol Stack")
         # LEVEL 2: Plonk Sub-modules
         plonk_sub = st.radio(
             label="Plonk Modules",
-            options=["Tate Pairing", "KZG Commitment"],
+            options=["Tate Pairing", "KZG Commitment Scheme"],
             key="plonk_sub",
             horizontal=True,
             label_visibility="collapsed"
