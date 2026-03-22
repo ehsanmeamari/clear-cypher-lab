@@ -39,7 +39,7 @@ def ecc_fp():
 
         # ۲. نمایش لیست نقاط (قبل از نمودار) با سایز بزرگ
         if points_list:
-            st.write(f"**Points on curve ({len(points_list)}):**")
+            st.write(f"**Points on curve ({len(points_list)} points):**")
             str_points = [f"({pt[0]},{pt[1]})" for pt in points_list]
             # نمایش ۳۰ نقطه اول برای جلوگیری از شلوغی بیش از حد
             points_text = ", ".join(str_points[:30]) + ("..." if len(str_points) > 30 else "")
