@@ -57,11 +57,14 @@ def render_zkp_tab():
             )
             st.divider()
             
-            if ecc_sub == "Addition over Fp":
+            if ecc_sub == "Visualizer over R":
+                run_ecc_visualizer()
+            elif ecc_sub == "Addition over Fp":
                 # فراخوانی تابع اصلی
                 ecc_fp()
-            elif ecc_sub == "Visualizer over R":
-                run_ecc_visualizer()
+            elif ecc_sub == "Multiplication over Fp":
+                # فراخوانی تابع اصلی
+                ecc_fp()                
             else:
                 st.info(f"{ecc_sub} logic is coming soon.")
 
