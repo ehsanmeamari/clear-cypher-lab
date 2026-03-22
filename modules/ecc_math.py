@@ -34,7 +34,14 @@ def ecc_fp():
             st.write(f"**Points on curve ({len(points)}):**")
             st.caption(", ".join(points[:30]) + ("..." if len(points) > 30 else ""))
 
-        op = st.radio("Choose Operation:", ["Point Addition (P + Q)", "Scalar Multiplication (kP)"], horizontal=True)
+
+    with right_col:        
+        with st.expander("Show Addition Law", expanded=True):
+            st.latex(r"s = \frac{y_2 - y_1}{x_2 - x_1} \pmod{p}")
+            st.latex(r"x_3 = s^2 - x_1 - x_2 \pmod{p}")
+            st.latex(r"y_3 = s(x_1 - x_3) - y_1 \pmod{p}")
+
+                op = st.radio("Choose Operation:", ["Point Addition (P + Q)", "Scalar Multiplication (kP)"], horizontal=True)
         
         inner_col1, inner_col2 = st.columns(2)
         if op == "Point Addition (P + Q)":
@@ -54,9 +61,3 @@ def ecc_fp():
             with inner_col2:
                 st.write("**Scalar Value**")
                 k = st.number_input("k (integer)", value=2)
-
-    with right_col:        
-        with st.expander("Show Addition Law", expanded=True):
-            st.latex(r"s = \frac{y_2 - y_1}{x_2 - x_1} \pmod{p}")
-            st.latex(r"x_3 = s^2 - x_1 - x_2 \pmod{p}")
-            st.latex(r"y_3 = s(x_1 - x_3) - y_1 \pmod{p}")
