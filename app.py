@@ -11,10 +11,10 @@ st.set_page_config(
     layout="wide"
 )
 
-# ULTRA-COMPACT CSS
+# ULTRA-COMPACT CSS - Fixed Padding
 st.markdown("""
     <style>
-        .block-container { padding-top: 0.5rem !important; padding-bottom: 0rem !important; }
+        .block-container { padding-top: 2.5rem !important; padding-bottom: 0rem !important; }
         [data-testid="stVerticalBlock"] > div { gap: 0rem !important; }
         div[data-testid="stRadio"] { margin-bottom: -25px !important; }
         hr { margin-top: 2px !important; margin-bottom: 2px !important; }
@@ -24,14 +24,14 @@ st.markdown("""
 
 apply_styles()
 
-# 2. Header Section - Optimized with st.columns to prevent raw code display
+# 2. Header Section
 col_left, col_center, col_right = st.columns([1, 2.5, 1.2])
 
 with col_left:
     st.empty()
 
 with col_center:
-    # Logo and Subtitle
+    # Centered Logo and Subtitle
     st.markdown(
         """
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -45,10 +45,10 @@ with col_center:
     )
 
 with col_right:
-    # Social Media Section - Fixed Right Alignment
+    # Right-aligned Social Media
     st.markdown("""
-        <div style="display: flex; flex-direction: column; align-items: flex-end; width: 100%;">
-            <div style="font-weight: bold; font-size: 0.85em; color: #555; margin-bottom: 8px;">
+        <div style="display: flex; flex-direction: column; align-items: flex-end; width: 100%; padding-top: 5px;">
+            <div style="font-weight: bold; font-size: 0.85em; color: #555; margin-bottom: 8px; white-space: nowrap;">
                 🔗 Social Media
             </div>
             <div style="display: flex; flex-direction: column; gap: 5px; align-items: flex-end;">
@@ -66,7 +66,6 @@ with col_right:
         </div>
         """, unsafe_allow_html=True)
 
-# Divider between Header and Tabs
 st.divider()
 
 # 3. Navigation Tabs
