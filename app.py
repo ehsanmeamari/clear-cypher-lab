@@ -36,9 +36,13 @@ with tab1:
     st.header("Groth16")
     
     # First level: Main Module Selection
-    zkp_module = st.radio("Select a Module:", ["Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation"], key="zkp_main")
-    
-    if zkp_module == "Extension Field":
+    zkp_module = st.radio("Select a Module:", ["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation"], key="zkp_main")
+
+    if zkp_module == "Modular Arithmetic":
+        st.subheader("Modular Arithmetic")
+        st.write("Modular Arithmetic comming soon.")     
+
+    elif zkp_module == "Extension Field":
         st.subheader("Extension Field")
         st.write("Extension Fields are fundamental in ZKP pairing-based cryptography.")       
         
