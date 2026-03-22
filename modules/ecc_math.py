@@ -41,7 +41,7 @@ def ecc_fp():
         
         # قرار دادن ورودی‌های نقاط در زیر رادیو باتن (درون ستون سمت راست)
         if op == "Point Addition (P + Q)":
-            st.write("**Enter Coordinates for P, Q and R:**")
+            st.write("**Enter Coordinates for P and Q:**")
             
             # ۱. تعریف هر ۶ ستون برای جلوگیری از NameError
             ix1, iy1, ix2, iy2, ix3, iy3 = st.columns(6)
