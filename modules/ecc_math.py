@@ -13,7 +13,10 @@ def ecc_fp():
     main_col, side_col = st.columns([2, 1])
 
     with main_col:
-        st.subheader("🔢 Curve Calculation")
+        st.subheader("🔢 Curve Difinitino")
+
+        # نمایش فرمول زنده بر اساس مقادیر ورودی
+        st.latex(f"E: y^2 \\equiv x^3 + {a if a else 'a'}x + {b if b else 'b'} \\pmod{{{p if p else 'p'}}}")
         
         # ردیف اول: پارامترها
         c1, c2, c3 = st.columns(3)
@@ -48,10 +51,7 @@ def ecc_fp():
                 st.write("**Scalar Value**")
                 k = st.number_input("k (integer)", value=2)
 
-    with side_col:
-        
-        # نمایش فرمول زنده بر اساس مقادیر ورودی
-        st.latex(f"E: y^2 \\equiv x^3 + {a if a else 'a'}x + {b if b else 'b'} \\pmod{{{p if p else 'p'}}}")
+    with side_col:        
         
         with st.expander("Show Addition Law", expanded=True):
             st.latex(r"s = \frac{y_2 - y_1}{x_2 - x_1} \pmod{p}")
