@@ -33,21 +33,13 @@ with col_left:
     st.empty() 
 
 with col_center:
-    # Use a div wrapper with flexbox to force center alignment
-    st.markdown(
-        """
-        <div style="display: flex; justify-content: center;">
-            <img src="app/static/logo.png" width="150">
-        </div>
-        """, 
-        unsafe_allow_html=True
-    )
+    # Use standard Streamlit image command but wrapped in a div for centering
+    st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
+    st.image("logo.png", width=150)
+    st.markdown("</div>", unsafe_allow_html=True)
     
-    st.markdown(
-        '<div style="text-align: center; font-size: 1em; color: #334e68; margin-top: 10px; font-weight: 500;">'
-        'Interactive Cybersecurity Learning Environment</div>', 
-        unsafe_allow_html=True
-    )
+    # Centered subtitle
+    st.markdown('<div style="text-align: center; font-size: 1em; color: #334e68; margin-top: 10px; font-weight: 500;">Interactive Cybersecurity Learning Environment</div>', unsafe_allow_html=True)
     
 with col_right:
     # Social Media on the Right
