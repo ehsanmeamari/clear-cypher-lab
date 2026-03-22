@@ -62,8 +62,6 @@ with tab2:
     st.info("🚀 Simulation tools coming soon.")
 
 with tab3:
-    st.header("Zero-Knowledge Proofs (ZKP)")
-    
     # LEVEL 1: Protocol Selection
     zkp_protocol = st.radio(
         label="Select Protocol:",
