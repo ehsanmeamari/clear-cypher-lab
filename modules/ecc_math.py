@@ -9,39 +9,24 @@ def is_on_curve(P, a, b, p):
     return (y**2 - (x**3 + a*x + b)) % p == 0
 
 def ecc_fp():
+    # تقسیم صفحه به دو ستون مساوی برای پر کردن عرض
     left_col, right_col = st.columns([1, 1])
 
     with left_col:
-        st.subheader("🔢 Curve Definition") # اصلاح غلط املایی Definition
+        st.subheader("🔢 Curve Definition")
         
-        # ۱. ابتدا ورودی‌ها را بگیرید تا متغیرها تعریف شوند
+        # بخش پارامترها
         c1, c2, c3 = st.columns(3)
         with c1: p = st.number_input("Prime Field (p)", value=17, step=1)
         with c2: a = st.number_input("Parameter (a)", value=2, step=1)
         with c3: b = st.number_input("Parameter (b)", value=2, step=1)
 
-        # ۲. حالا که a, b, p مقدار دارند، فرمول را نمایش دهید
-        st.latex(f"E: y^2 \\equiv x^3 + {a if a is not None else 'a'}x + {b if b is not None else 'b'} \\pmod{{{p if p is not None else 'p'}}}")
-
+        # نمایش فرمول
+        st.latex(f"E: y^2 \\equiv x^3 + {a}x + {b} \\pmod{{{p}}}")
         st.divider()
 
-        if p and p < 100: # افزایش محدوده برای نمایش بهتر
-            points = []
-            for x in range(p):
-                for y in range(p):
-                    if (y**2 - (x**3 + a*x + b)) % p == 0:
-                        points.append(f"({x},{y})")
-            st.write(f"**Points on curve ({len(points)}):**")
-            st.caption(", ".join(points[:30]) + ("..." if len(points) > 30 else ""))
-
-
-    with right_col:        
-        with st.expander("Show Addition Law", expanded=True):
-            st.latex(r"s = \frac{y_2 - y_1}{x_2 - x_1} \pmod{p}")
-            st.latex(r"x_3 = s^2 - x_1 - x_2 \pmod{p}")
-            st.latex(r"y_3 = s(x_1 - x_3) - y_1 \pmod{p}")
-
-                op = st.radio("Choose Operation:", ["Point Addition (P + Q)", "Scalar Multiplication (kP)"], horizontal=True)
+        # بخش انتخاب عملیات (بدون فاصله اضافه - رفع خطا)
+        op = st.radio("Choose Operation:", ["Point Addition (P + Q)", "Scalar Multiplication (kP)"], horizontal=True)
         
         inner_col1, inner_col2 = st.columns(2)
         if op == "Point Addition (P + Q)":
@@ -61,3 +46,24 @@ def ecc_fp():
             with inner_col2:
                 st.write("**Scalar Value**")
                 k = st.number_input("k (integer)", value=2)
+
+    with right_col:
+        st.subheader("📖 Mathematical Context")
+        with st.expander("Show Addition Law", expanded=True):
+            st.latex(r"s = \frac{y_2 - y_1}{x_2 - x_1} \pmod{p}")
+            st.latex(r"x_3 = s^2 - x_1 - x_2 \pmod{p}")
+            st.latex(r"y_3 = s(x_1 - x_3) - y_1 \pmod{p}")
+        
+        st.divider()
+        
+        # نمایش لیست نقاط در ستون سمت راست برای پر کردن فضا
+        if p and p < 100:
+            points = []
+            for x in range(p):
+                for y in range(p):
+                    if (y**2 - (x**3 + a*x + b)) % p == 0:
+                        points.append(f"({x},{y})")
+            
+            st.write(f"**Points on this curve ({len(points)}):**")
+            # نمایش نقاط به صورت تگ‌های کوچک برای زیبایی
+            st.caption(", ".join(points[:50]) + ("..." if len(points) > 50 else ""))
