@@ -1,7 +1,9 @@
 import streamlit as st
 from modules.styles import apply_styles
-from modules.ecc_tool import run_ecc_visualizer
-from modules.modular_math import run_modular_math
+# Import functions from views
+from views.cryptography_view import render_cryptography_tab
+from views.blockchain_view import render_blockchain_tab
+from views.zkp_view import render_zkp_tab
 
 # 1. Page Configuration
 st.set_page_config(
@@ -13,44 +15,13 @@ st.set_page_config(
 # ULTRA-COMPACT CSS
 st.markdown("""
     <style>
-        /* 1. Global spacing reduction */
-        .block-container {
-            padding-top: 0.5rem !important;
-            padding-bottom: 0rem !important;
-        }
-        
-        /* 2. Remove gap between vertical blocks */
-        [data-testid="stVerticalBlock"] > div {
-            gap: 0rem !important;
-        }
-
-        /* 3. Tighten Radio Buttons and Headers */
-        div[data-testid="stRadio"] {
-            margin-bottom: -25px !important;
-        }
-        
-        /* 4. Minimize Divider spacing */
-        hr {
-            margin-top: 2px !important;
-            margin-bottom: 2px !important;
-        }
-
-        /* 5. Adjust Image margin */
-        [data-testid="stImage"] {
-            margin-bottom: -20px !important;
-        }
-
-        /* 6. Tabs spacing reduction */
-        button[data-baseweb="tab"] {
-            padding-top: 0px !important;
-            padding-bottom: 0px !important;
-            height: 35px !important;
-        }
-
-        /* 7. General Markdown spacing */
-        .stMarkdown div p {
-            margin-bottom: 0px !important;
-        }
+        .block-container { padding-top: 0.5rem !important; padding-bottom: 0rem !important; }
+        [data-testid="stVerticalBlock"] > div { gap: 0rem !important; }
+        div[data-testid="stRadio"] { margin-bottom: -25px !important; }
+        hr { margin-top: 2px !important; margin-bottom: 2px !important; }
+        [data-testid="stImage"] { margin-bottom: -20px !important; }
+        button[data-baseweb="tab"] { padding-top: 0px !important; padding-bottom: 0px !important; height: 35px !important; }
+        .stMarkdown div p { margin-bottom: 0px !important; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -61,12 +32,9 @@ col_main, col_social = st.columns([5, 1])
 
 with col_main:
     st.image("logo.png", width=180) 
-    
-    # Updated margin-top from -15px to 10px to add space below the logo
     st.markdown('<div style="text-align: left; padding-left: 5px; font-size: 1em; color: #334e68; margin-top: 10px; font-weight: 500;">Interactive Cryptography Learning Environment</div>', unsafe_allow_html=True)
 
 with col_social:
-    # (Rest of the social media code remains the same)
     st.markdown('<p style="margin-top: 5px; margin-bottom: 2px; font-weight: bold; font-size: 0.8em;">🔗 Social Media:</p>', unsafe_allow_html=True)
     st.markdown(
         """<div style="display: flex; flex-direction: column; gap: 2px;">
@@ -84,40 +52,12 @@ st.divider()
 tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
 
 with tab1:
-    st.info("🚀 Advanced modules coming soon.")
+    render_cryptography_tab()
 
 with tab2:
-    st.info("🚀 Simulation tools coming soon.")
+    render_blockchain_tab()
 
 with tab3:
-    zkp_protocol = st.radio(label="P", options=["Groth16", "Plonk", "Spartan"], key="zkp_p", horizontal=True, label_visibility="collapsed")
-    st.divider()
-
-    if zkp_protocol == "Groth16":
-        zkp_module = st.radio(label="M", options=["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation"], key="g16_m", horizontal=True, label_visibility="collapsed")
-        st.divider()
-        
-        if zkp_module == "Modular Arithmetic":
-            run_modular_math()
-        elif zkp_module == "ECC":
-            ecc_sub = st.radio(label="E", options=["Visualizer over R", "Addition over R", "Multiplication over R", "Visualizer over Fp", "Addition over Fp", "Multiplication over Fp"], key="ecc_s", horizontal=True, label_visibility="collapsed")
-            st.divider()
-            
-            if ecc_sub == "Visualizer over R":
-                run_ecc_visualizer()
-            else:
-                st.info(f"{ecc_sub} logic is coming soon.")
-        else:
-            st.info(f"{zkp_module} for Groth16 is under development.")
-
-    elif zkp_protocol == "Plonk":
-        plonk_sub = st.radio(label="PL", options=["Tate Pairing", "KZG Commitment Scheme"], key="plonk_s", horizontal=True, label_visibility="collapsed")
-        st.divider()
-        st.info(f"{plonk_sub} module for Plonk is coming soon.")
-
-    elif zkp_protocol == "Spartan":
-        spartan_sub = st.radio(label="SP", options=["Spartan Protocol", "Multilinear Extension"], key="spartan_s", horizontal=True, label_visibility="collapsed")
-        st.divider()
-        st.info(f"{spartan_sub} module for Spartan is coming soon.")
+    render_zkp_tab()
 
 st.divider()
