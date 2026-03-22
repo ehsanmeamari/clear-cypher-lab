@@ -64,3 +64,9 @@ def render_zkp_tab():
                 run_ecc_visualizer()
             else:
                 st.info(f"{ecc_sub} logic is coming soon.")
+
+        elif zkp_module == "Weil Pairing":
+            st.info("Weil Pairing logic is coming soon.")
+
+        elif zkp_module == "Lagrange Interpolation":
+            st.info("Lagrange Interpolation logic is coming soon.")
