@@ -102,7 +102,6 @@ with tab3:
             st.divider()
             
             if ecc_sub_module == "Elliptic Curve Visualizer":
-                st.subheader("Elliptic Curve Visualizer")
                 run_ecc_visualizer() # Your existing function
 
             elif ecc_sub_module == "Addition over R":
