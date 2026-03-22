@@ -36,7 +36,7 @@ with tab1:
     st.header("Groth16")
     
     # First level: Main Module Selection
-    zkp_module = st.radio("Select a Module:", ["Extension Field", "ECC"], key="zkp_main")
+    zkp_module = st.radio("Select a Module:", ["Extension Field", "Weil Pairing", "ECC"], key="zkp_main")
     
     if zkp_module == "Extension Field":
         st.subheader("Extension Field")
