@@ -1,33 +1,26 @@
 import streamlit as st
 from modules.styles import apply_styles
 from modules.ecc_tool import run_ecc_visualizer
+from modules.modular_math import run_modular_math  # Import the new module
 
 # 1. Page Configuration
 st.set_page_config(page_title="Clear Cypher Lab", page_icon="🛡️", layout="wide")
 apply_styles()
 
-# 2. RTL (Right-to-Left) Custom CSS
+# 2. RTL (Right-to-Left) Support CSS
 st.markdown(
     """
     <style>
-    .main {
-        direction: rtl;
-        text-align: right;
-    }
-    div[data-testid="stSidebar"] {
+    .main, div[data-testid="stSidebar"] {
         direction: rtl;
         text-align: right;
     }
     div[data-testid="stMarkdownContainer"] p {
         text-align: right;
     }
-    /* Fixing Radio and Selectbox alignment for RTL */
     div.row-widget.stRadio > div {
         flex-direction: row-reverse;
         justify-content: flex-end;
-    }
-    div[data-testid="stExpander"] {
-        direction: rtl;
     }
     </style>
     """,
@@ -53,10 +46,11 @@ with st.sidebar:
             unsafe_allow_html=True)
     st.markdown("---")
 
-# 4. Main Content
+# 4. Main Content Header
 st.title("🛡️ Clear Cypher Lab")
 st.markdown("Interactive Cryptography Learning Environment")
 
+# Defining Tabs
 tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
 
 with tab1:
@@ -81,52 +75,16 @@ with tab3:
     
     st.divider()
 
+    # Module Logic
     if zkp_module == "Modular Arithmetic":
-        st.subheader("Modular Arithmetic")
+        run_modular_math()  # Using the imported function
         
-        # Horizontal sub-menu
-        mod_sub_module = st.radio(
-            label="Sub Operation:",
-            options=["Modulo Calculator", "Modular Inverse"],
-            key="mod_sub_selection",
-            horizontal=True,
-            label_visibility="collapsed"
-        )
-        
-        st.divider()
-        
-        if mod_sub_module == "Modulo Calculator":
-            st.write("### 🔢 Modulo Calculator")
-            col1, col2 = st.columns(2)
-            with col1:
-                num_a = st.number_input("Enter a:", value=17, key="mod_calc_a")
-            with col2:
-                num_n = st.number_input("Enter n:", value=5, key="mod_calc_n")
-            
-            if num_n != 0:
-                st.code(f"{num_a} mod {num_n} = {num_a % num_n}", language="text")
-            else:
-                st.error("Modulo by zero is undefined!")
-
-        elif mod_sub_module == "Modular Inverse":
-            st.write("### 🔄 Modular Multiplicative Inverse")
-            col1, col2 = st.columns(2)
-            with col1:
-                inv_a = st.number_input("Enter a:", value=3, key="inv_a")
-            with col2:
-                inv_n = st.number_input("Enter n:", value=11, key="inv_n")
-            try:
-                res_inv = pow(int(inv_a), -1, int(inv_n))
-                st.success(f"Result: {res_inv}")
-                st.latex(f"{inv_a} \\cdot {res_inv} \\equiv 1 \\pmod{{{inv_n}}}")
-            except ValueError:
-                st.error("Inverse does not exist.")
-
     elif zkp_module == "Extension Field":
         st.subheader("Extension Field")
-        st.info("Coming soon.")
+        st.info("Field extension operations (Fp^k) coming soon.")
         
     elif zkp_module == "ECC":
+        st.subheader("Elliptic Curve Cryptography")
         ecc_sub = st.selectbox("ECC Operations:", ["Visualizer", "Point Addition", "Scalar Multiplication"])
         if ecc_sub == "Visualizer":
             run_ecc_visualizer()
@@ -135,10 +93,10 @@ with tab3:
 
     elif zkp_module == "Weil Pairing":
         st.subheader("Weil Pairing")
-        st.info("Coming soon.")
+        st.info("Bilinear pairings and Miller's algorithm coming soon.")
 
     elif zkp_module == "Lagrange Interpolation":
         st.subheader("Lagrange Interpolation")
-        st.info("Coming soon.")
+        st.info("Polynomial interpolation for ZK-proofs coming soon.")
 
 st.divider()
