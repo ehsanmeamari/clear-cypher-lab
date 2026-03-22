@@ -41,18 +41,18 @@ def ecc_fp():
         
         # قرار دادن ورودی‌های نقاط در زیر رادیو باتن (درون ستون سمت راست)
         if op == "Point Addition (P + Q)":
-            st.write("**Point P**")
-            x1 = st.number_input("x1", value=5, key="x1")
-            y1 = st.number_input("y1", value=1, key="y1")
-            
-            st.write("**Point Q**")
-            x2 = st.number_input("x2", value=6, key="x2")
-            y2 = st.number_input("y2", value=3, key="y2")
+            st.write("**Enter Coordinates for P and Q:**")
+            # ایجاد 4 ستون برای x1, y1, x2, y2 در یک خط
+            ix1, iy1, ix2, iy2 = st.columns(4)
+            with ix1: x1 = st.number_input("x1", value=5, key="x1")
+            with iy1: y1 = st.number_input("y1", value=1, key="y1")
+            with ix2: x2 = st.number_input("x2", value=6, key="x2")
+            with iy2: y2 = st.number_input("y2", value=3, key="y2")
             
         else:
-            st.write("**Point P**")
-            x1 = st.number_input("x1_k", value=5)
-            y1 = st.number_input("y1_k", value=1)
-            
-            st.write("**Scalar Value**")
-            n = st.number_input("n (integer)", value=2)
+            st.write("**Enter Point P and Scalar n:**")
+            # ایجاد 3 ستون برای x1, y1, n در یک خط
+            ix1, iy1, in1 = st.columns(3)
+            with ix1: x1 = st.number_input("x1", value=5, key="x1_k")
+            with iy1: y1 = st.number_input("y1", value=1, key="y1_k")
+            with in1: n = st.number_input("n", value=2, key="n_scalar")
