@@ -3,7 +3,7 @@ from modules.styles import apply_styles
 from modules.ecc_tool import run_ecc_visualizer
 from modules.modular_math import run_modular_math
 
-# 1. Page Configuration (Icon changed to your new logo file)
+# 1. Page Configuration
 st.set_page_config(
     page_title="Clear Cypher Lab", 
     page_icon="logo.png", 
@@ -12,42 +12,37 @@ st.set_page_config(
 
 apply_styles()
 
-# 2. Sidebar Logo
-# Make sure "logo.png" is in the same directory as this file
-try:
-    st.sidebar.image("logo.png", use_container_width=True)
-except Exception:
-    st.sidebar.warning("Logo file not found. Check filename.")
+# 2. Header Section: Logo (Left) and Social Media (Right)
+# Creating two columns to match your uploaded image layout
+col_main, col_social = st.columns([4, 1])
 
-st.sidebar.markdown("---")
+with col_main:
+    # Display the new logo on the main page instead of sidebar
+    st.image("logo.png", width=450)
+    st.markdown('<div style="text-align: left; padding-left: 20px; font-size: 1.2em; color: #334e68;">Interactive Cryptography Learning Environment</div>', unsafe_allow_html=True)
 
-# 3. Sidebar Navigation
-with st.sidebar:
-    st.title("🛡️ Clear Cypher Lab")
-    st.markdown("---")
+with col_social:
     st.write("🔗 **Social Media:**")
-    
-    col_yt, col_li = st.columns(2)
-    with col_yt:
-        st.markdown(
-            """<a href="https://www.youtube.com/@ClearCypherLab" target="_blank">
-            <img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" width="100%"></a>""", 
-            unsafe_allow_html=True)
-    with col_li:
-        st.markdown(
-            """<a href="https://www.linkedin.com/company/113012501/" target="_blank">
-            <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" width="100%"></a>""", 
-            unsafe_allow_html=True)
-    st.markdown("---")
+    # YouTube Button
+    st.markdown(
+        """<a href="https://www.youtube.com/@ClearCypherLab" target="_blank" style="text-decoration: none;">
+        <div style="background-color: #FF0000; color: white; padding: 10px; text-align: center; border-radius: 5px; font-weight: bold; margin-bottom: 10px;">
+        📺 YOUTUBE
+        </div></a>""", 
+        unsafe_allow_html=True)
+    # LinkedIn Button
+    st.markdown(
+        """<a href="https://www.linkedin.com/company/113012501/" target="_blank" style="text-decoration: none;">
+        <div style="background-color: #0077B5; color: white; padding: 10px; text-align: center; border-radius: 5px; font-weight: bold;">
+        🔗 LINKEDIN
+        </div></a>""", 
+        unsafe_allow_html=True)
 
-# 4. Main Header
-# We use a div to force this specific line to the left
-st.markdown('<div style="text-align: left;">Interactive Cryptography Learning Environment</div>', unsafe_allow_html=True)
+st.write("") # Spacer
+st.divider()
 
-# 5. Top-Level Tabs
+# 3. Navigation Tabs
 tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
-
-
 
 with tab1:
     st.info("🚀 Advanced modules coming soon.")
@@ -69,7 +64,6 @@ with tab3:
 
     # --- LOGIC FOR GROTH16 ---
     if zkp_protocol == "Groth16":
-        # LEVEL 2: Groth16 Sub-modules
         zkp_module = st.radio(
             label="Groth16 Modules",
             options=["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation"], 
@@ -83,7 +77,6 @@ with tab3:
             run_modular_math()
             
         elif zkp_module == "ECC":
-            # New sub-menu for ECC
             ecc_sub_module = st.radio(
                 label="ECC Operations:",
                 options=["Visualizer over R", "Addition over R", "Multiplication over R", "Visualizer over Fp", "Addition over Fp", "Multiplication over Fp"],
@@ -95,7 +88,7 @@ with tab3:
             st.divider()
             
             if ecc_sub_module == "Visualizer over R":
-                run_ecc_visualizer() # Your existing function
+                run_ecc_visualizer()
 
             elif ecc_sub_module == "Addition over R":
                 st.info("Point Addition logic ($P + Q = R$) over R is coming soon.")
@@ -117,7 +110,6 @@ with tab3:
 
     # --- LOGIC FOR PLONK ---
     elif zkp_protocol == "Plonk":
-        # LEVEL 2: Plonk Sub-modules
         plonk_sub = st.radio(
             label="Plonk Modules",
             options=["Tate Pairing", "KZG Commitment Scheme"],
@@ -130,7 +122,6 @@ with tab3:
 
     # --- LOGIC FOR Spartan ---
     elif zkp_protocol == "Spartan":
-        # LEVEL 2: Spartan Sub-modules
         Spartan_sub = st.radio(
             label="Spartan Modules",
             options=["Spartan Protocol", "Multilinear Extension"],
