@@ -10,44 +10,46 @@ st.set_page_config(
     layout="wide"
 )
 
-# ULTRA-TIGHT SPACING CSS
+# ULTRA-COMPACT CSS
 st.markdown("""
     <style>
-        /* Remove padding from the main container */
+        /* 1. Global spacing reduction */
         .block-container {
-            padding-top: 1rem !important;
+            padding-top: 0.5rem !important;
             padding-bottom: 0rem !important;
-            max-width: 95% !important;
         }
         
-        /* Eliminate space between all Streamlit elements */
+        /* 2. Remove gap between vertical blocks */
         [data-testid="stVerticalBlock"] > div {
-            flex-direction: column;
-            gap: 0px !important;
+            gap: 0rem !important;
         }
 
-        /* Tighten Radio Buttons */
+        /* 3. Tighten Radio Buttons and Headers */
         div[data-testid="stRadio"] {
-            margin-bottom: -15px !important;
+            margin-bottom: -25px !important;
         }
         
-        /* Tighten Dividers */
+        /* 4. Minimize Divider spacing */
         hr {
-            margin-top: 5px !important;
-            margin-bottom: 5px !important;
-            border: 0;
-            border-top: 1px solid #eee;
+            margin-top: 2px !important;
+            margin-bottom: 2px !important;
         }
 
-        /* Adjust Image and Header alignment */
+        /* 5. Adjust Image margin */
         [data-testid="stImage"] {
-            margin-bottom: -10px !important;
+            margin-bottom: -20px !important;
         }
 
-        /* Tabs padding reduction */
+        /* 6. Tabs spacing reduction */
         button[data-baseweb="tab"] {
-            padding-top: 5px !important;
-            padding-bottom: 5px !important;
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+            height: 35px !important;
+        }
+
+        /* 7. General Markdown spacing */
+        .stMarkdown div p {
+            margin-bottom: 0px !important;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -58,18 +60,18 @@ apply_styles()
 col_main, col_social = st.columns([5, 1])
 
 with col_main:
-    st.image("logo.png", width=200) 
-    st.markdown('<div style="text-align: left; padding-left: 5px; font-size: 1.05em; color: #334e68; margin-top: -10px;">Interactive Cryptography Learning Environment</div>', unsafe_allow_html=True)
+    st.image("logo.png", width=180) 
+    st.markdown('<div style="text-align: left; padding-left: 5px; font-size: 1em; color: #334e68; margin-top: -15px; font-weight: 500;">Interactive Cryptography Learning Environment</div>', unsafe_allow_html=True)
 
 with col_social:
-    st.markdown('<p style="margin-bottom: 2px; font-weight: bold; font-size: 0.85em;">🔗 Social Media:</p>', unsafe_allow_html=True)
+    st.markdown('<p style="margin-top: 5px; margin-bottom: 2px; font-weight: bold; font-size: 0.8em;">🔗 Social Media:</p>', unsafe_allow_html=True)
     st.markdown(
-        """<div style="display: flex; flex-direction: column; gap: 4px;">
+        """<div style="display: flex; flex-direction: column; gap: 2px;">
         <a href="https://www.youtube.com/@ClearCypherLab" target="_blank" style="text-decoration: none;">
-            <div style="background-color: #FF0000; color: white; padding: 4px; text-align: center; border-radius: 4px; font-weight: bold; font-size: 0.75em;">📺 YOUTUBE</div>
+            <div style="background-color: #FF0000; color: white; padding: 2px 8px; text-align: center; border-radius: 4px; font-weight: bold; font-size: 0.7em;">📺 YOUTUBE</div>
         </a>
         <a href="https://www.linkedin.com/company/113012501/" target="_blank" style="text-decoration: none;">
-            <div style="background-color: #0077B5; color: white; padding: 4px; text-align: center; border-radius: 4px; font-weight: bold; font-size: 0.75em;">🔗 LINKEDIN</div>
+            <div style="background-color: #0077B5; color: white; padding: 2px 8px; text-align: center; border-radius: 4px; font-weight: bold; font-size: 0.7em;">🔗 LINKEDIN</div>
         </a>
         </div>""", unsafe_allow_html=True)
 
@@ -85,7 +87,6 @@ with tab2:
     st.info("🚀 Simulation tools coming soon.")
 
 with tab3:
-    # Use columns to make radios even tighter if needed
     zkp_protocol = st.radio(label="P", options=["Groth16", "Plonk", "Spartan"], key="zkp_p", horizontal=True, label_visibility="collapsed")
     st.divider()
 
@@ -95,7 +96,6 @@ with tab3:
         
         if zkp_module == "Modular Arithmetic":
             run_modular_math()
-            
         elif zkp_module == "ECC":
             ecc_sub = st.radio(label="E", options=["Visualizer over R", "Addition over R", "Multiplication over R", "Visualizer over Fp", "Addition over Fp", "Multiplication over Fp"], key="ecc_s", horizontal=True, label_visibility="collapsed")
             st.divider()
