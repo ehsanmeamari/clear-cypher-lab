@@ -61,9 +61,12 @@ col_main, col_social = st.columns([5, 1])
 
 with col_main:
     st.image("logo.png", width=180) 
-    st.markdown('<div style="text-align: left; padding-left: 5px; font-size: 1em; color: #334e68; margin-top: -15px; font-weight: 500;">Interactive Cryptography Learning Environment</div>', unsafe_allow_html=True)
+    
+    # Updated margin-top from -15px to 10px to add space below the logo
+    st.markdown('<div style="text-align: left; padding-left: 5px; font-size: 1em; color: #334e68; margin-top: 10px; font-weight: 500;">Interactive Cryptography Learning Environment</div>', unsafe_allow_html=True)
 
 with col_social:
+    # (Rest of the social media code remains the same)
     st.markdown('<p style="margin-top: 5px; margin-bottom: 2px; font-weight: bold; font-size: 0.8em;">🔗 Social Media:</p>', unsafe_allow_html=True)
     st.markdown(
         """<div style="display: flex; flex-direction: column; gap: 2px;">
