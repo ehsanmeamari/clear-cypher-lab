@@ -11,7 +11,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom CSS for better logo and text alignment
+# Custom CSS - Clean and minimal
 st.markdown("""
     <style>
         .block-container { 
@@ -20,19 +20,15 @@ st.markdown("""
         }
         [data-testid="stVerticalBlock"] > div { gap: 0rem !important; }
         
-        /* Logo and text styling */
-        [data-testid="stImage"] { 
-            display: flex; 
-            justify-content: center; 
-            margin-bottom: 8px !important;
+        /* Center the logo with slight right shift */
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-right: -40px;   /* کمی به راست می‌برد */
         }
-        .logo-text {
-            text-align: center; 
-            font-size: 1.35em; 
-            font-weight: 700; 
-            color: #1e3a8a; 
-            margin-top: 0px !important;
-            letter-spacing: 1px;
+        
+        [data-testid="stImage"] {
+            margin-bottom: 8px !important;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -46,13 +42,12 @@ with col_left:
     st.empty()
 
 with col_center:
-    # Display the logo
+    # Logo container - centered with slight right shift
+    st.markdown('<div class="logo-container">', unsafe_allow_html=True)
     st.image("logo.png", width=220)
-    
-    # Logo text directly below the image
-    st.markdown('<div class="logo-text">CLEAR CYPHER LAB</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    # Subtitle
+    # Subtitle directly under the logo
     st.markdown('''
         <div style="text-align: center; font-size: 1.05em; color: #334e68; 
                     margin-top: 12px; font-weight: 500;">
@@ -61,7 +56,7 @@ with col_center:
     ''', unsafe_allow_html=True)
 
 with col_right:
-    # Social Media Section
+    # Social Media
     st.markdown('<div style="text-align: right;">', unsafe_allow_html=True)
     st.markdown('<p style="margin-bottom: 5px; font-weight: bold; font-size: 0.8em; color: #555;">🔗 Social Media</p>', unsafe_allow_html=True)
     
@@ -75,7 +70,6 @@ with col_right:
             </a>
         </div>
         """, unsafe_allow_html=True)
-    
     st.markdown('</div>', unsafe_allow_html=True)
 
 st.divider()
