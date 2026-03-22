@@ -47,13 +47,13 @@ with col_center:
     )
 
 with col_right:
-    # Perfect right-alignment for Social Media block
+    # Creating a single container for all right-side elements
     st.markdown("""
-        <div style="display: flex; flex-direction: column; align-items: flex-end; text-align: right; width: 100%;">
-            <div style="font-weight: bold; font-size: 0.8em; color: #555; margin-bottom: 8px;">
+        <div style="display: flex; flex-direction: column; align-items: flex-end; width: 100%;">
+            <div style="font-weight: bold; font-size: 0.8em; color: #555; margin-bottom: 8px; text-align: right;">
                 🔗 Social Media
             </div>
-            <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-end;">
+            <div style="display: flex; flex-direction: column; gap: 5px;">
                 <a href="https://www.youtube.com/@ClearCypherLab" target="_blank" style="text-decoration: none;">
                     <div style="background-color: #FF0000; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.75em; width: 100px; text-align: center;">
                         📺 YOUTUBE
