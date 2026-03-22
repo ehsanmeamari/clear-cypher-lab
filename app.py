@@ -34,7 +34,7 @@ with col_left:
 
 with col_center:
     # Logo and Subtitle Centered
-    st.image("logo.png", width=500) 
+    st.image("logo.png", width=150) 
     st.markdown('<div style="text-align: center; font-size: 1em; color: #334e68; margin-top: 10px; font-weight: 500;">Interactive Cybersecurity Learning Environment</div>', unsafe_allow_html=True)
 
 with col_right:
