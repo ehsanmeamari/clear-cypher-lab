@@ -26,47 +26,38 @@ st.markdown("""
 
 apply_styles()
 
-# 2. Header Section - Fixed Final Version
-# Using 2 columns instead of 3 to prevent right-side clipping
-col_main, col_social = st.columns([4, 1])
+# 2. Header Section - THE FINAL DEFIANT VERSION
+st.markdown("""
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%; padding: 10px 0px;">
+        
+        <div style="flex: 1;"></div>
 
-with col_main:
-    # Centering the logo and text manually using margin-left
-    st.markdown(
-        """
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-left: 20%;">
+        <div style="flex: 2; display: flex; flex-direction: column; align-items: center; justify-content: center;">
             <img src="https://raw.githubusercontent.com/ehsanmeamari/clear-cypher-lab/main/logo.png" width="160">
-            <div style="font-size: 1.1em; color: #334e68; margin-top: 10px; font-weight: 500; text-align: center;">
+            <div style="font-size: 1.1em; color: #334e68; margin-top: 10px; font-weight: 500; text-align: center; white-space: nowrap;">
                 Interactive Cybersecurity Learning Environment
             </div>
         </div>
-        """, 
-        unsafe_allow_html=True
-    )
 
-with col_social:
-    # Forced alignment to the absolute right with no room for error
-    st.markdown("""
-        <div style="text-align: right; width: 100%; display: flex; flex-direction: column; align-items: flex-end;">
-            <p style="font-weight: bold; font-size: 0.85em; color: #555; margin-bottom: 8px; margin-top: 0px;">
+        <div style="flex: 1; display: flex; flex-direction: column; align-items: flex-end;">
+            <div style="font-weight: bold; font-size: 0.85em; color: #555; margin-bottom: 8px; white-space: nowrap;">
                 🔗 Social Media
-            </p>
-            <div style="display: flex; flex-direction: column; gap: 5px;">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 5px; align-items: flex-end;">
                 <a href="https://www.youtube.com/@ClearCypherLab" target="_blank" style="text-decoration: none;">
-                    <div style="background-color: #FF0000; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.75em; width: 95px; text-align: center;">
+                    <div style="background-color: #FF0000; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.75em; width: 100px; text-align: center;">
                         📺 YOUTUBE
                     </div>
                 </a>
                 <a href="https://www.linkedin.com/company/113012501/" target="_blank" style="text-decoration: none;">
-                    <div style="background-color: #0077B5; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.75em; width: 95px; text-align: center;">
+                    <div style="background-color: #0077B5; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.75em; width: 100px; text-align: center;">
                         🔗 LINKEDIN
                     </div>
                 </a>
             </div>
         </div>
-        """, unsafe_allow_html=True)
-
-st.divider()
+    </div>
+    """, unsafe_allow_html=True)
 
 # 3. Navigation Tabs
 tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
