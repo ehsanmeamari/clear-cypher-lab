@@ -40,7 +40,7 @@ with tab2:
     st.info("Blockchain simulation tools coming soon.")
 
 with tab3:
-    st.header("Zero-Knowledge Proofs (ZKP)")
+    st.header("Groth 16")
     
     # Updated Radio Button without visible label
     zkp_module = st.radio(
