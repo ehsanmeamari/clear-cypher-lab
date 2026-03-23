@@ -6,10 +6,10 @@ def ecc_fp():
     x_coords = []
     y_coords = []
     
-    # Divide the page into two equal columns
-    left_col, right_col = st.columns([1, 1])
+    # Divide the page into four equal columns
+    col1, col2, col3, col4 = st.columns([6, 1, 2, 5])
 
-    with left_col:
+    with col1:
         # 1. Create expander with clear title
         with st.expander("Curve Definition", expanded=True): # Already True
             # 4 columns: three for inputs, one for the formula
@@ -110,7 +110,7 @@ def ecc_fp():
             with iy1: y1 = st.number_input("yP", value=1, key="y1_k")
             with in1: n = st.number_input("n", value=2, key="n_scalar")    
 
-    with right_col:                 
+    with col4:                 
         
         # Visual plot rendering inside an expander: Using expanded=True to keep the plot visible by default
         with st.expander(f"📊 Visualization over Fp (p={p}):", expanded=True):
