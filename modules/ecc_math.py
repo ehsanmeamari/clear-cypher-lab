@@ -45,12 +45,12 @@ def ecc_fp():
             str_points = [f"({pt[0]},{pt[1]})" for pt in points_list]
             all_points_str = ", ".join(str_points)
             
-            # Changed expanded to True to open it by default
+            # Using st.expander with both expanded=True and a tighter margin
             with st.expander(f"📍 Points on curve ({len(points_list)} points):", expanded=True):
-                # Added 'margin-top: -10px' to eliminate the gap
+                # We use margin-top: -20px to completely stick the box to the top
                 points_html = f"""
                     <div style='
-                        margin-top: -10px;
+                        margin-top: -20px;
                         padding: 12px 16px; 
                         background-color: #f8f9fa; 
                         border-radius: 8px; 
