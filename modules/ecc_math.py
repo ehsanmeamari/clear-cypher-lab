@@ -10,21 +10,24 @@ def ecc_fp():
     left_col, right_col = st.columns([1, 1])
 
     with left_col:
-        # 1. Create expander with compact styling
+        # 1. Create expander with zero-padding CSS
         with st.expander("Curve Definition", expanded=True):
-            # Injection of CSS to remove expander's internal padding
+            # Injection of CSS to force zero padding and margins
             st.markdown("""
                 <style>
+                /* Target the expander content area directly */
                 [data-testid="stExpanderDetails"] {
-                    padding-top: 0px;
-                    padding-bottom: 0px;
+                    padding-top: 0px !important;
+                    padding-bottom: 0px !important;
+                }
+                /* Target the vertical block inside the expander */
+                [data-testid="stVerticalBlock"] > div:first-child {
+                    margin-top: -20px !important;
                 }
                 </style>
                 """, unsafe_allow_html=True)
             
-            # Additional negative margin for maximum compactness
-            st.markdown("<div style='margin-top: -45px; margin-bottom: -20px;'>", unsafe_allow_html=True)
-            
+            # 4 columns: three for inputs, one for the formula
             c1, c2, c3, c4 = st.columns([1, 1, 1, 2.5])
                     
             with c1: 
@@ -40,7 +43,7 @@ def ecc_fp():
                 st.latex(f"E: y^2 \\equiv x^3 + {a}x + {b} \\pmod{{{p}}}")
                 st.markdown("</div>", unsafe_allow_html=True)
             
-            st.markdown("</div>", unsafe_allow_html=True)
+            #st.markdown("</div>", unsafe_allow_html=True)
         
         # Divider after the expander
         st.divider()
