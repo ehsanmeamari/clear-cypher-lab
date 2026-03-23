@@ -47,7 +47,7 @@ def ecc_fp():
             all_points_str = ", ".join(str_points)
             
             # Using st.expander with expanded=True to keep it open by default
-            with st.expander(f"📍 Points on curve ({len(points_list)} points):", expanded=True):
+            with st.expander(f"📍 Points on curve ({len(points_list)+1} points):", expanded=True):
                 # Removed the gray background div and used direct styled text
                 points_html = f"""
                     <div style='
