@@ -10,8 +10,8 @@ def ecc_fp():
     left_col, right_col = st.columns([1, 1])
 
     with left_col:
-        # Create expander with clear title
-        with st.expander("Curve Definition", expanded=True):
+        # 1. Create expander with clear title
+        with st.expander("Curve Definition", expanded=True): # Already True
             # 4 columns: three for inputs, one for the formula
             c1, c2, c3, c4 = st.columns([1, 1, 1, 2.5])
                     
@@ -31,7 +31,7 @@ def ecc_fp():
         # Divider after the expander
         st.divider()
 
-        # 1. Calculate points on the curve
+        # 2. Calculate points on the curve and then Display them
         if p and p < 1000:
             for x in range(p):
                 for y in range(p):
@@ -40,13 +40,13 @@ def ecc_fp():
                         x_coords.append(x)
                         y_coords.append(y)
 
-        # 2. Display the list of points in an expander
+        # Display the list of points in an expander
         if points_list:
             str_points = [f"({pt[0]},{pt[1]})" for pt in points_list]
             all_points_str = ", ".join(str_points)
             
-            # Using st.expander with a push to the top using margin-top
-            with st.expander(f"📍 Points on curve ({len(points_list)} points):", expanded=False):
+            # Changed expanded to True to open it by default
+            with st.expander(f"📍 Points on curve ({len(points_list)} points):", expanded=True):
                 # Added 'margin-top: -10px' to eliminate the gap
                 points_html = f"""
                     <div style='
