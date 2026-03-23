@@ -61,20 +61,6 @@ def ecc_fp():
                 """
                 st.markdown(points_html, unsafe_allow_html=True)
             
-        # 3. Draw the visual plot
-        st.write(f"**Visualization over Fp (p={p}):**")
-        fig, ax = plt.subplots(figsize=(6, 6))
-        
-        ax.scatter(x_coords, y_coords, s=20, facecolors='none', edgecolors='#3498db', linewidth=1.0)
-        
-        ax.set_xlim(-0.5, p - 0.5)
-        ax.set_ylim(-0.5, p - 0.5)
-        ax.grid(True, linestyle='-', alpha=0.3)
-        ax.set_xlabel("x")
-        ax.set_ylabel("y")
-        ax.set_xticks(range(0, p, max(1, p // 10)))
-        ax.set_yticks(range(0, p, max(1, p // 10)))
-        st.pyplot(fig)
 
     with right_col:                 
         with st.expander("Point Addition Formulas", expanded=True):
@@ -123,3 +109,19 @@ def ecc_fp():
             with ix1: x1 = st.number_input("xP", value=5, key="x1_k")
             with iy1: y1 = st.number_input("yP", value=1, key="y1_k")
             with in1: n = st.number_input("n", value=2, key="n_scalar")
+
+        
+        # Draw the visual plot
+        st.write(f"**Visualization over Fp (p={p}):**")
+        fig, ax = plt.subplots(figsize=(6, 6))
+        
+        ax.scatter(x_coords, y_coords, s=20, facecolors='none', edgecolors='#3498db', linewidth=1.0)
+        
+        ax.set_xlim(-0.5, p - 0.5)
+        ax.set_ylim(-0.5, p - 0.5)
+        ax.grid(True, linestyle='-', alpha=0.3)
+        ax.set_xlabel("x")
+        ax.set_ylabel("y")
+        ax.set_xticks(range(0, p, max(1, p // 10)))
+        ax.set_yticks(range(0, p, max(1, p // 10)))
+        st.pyplot(fig)
