@@ -40,7 +40,7 @@ def ecc_fp():
                         x_coords.append(x)
                         y_coords.append(y)
 
-        # Display the list of points in an expander
+        # 3. Display the list of points in an expander
         if points_list:
             str_points = [f"({pt[0]},{pt[1]})" for pt in points_list]
             all_points_str = ", ".join(str_points)
@@ -60,9 +60,8 @@ def ecc_fp():
                     </div>
                 """
                 st.markdown(points_html, unsafe_allow_html=True)
-            
 
-    with right_col:                 
+        # 4. Display Point Addition Formulas
         with st.expander("Point Addition Formulas", expanded=True):
             st.latex(r"s = \frac{y_Q - y_P}{x_Q - x_P} \pmod{p}")
             st.latex(r"x_R = s^2 - x_P - x_Q \pmod{p}")
@@ -70,7 +69,7 @@ def ecc_fp():
 
         st.divider()
 
-        # Mathematical operations section
+        # 5. Mathematical operations section
         op = st.radio("Choose Operation:", ["Point Addition (P + Q)", "Scalar Multiplication (nP)"], horizontal=True)
         
         if op == "Point Addition (P + Q)":
@@ -108,8 +107,9 @@ def ecc_fp():
             ix1, iy1, in1 = st.columns(3)
             with ix1: x1 = st.number_input("xP", value=5, key="x1_k")
             with iy1: y1 = st.number_input("yP", value=1, key="y1_k")
-            with in1: n = st.number_input("n", value=2, key="n_scalar")
+            with in1: n = st.number_input("n", value=2, key="n_scalar")    
 
+    with right_col:                 
         
         # Draw the visual plot
         st.write(f"**Visualization over Fp (p={p}):**")
