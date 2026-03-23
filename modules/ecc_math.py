@@ -13,7 +13,7 @@ def ecc_fp():
         # 1. Create expander with clear title
         with st.expander("Curve Definition", expanded=True):
             # wrapping everything in a div with negative margin to pull content up
-            st.markdown("<div style='margin-top: -30px; margin-bottom: -20px;'>", unsafe_allow_html=True)
+            st.markdown("<div style='margin-top: -50px; margin-bottom: -50px;'>", unsafe_allow_html=True)
             
             c1, c2, c3, c4 = st.columns([1, 1, 1, 2.5])
                     
