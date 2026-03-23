@@ -11,7 +11,7 @@ def ecc_fp():
 
     with left_col:
         # ایجاد کشو با عنوان مشخص
-        with st.expander("🔢 Curve Definition", expanded=True):
+        with st.expander("Curve Definition", expanded=True):
             # حالا فقط به ۴ ستون نیاز داریم (سه تا برای عدد، یکی برای فرمول)
             c1, c2, c3, c4 = st.columns([1, 1, 1, 2.5])
                     
