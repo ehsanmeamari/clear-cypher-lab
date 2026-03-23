@@ -11,8 +11,10 @@ def ecc_fp():
 
     with left_col:
         # 1. Create expander with clear title
-        with st.expander("Curve Definition", expanded=True): # Already True
-            # 4 columns: three for inputs, one for the formula
+        with st.expander("Curve Definition", expanded=True):
+            # wrapping everything in a div with negative margin to pull content up
+            st.markdown("<div style='margin-top: -30px; margin-bottom: -20px;'>", unsafe_allow_html=True)
+            
             c1, c2, c3, c4 = st.columns([1, 1, 1, 2.5])
                     
             with c1: 
@@ -23,10 +25,12 @@ def ecc_fp():
                 b = st.number_input("Parameter (b)", value=13, step=1)
                     
             with c4:
-                # Vertical alignment for the formula
-                st.markdown("<div style='margin-top: 25px;'>", unsafe_allow_html=True)
+                # Reduced margin-top here to align with smaller overall spacing
+                st.markdown("<div style='margin-top: 20px;'>", unsafe_allow_html=True)
                 st.latex(f"E: y^2 \\equiv x^3 + {a}x + {b} \\pmod{{{p}}}")
                 st.markdown("</div>", unsafe_allow_html=True)
+            
+            st.markdown("</div>", unsafe_allow_html=True)
         
         # Divider after the expander
         st.divider()
