@@ -43,7 +43,7 @@ def ecc_fp():
                 st.latex(f"E: y^2 \\equiv x^3 + {a}x + {b} \\pmod{{{p}}}")
                 st.markdown("</div>", unsafe_allow_html=True)
             
-            #st.markdown("</div>", unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
         
         # Divider after the expander
         st.divider()
