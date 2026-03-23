@@ -15,15 +15,20 @@ def run_modular_math():
     st.divider()
     
     if mod_sub_module == "Modulo Calculator":
-        st.write("### 🔢 Modulo Calculator")
+    # Create an expander for the Modulo Calculator
+    with st.expander("🔢 Modulo Calculator", expanded=True):
+        # Using columns inside the expander for inputs
         col1, col2 = st.columns(2)
+        
         with col1:
             num_a = st.number_input("Enter number (a):", value=17, key="mod_calc_a")
         with col2:
             num_n = st.number_input("Enter modulo (n):", value=5, key="mod_calc_n")
         
+        # Calculation and result display
         if num_n != 0:
             result = num_a % num_n
+            # Displaying the result in a clean code block
             st.code(f"{num_a} mod {num_n} = {result}", language="text")
         else:
             st.error("Modulo by zero is undefined!")
