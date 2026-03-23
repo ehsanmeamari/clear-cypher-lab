@@ -15,23 +15,26 @@ def run_modular_math():
     st.divider()
     
     if mod_sub_module == "Modulo Calculator":
-        # ALL code below this IF must be indented (pushed forward)
         with st.expander("🔢 Modulo Calculator", expanded=True):
-            # Using columns inside the expander for inputs
-            col1, col2 = st.columns(2)
+            # ایجاد ۳ ستون: دو ستون برای ورودی و یکی برای نتیجه
+            col1, col2, col3 = st.columns([1, 1, 1.5])
             
             with col1:
                 num_a = st.number_input("Enter number (a):", value=17, key="mod_calc_a")
             with col2:
                 num_n = st.number_input("Enter modulo (n):", value=5, key="mod_calc_n")
             
-            # Calculation and result display
-            if num_n != 0:
-                result = num_a % num_n
-                # Displaying the result in a clean code block
-                st.code(f"{num_a} mod {num_n} = {result}", language="text")
-            else:
-                st.error("Modulo by zero is undefined!")
+            with col3:
+                if num_n != 0:
+                    result = num_a % num_n
+                    # اضافه کردن فاصله برای تراز شدن با اینپوت‌ها
+                    st.markdown("<div style='margin-top: 28px;'>", unsafe_allow_html=True)
+                    st.code(f"{num_a} mod {num_n} = {result}", language="text")
+                    st.markdown("</div>", unsafe_allow_html=True)
+                else:
+                    st.markdown("<div style='margin-top: 28px;'>", unsafe_allow_html=True)
+                    st.error("Error: Div by 0")
+                    st.markdown("</div>", unsafe_allow_html=True)
 
     elif mod_sub_module == "Modular Inverse":
         # Same here: all code under ELIF must be indented
