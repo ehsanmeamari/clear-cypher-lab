@@ -15,7 +15,7 @@ def ecc_fp():
             # 4 columns: three for inputs, one for the formula
             c1, c2, c3, c4 = st.columns([1, 1, 1, 2.5])            
             with c1: 
-                p = st.number_input("Prime Field (p)", value=17, step=1)
+                p = st.number_input("Prime (p)", value=17, step=1)
             with c2: 
                 a = st.number_input("Parameter (a)", value=2, step=1)
             with c3: 
