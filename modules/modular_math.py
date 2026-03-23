@@ -1,7 +1,6 @@
 import streamlit as st
 
 def run_modular_math():
-    st.subheader("Modular Arithmetic")
     
     # Horizontal sub-menu for Modular Arithmetic
     mod_sub_module = st.radio(
