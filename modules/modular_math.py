@@ -3,13 +3,13 @@ import streamlit as st
 def run_modular_math():
     st.subheader("Modular Arithmetic")
     
-    # ایجاد دو ستون اصلی برای قرارگیری ماشین‌حساب‌ها کنار هم
+    # Create two main columns for the calculators
     main_col1, main_col2 = st.columns(2)
     
-    # --- ستون اول: Modulo Calculator ---
+    # --- Column 1: Modulo Calculator ---
     with main_col1:
         with st.expander("🔢 Modulo Calculator", expanded=True):
-            # زیرمجموعه ستون‌ها برای چیدمان داخلی (Input و Result)
+            # Clean layout for inputs and result
             c1, c2, c3 = st.columns([1, 1, 1.2])
             with c1:
                 num_a = st.number_input("a:", value=17, key="mod_calc_a")
@@ -23,10 +23,10 @@ def run_modular_math():
                     st.error("Error")
                 st.markdown("</div>", unsafe_allow_html=True)
 
-    # --- ستون دوم: Modular Inverse ---
+    # --- Column 2: Modular Inverse ---
     with main_col2:
         with st.expander("🔄 Modular Inverse", expanded=True):
-            # زیرمجموعه ستون‌ها برای چیدمان داخلی
+            # Clean layout for inputs and result
             c1, c2, c3 = st.columns([1, 1, 1.2])
             with c1:
                 inv_a = st.number_input("a:", value=3, key="inv_a")
@@ -41,7 +41,7 @@ def run_modular_math():
                     st.error("None")
                 st.markdown("</div>", unsafe_allow_html=True)
             
-            # نمایش فرمول کوچک در پایین ستون دوم در صورت وجود معکوس
+            # Formula display at the bottom
             try:
                 res_inv = pow(int(inv_a), -1, int(inv_n))
                 st.latex(f"{inv_a} \\cdot {res_inv} \\equiv 1 \\pmod{{{inv_n}}}")
