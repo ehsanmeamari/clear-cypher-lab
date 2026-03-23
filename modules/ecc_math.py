@@ -10,32 +10,25 @@ def ecc_fp():
     left_col, right_col = st.columns([1, 1])
 
     with left_col:
-        # ایجاد ۵ ستون: ستون اول برای عنوان و بقیه برای پارامترها و فرمول
-        # نسبت‌ها را طوری تنظیم می‌کنیم که فضای کافی برای هر بخش باشد
-        # تنظیم نسبت ستون‌ها (کمی فضای ستون اول را برای ظرافت بیشتر کم کردیم)
-        c_title, c1, c2, c3, c4 = st.columns([1, 0.8, 0.8, 0.8, 2.3])
-                
-        with c_title:
-            # استفاده از font-size برای کنترل دقیق اندازه (مثلاً 20px) و تنظیم فاصله از بالا
-            st.markdown("""
-                <div style='margin-top: 32px; font-size: 20px; font-weight: bold;'>
-                    🔢 Curve Definition
-                </div>
-                """, unsafe_allow_html=True)
-                
-        with c1: 
-            p = st.number_input("Prime Field (p)", value=17, step=1)
-        with c2: 
-            a = st.number_input("Parameter (a)", value=2, step=1)
-        with c3: 
-            b = st.number_input("Parameter (b)", value=13, step=1)
-                
-        with c4:
-            # تراز کردن عمودی فرمول لاتک
-            st.markdown("<div style='margin-top: 35px;'>", unsafe_allow_html=True)
-            st.latex(f"E: y^2 \\equiv x^3 + {a}x + {b} \\pmod{{{p}}}")
-            st.markdown("</div>", unsafe_allow_html=True)
-                        
+        # ایجاد کشو با عنوان مشخص
+        with st.expander("🔢 Curve Definition", expanded=True):
+            # حالا فقط به ۴ ستون نیاز داریم (سه تا برای عدد، یکی برای فرمول)
+            c1, c2, c3, c4 = st.columns([1, 1, 1, 2.5])
+                    
+            with c1: 
+                p = st.number_input("Prime Field (p)", value=17, step=1)
+            with c2: 
+                a = st.number_input("Parameter (a)", value=2, step=1)
+            with c3: 
+                b = st.number_input("Parameter (b)", value=13, step=1)
+                    
+            with c4:
+                # تراز کردن عمودی فرمول (داخل کشو معمولاً ۲۵ پیکسل کافی است)
+                st.markdown("<div style='margin-top: 25px;'>", unsafe_allow_html=True)
+                st.latex(f"E: y^2 \\equiv x^3 + {a}x + {b} \\pmod{{{p}}}")
+                st.markdown("</div>", unsafe_allow_html=True)
+        
+        # خط جداکننده را بعد از اتمام بلوک expander بگذارید
         st.divider()
 
         # ۱. محاسبات نقاط منحنی
