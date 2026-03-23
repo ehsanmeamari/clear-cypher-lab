@@ -10,10 +10,20 @@ def ecc_fp():
     left_col, right_col = st.columns([1, 1])
 
     with left_col:
-        # 1. Create expander with clear title
+        # 1. Create expander with compact styling
         with st.expander("Curve Definition", expanded=True):
-            # wrapping everything in a div with negative margin to pull content up
-            st.markdown("<div style='margin-top: -50px; margin-bottom: -50px;'>", unsafe_allow_html=True)
+            # Injection of CSS to remove expander's internal padding
+            st.markdown("""
+                <style>
+                [data-testid="stExpanderDetails"] {
+                    padding-top: 0px;
+                    padding-bottom: 0px;
+                }
+                </style>
+                """, unsafe_allow_html=True)
+            
+            # Additional negative margin for maximum compactness
+            st.markdown("<div style='margin-top: -45px; margin-bottom: -20px;'>", unsafe_allow_html=True)
             
             c1, c2, c3, c4 = st.columns([1, 1, 1, 2.5])
                     
@@ -25,8 +35,8 @@ def ecc_fp():
                 b = st.number_input("Parameter (b)", value=13, step=1)
                     
             with c4:
-                # Reduced margin-top here to align with smaller overall spacing
-                st.markdown("<div style='margin-top: 20px;'>", unsafe_allow_html=True)
+                # Vertical alignment for the formula
+                st.markdown("<div style='margin-top: 25px;'>", unsafe_allow_html=True)
                 st.latex(f"E: y^2 \\equiv x^3 + {a}x + {b} \\pmod{{{p}}}")
                 st.markdown("</div>", unsafe_allow_html=True)
             
