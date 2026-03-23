@@ -1,7 +1,6 @@
 import streamlit as st
 
 def run_modular_math():
-    st.subheader("Modular Arithmetic")
     
     # 1. Modulo Calculator Section
     with st.expander("🔢 Modulo Calculator", expanded=True):
