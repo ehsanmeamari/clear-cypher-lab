@@ -45,11 +45,12 @@ def ecc_fp():
             str_points = [f"({pt[0]},{pt[1]})" for pt in points_list]
             all_points_str = ", ".join(str_points)
             
-            # Using st.expander with the dynamic point count in the header
+            # Using st.expander with a push to the top using margin-top
             with st.expander(f"📍 Points on curve ({len(points_list)} points):", expanded=False):
-                # Display points inside curly braces with the styling you provided
+                # Added 'margin-top: -10px' to eliminate the gap
                 points_html = f"""
                     <div style='
+                        margin-top: -10px;
                         padding: 12px 16px; 
                         background-color: #f8f9fa; 
                         border-radius: 8px; 
