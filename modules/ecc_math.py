@@ -10,24 +10,21 @@ def ecc_fp():
     left_col, right_col = st.columns([1, 1])
 
     with left_col:
-        # 1. Create expander with zero-padding CSS
+        # 1. Create expander with compact styling
         with st.expander("Curve Definition", expanded=True):
-            # Injection of CSS to force zero padding and margins
+            # Injection of CSS to remove expander's internal padding
             st.markdown("""
                 <style>
-                /* Target the expander content area directly */
                 [data-testid="stExpanderDetails"] {
-                    padding-top: 0px !important;
-                    padding-bottom: 0px !important;
-                }
-                /* Target the vertical block inside the expander */
-                [data-testid="stVerticalBlock"] > div:first-child {
-                    margin-top: -20px !important;
+                    padding-top: 0px;
+                    padding-bottom: 0px;
                 }
                 </style>
                 """, unsafe_allow_html=True)
             
-            # 4 columns: three for inputs, one for the formula
+            # Additional negative margin for maximum compactness
+            st.markdown("<div style='margin-top: -45px; margin-bottom: -20px;'>", unsafe_allow_html=True)
+            
             c1, c2, c3, c4 = st.columns([1, 1, 1, 2.5])
                     
             with c1: 
