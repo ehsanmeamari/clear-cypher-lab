@@ -7,7 +7,7 @@ def ecc_fp():
     y_coords = []
     
     # Divide the page into four equal columns
-    col1, col2, col3, col4 = st.columns([7, 1, 5])
+    col1, col2, col3 = st.columns([7, 1, 5])
 
     with col1:
         # 1. Create expander with clear title
