@@ -111,17 +111,20 @@ def ecc_fp():
 
     with right_col:                 
         
-        # Draw the visual plot
-        st.write(f"**Visualization over Fp (p={p}):**")
-        fig, ax = plt.subplots(figsize=(6, 6))
-        
-        ax.scatter(x_coords, y_coords, s=20, facecolors='none', edgecolors='#3498db', linewidth=1.0)
-        
-        ax.set_xlim(-0.5, p - 0.5)
-        ax.set_ylim(-0.5, p - 0.5)
-        ax.grid(True, linestyle='-', alpha=0.3)
-        ax.set_xlabel("x")
-        ax.set_ylabel("y")
-        ax.set_xticks(range(0, p, max(1, p // 10)))
-        ax.set_yticks(range(0, p, max(1, p // 10)))
-        st.pyplot(fig)
+        # Visual plot rendering inside an expander: Using expanded=True to keep the plot visible by default
+        with st.expander(f"📊 Visualization over Fp (p={p}):", expanded=True):
+            fig, ax = plt.subplots(figsize=(6, 6))
+            
+            # Scatter plot styling
+            ax.scatter(x_coords, y_coords, s=20, facecolors='none', edgecolors='#3498db', linewidth=1.0)
+            
+            ax.set_xlim(-0.5, p - 0.5)
+            ax.set_ylim(-0.5, p - 0.5)
+            ax.grid(True, linestyle='-', alpha=0.3)
+            ax.set_xlabel("x")
+            ax.set_ylabel("y")
+            ax.set_xticks(range(0, p, max(1, p // 10)))
+            ax.set_yticks(range(0, p, max(1, p // 10)))
+            
+            # Display the plot inside the expander
+            st.pyplot(fig)
