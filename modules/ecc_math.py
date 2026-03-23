@@ -6,13 +6,13 @@ def ecc_fp():
     x_coords = []
     y_coords = []
     
-    # Divide the page into two equal columns as shown in the image
+    # Divide the page into two equal columns
     left_col, right_col = st.columns([1, 1])
 
     with left_col:
         # Create expander with clear title
         with st.expander("Curve Definition", expanded=True):
-            # Now we only need 4 columns (three for numbers, one for the formula)
+            # 4 columns: three for inputs, one for the formula
             c1, c2, c3, c4 = st.columns([1, 1, 1, 2.5])
                     
             with c1: 
@@ -23,12 +23,12 @@ def ecc_fp():
                 b = st.number_input("Parameter (b)", value=13, step=1)
                     
             with c4:
-                # Vertical alignment for the formula (25px margin is usually enough inside expander)
+                # Vertical alignment for the formula
                 st.markdown("<div style='margin-top: 25px;'>", unsafe_allow_html=True)
                 st.latex(f"E: y^2 \\equiv x^3 + {a}x + {b} \\pmod{{{p}}}")
                 st.markdown("</div>", unsafe_allow_html=True)
         
-        # Put the divider after the expander block
+        # Divider after the expander
         st.divider()
 
         # 1. Calculate points on the curve
@@ -40,35 +40,39 @@ def ecc_fp():
                         x_coords.append(x)
                         y_coords.append(y)
 
-        # 2. Display the list of points (before the chart) in compact brackets
+        # 2. Display the list of points - Clean and beautiful version
         if points_list:
             str_points = [f"({pt[0]},{pt[1]})" for pt in points_list]
+            all_points_str = ", ".join(str_points)
             
-            if len(str_points) > 30:
-                core_points = ", ".join(str_points[:30]) + ", ..."
-            else:
-                core_points = ", ".join(str_points)
-            
-            # Remove space at the beginning of the bracket for more compactness
-            points_in_brackets = f"{{{core_points}}}"
-            
-            # Change font to Sans-Serif and reduce letter spacing for fewer lines
-            combined_html = f"""
-                <div style='font-size: 18px; line-height: 1.4; margin-bottom: 20px;'>
-
-                    <span style='font-weight: bold; color: #31333F;'>Points on curve ({len(points_list)} points):</span>
-
-                    <span style='color: #555; margin-left: 5px; font-family: sans-serif; letter-spacing: -0.5px;'>{points_in_brackets}</span>
+            # Beautiful HTML display for points
+            points_html = f"""
+                <div style='margin-bottom: 20px;'>
+                    <span style='font-weight: bold; color: #31333F; font-size: 18px;'>
+                        Points on curve ({len(points_list)} points):
+                    </span>
+                    <div style='margin-top: 8px; 
+                                padding: 12px 16px; 
+                                background-color: #f8f9fa; 
+                                border-radius: 8px; 
+                                border: 1px solid #e0e0e0;
+                                font-family: monospace; 
+                                font-size: 15.5px; 
+                                line-height: 1.6;
+                                color: #2c3e50;
+                                overflow-x: auto;
+                                white-space: pre-wrap;
+                                word-break: break-all;'>
+                        {all_points_str}
+                    </div>
                 </div>
             """
-            st.markdown(combined_html, unsafe_allow_html=True)
+            st.markdown(points_html, unsafe_allow_html=True)
             
         # 3. Draw the visual plot
         st.write(f"**Visualization over Fp (p={p}):**")
         fig, ax = plt.subplots(figsize=(6, 6))
         
-        # s changed from 50 to 20 (for smaller circles)
-        # linewidth changed from 1.5 to 1.0 (for more elegance in small size)
         ax.scatter(x_coords, y_coords, s=20, facecolors='none', edgecolors='#3498db', linewidth=1.0)
         
         ax.set_xlim(-0.5, p - 0.5)
@@ -88,7 +92,7 @@ def ecc_fp():
 
         st.divider()
 
-        # Mathematical operations section in linear form
+        # Mathematical operations section
         op = st.radio("Choose Operation:", ["Point Addition (P + Q)", "Scalar Multiplication (nP)"], horizontal=True)
         
         if op == "Point Addition (P + Q)":
