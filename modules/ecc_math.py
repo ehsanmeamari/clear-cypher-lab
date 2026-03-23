@@ -40,34 +40,31 @@ def ecc_fp():
                         x_coords.append(x)
                         y_coords.append(y)
 
-        # 2. Display the list of points - Clean and beautiful version
+        # 2. Display the list of points in an expander
         if points_list:
             str_points = [f"({pt[0]},{pt[1]})" for pt in points_list]
             all_points_str = ", ".join(str_points)
             
-            # Beautiful HTML display for points
-            points_html = f"""
-                <div style='margin-bottom: 20px;'>
-                    <span style='font-weight: bold; color: #31333F; font-size: 18px;'>
-                        Points on curve ({len(points_list)} points):
-                    </span>
-                    <div style='margin-top: 8px; 
-                                padding: 12px 16px; 
-                                background-color: #f8f9fa; 
-                                border-radius: 8px; 
-                                border: 1px solid #e0e0e0;
-                                font-family: monospace; 
-                                font-size: 15.5px; 
-                                line-height: 1.6;
-                                color: #2c3e50;
-                                overflow-x: auto;
-                                white-space: pre-wrap;
-                                word-break: break-all;'>
-                        {all_points_str}
+            # Using st.expander with the dynamic point count in the header
+            with st.expander(f"📍 Points on curve ({len(points_list)} points):", expanded=False):
+                # Display points inside curly braces with the styling you provided
+                points_html = f"""
+                    <div style='
+                        padding: 12px 16px; 
+                        background-color: #f8f9fa; 
+                        border-radius: 8px; 
+                        border: 1px solid #e0e0e0;
+                        font-family: monospace; 
+                        font-size: 15.5px; 
+                        line-height: 1.6;
+                        color: #2c3e50;
+                        overflow-x: auto;
+                        white-space: pre-wrap;
+                        word-break: break-all;'>
+                        {{ {all_points_str} }}
                     </div>
-                </div>
-            """
-            st.markdown(points_html, unsafe_allow_html=True)
+                """
+                st.markdown(points_html, unsafe_allow_html=True)
             
         # 3. Draw the visual plot
         st.write(f"**Visualization over Fp (p={p}):**")
