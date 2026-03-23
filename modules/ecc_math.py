@@ -50,7 +50,7 @@ def ecc_fp():
                 # We use margin-top: -20px to completely stick the box to the top
                 points_html = f"""
                     <div style='
-                        margin-top: -100px;
+                        margin-top: -5px;
                         padding: 12px 16px; 
                         background-color: #f8f9fa; 
                         border-radius: 8px; 
