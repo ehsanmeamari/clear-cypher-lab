@@ -7,7 +7,7 @@ def ecc_fp():
     y_coords = []
     
     # Divide the page into four equal columns
-    col1, col2, col3 = st.columns([7, 1, 5])
+    col1, col2 = st.columns([8, 5])
 
     with col1:
         # 1. Create expander with clear title
@@ -110,7 +110,7 @@ def ecc_fp():
             with iy1: y1 = st.number_input("yP", value=1, key="y1_k")
             with in1: n = st.number_input("n", value=2, key="n_scalar")    
 
-    with col3:                 
+    with col2:                 
         
         # Visual plot rendering inside an expander: Using expanded=True to keep the plot visible by default
         with st.expander(f"📊 Visualization over Fp (p={p}):", expanded=True):
