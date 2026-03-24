@@ -156,17 +156,35 @@ def extension_math2():
     st.divider()
 
     # --- Exponentiation ---
-    st.write("### 🔢 Exponentiation")
-    exp = st.number_input("Input the exponent", value=None, step=1, format="%d", key="exp")
-    real1_exp = st.number_input("Input the real part for a", value=None, step=1, format="%d", key="r1_exp")
-    img1_exp = st.number_input("Input the imaginary part for a", value=None, step=1, format="%d", key="i1_exp")
-    a_exp = QuadraticIFp(real1_exp, img1_exp, p) if (real1_exp is not None and img1_exp is not None) else None
-    if a_exp: st.latex(f"a={real1_exp % p} + {img1_exp % p}i")
-    
-    if a_exp is None or exp is None:
-        st.warning("Input the values for Exponentiation")
-    else:
-        st.success(rf"a^{{{exp}}} = {a_exp ** exp}")
+    with st.expander("🔢 Exponentiation", expanded=False):
+        # Row 1: Exponent Input
+        st.markdown("**Step 1: Define the Power**")
+        exp = st.number_input("Input the exponent (n)", value=None, step=1, format="%d", key="exp")
+        
+        st.divider()
+        
+        # Row 2: Input 'a' with real-time display in 3 columns
+        st.markdown("**Step 2: Define Base Number (a)**")
+        col1, col2, col3 = st.columns([2, 2, 2])
+        with col1:
+            r1_exp = st.number_input("Real part (a)", value=None, step=1, format="%d", key="r1_exp")
+        with col2:
+            i1_exp = st.number_input("Imaginary part (a)", value=None, step=1, format="%d", key="i1_exp")
+        with col3:
+            if r1_exp is not None and i1_exp is not None:
+                st.markdown("<div style='padding-top: 25px;'>", unsafe_allow_html=True)
+                st.latex(f"a = {r1_exp % p} + {i1_exp % p}i")
+                st.markdown("</div>", unsafe_allow_html=True)
+
+        # --- Result ---
+        if all(v is not None for v in [r1_exp, i1_exp, exp]):
+            a_exp_obj = QuadraticIFp(r1_exp, i1_exp, p)
+            result_exp = a_exp_obj ** exp
+            st.success(f"Result: a^{exp} = {result_exp}")
+            # نمایش ریاضی شکیل‌تر برای نتیجه
+            st.latex(f"({a_exp_obj})^{{{exp}}} \equiv {result_exp} \pmod{{{p}}}")
+        else:
+            st.warning("Please input both the exponent and all parts of 'a'")
 
     st.divider()
 
