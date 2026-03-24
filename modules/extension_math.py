@@ -118,11 +118,13 @@ def extension_math():
                     st.latex(f"b = {r2_m % p} + {i2_m % p}i")
                     st.markdown("</div>", unsafe_allow_html=True)
 
+            # Updated Result Printing for Multiplication
             if all(v is not None for v in [r1_m, i1_m, r2_m, i2_m]):
                 a_obj = QuadraticIFp(r1_m, i1_m, p)
                 b_obj = QuadraticIFp(r2_m, i2_m, p)
                 res = a_obj * b_obj
-                st.latex(f"({a_obj}) \cdot ({b_obj}) \equiv {res} \pmod{{{p}}}")
+                # Success box with inline LaTeX
+                st.success(f"Result: $({a_obj}) \\cdot ({b_obj}) \\equiv {res} \\pmod{{{p}}}$")
             else:
                 st.info("Input a & b")
 
