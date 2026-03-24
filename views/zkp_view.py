@@ -52,7 +52,7 @@ def render_zkp_tab():
             run_modular_math()
             
         elif zkp_module == "Extension Field":
-            st.info("Extension Field logic is coming soon.")
+            extension_math()
         
         elif zkp_module == "ECC":
             # --- 3. ECC Sub-module Selection ---
