@@ -47,7 +47,7 @@ class QuadraticIFp:
         return QuadraticIFp(conj.a * norm_inv, conj.b * norm_inv, p)
 
 def extension_math():
-    st.subheader("Extension Fields Operations")
+    st.subheader("Operations over Extension Fields")
     st.write("Current configuration: p=101 and $i^2 = 4i + 99$ in Extension Fields.")
     
     p = 101
