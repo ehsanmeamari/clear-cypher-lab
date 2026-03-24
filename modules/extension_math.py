@@ -87,7 +87,6 @@ def extension_math():
                 a_obj = QuadraticIFp(r1, i1, p)
                 b_obj = QuadraticIFp(r2, i2, p)
                 res = a_obj + b_obj
-                st.success(f"Result: {res}")
                 st.latex(f"({a_obj}) + ({b_obj}) \equiv {res} \pmod{{{p}}}")
             else:
                 st.info("Input a & b")
@@ -130,7 +129,6 @@ def extension_math():
                 a_obj = QuadraticIFp(r1_m, i1_m, p)
                 b_obj = QuadraticIFp(r2_m, i2_m, p)
                 res = a_obj * b_obj
-                st.success(f"Result: {res}")
                 st.latex(f"({a_obj}) \cdot ({b_obj}) \equiv {res} \pmod{{{p}}}")
             else:
                 st.info("Input a & b")
@@ -157,7 +155,6 @@ def extension_math():
             if all(v is not None for v in [r1_e, i1_e, exp]):
                 a_obj = QuadraticIFp(r1_e, i1_e, p)
                 res = a_obj ** exp
-                st.success(f"Result: {res}")
                 st.latex(f"({a_obj})^{{{exp}}} \equiv {res} \pmod{{{p}}}")
 
     with row2_col2:
@@ -178,7 +175,6 @@ def extension_math():
                 a_obj = QuadraticIFp(r1_v, i1_v, p)
                 try:
                     res = a_obj.inverse()
-                    st.success(f"Result: {res}")
                     st.latex(f"({a_obj})^{{-1}} \equiv {res} \pmod{{{p}}}")
                 except ZeroDivisionError:
                     st.error("Not invertible")
