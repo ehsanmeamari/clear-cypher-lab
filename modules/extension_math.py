@@ -128,9 +128,6 @@ def extension_math():
             else:
                 st.info("Input a & b")
 
-    # --- ROW 2: Exponentiation & Inverse ---
-    row2_col1, row2_col2 = st.columns(2)
-
     with row2_col1:
         # --- Exponentiation ---
         with st.expander("🔢 Exponentiation", expanded=False):
@@ -150,7 +147,8 @@ def extension_math():
             if all(v is not None for v in [r1_e, i1_e, exp]):
                 a_obj = QuadraticIFp(r1_e, i1_e, p)
                 res = a_obj ** exp
-                st.latex(f"({a_obj})^{{{exp}}} \equiv {res} \pmod{{{p}}}")
+                # Inline LaTeX inside the success box
+                st.success(f"Result: $({a_obj})^{{{exp}}} \\equiv {res} \\pmod{{{p}}}$")
 
     with row2_col2:
         # --- Inverse ---
@@ -170,6 +168,7 @@ def extension_math():
                 a_obj = QuadraticIFp(r1_v, i1_v, p)
                 try:
                     res = a_obj.inverse()
-                    st.latex(f"({a_obj})^{{-1}} \equiv {res} \pmod{{{p}}}")
+                    # Inline LaTeX inside the success box
+                    st.success(f"Result: $({a_obj})^{{-1}} \\equiv {res} \\pmod{{{p}}}$")
                 except ZeroDivisionError:
-                    st.error("Not invertible")
+                    st.error("Error: Element is not invertible")
