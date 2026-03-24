@@ -79,6 +79,7 @@ def render_zkp_tab():
                 st.info(f"{ecc_sub} logic is coming soon.")
 
         elif zkp_module == "Weil Pairing":
-
+             extension_math2()
+            
         elif zkp_module == "Lagrange Interpolation":
             st.info("Lagrange Interpolation logic is coming soon.")
