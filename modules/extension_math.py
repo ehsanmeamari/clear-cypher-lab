@@ -53,22 +53,27 @@ def extension_math():
     p = 101
 
     # --- 1. Addition ---
-    with st.expander("➕ Addition", expanded=False):
+    with st.expander("➕ Addition", expanded=True):
         c1, c2 = st.columns(2)
         with c1:
             real1 = st.number_input("Real part (a)", value=None, step=1, format="%d", key="r1_add")
             img1 = st.number_input("Imaginary part (a)", value=None, step=1, format="%d", key="i1_add")
+            if real1 is not None and img1 is not None:
+                st.latex(f"a = {real1 % p} + {img1 % p}i")
+                
         with c2:
             real2 = st.number_input("Real part (b)", value=None, step=1, format="%d", key="r2_add")
             img2 = st.number_input("Imaginary part (b)", value=None, step=1, format="%d", key="i2_add")
+            if real2 is not None and img2 is not None:
+                st.latex(f"b = {real2 % p} + {img2 % p}i")
         
         a = QuadraticIFp(real1, img1, p) if (real1 is not None and img1 is not None) else None
         b = QuadraticIFp(real2, img2, p) if (real2 is not None and img2 is not None) else None
         
         if a and b:
+            st.divider()
             st.success(f"Result: a + b = {a + b}")
-        else:
-            st.info("Please input all values for a and b")
+            st.latex(f"({a}) + ({b}) \equiv {a + b} \pmod{{{p}}}")
 
     # --- 2. Multiplication ---
     with st.expander("✖️ Multiplication", expanded=False):
