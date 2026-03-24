@@ -48,7 +48,7 @@ class QuadraticIFp:
         norm_inv = pow(norm, p - 2, p)
         return QuadraticIFp(conj.a * norm_inv, conj.b * norm_inv, p)
 
-def extension_math():
+def extension_math2():
     st.subheader("Extension Fields")
     st.write("For this version of our application p=101 and i^2 = 4i + 99 in Extension Fields. We will extend it for all cases soon.")
     
