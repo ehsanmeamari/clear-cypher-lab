@@ -129,7 +129,7 @@ def extension_math2():
             a_mul_obj = QuadraticIFp(r1_mul, i1_mul, p)
             b_mul_obj = QuadraticIFp(r2_mul, i2_mul, p)
             result_mul = a_mul_obj * b_mul_obj
-            st.success(f"Result: a · b = {result_mul}")
+            #st.success(f"Result: a · b = {result_mul}")
             # نمایش خروجی نهایی به صورت فرمول برای زیبایی بیشتر
             st.latex(f"({a_mul_obj}) \cdot ({b_mul_obj}) \equiv {result_mul} \pmod{{{p}}}")
         else:
