@@ -39,9 +39,9 @@ class QuadraticIFp:
     def inverse(self):
         p = self.p
         a, b = self.a, self.b
-        # conjugate
+        # conjugate logic
         conj = QuadraticIFp(a + 4 * b, -b, p)
-        # norm = x * conjugate (must lie in F_p)
+        # norm = x * conjugate
         norm = (self * conj).a 
         if norm == 0:
             raise ZeroDivisionError("Element not invertible")
@@ -49,8 +49,8 @@ class QuadraticIFp:
         return QuadraticIFp(conj.a * norm_inv, conj.b * norm_inv, p)
 
 def extension_math():
-    st.subheader("Extension Fields")
-    st.write("For this version of our application p=101 and i^2 = 4i + 99 in Extension Fields.")
+    st.subheader("Extension Fields Operations")
+    st.write("Current configuration: $p=101$ and $i^2 = 4i + 99$")
     
     p = 101
 
@@ -83,14 +83,12 @@ def extension_math():
                     st.latex(f"b = {r2 % p} + {i2 % p}i")
                     st.markdown("</div>", unsafe_allow_html=True)
 
-            # Printing the result
             if all(v is not None for v in [r1, i1, r2, i2]):
-                a_obj = QuadraticIFp(r1, i1, p)
-                b_obj = QuadraticIFp(r2, i2, p)
+                a_obj, b_obj = QuadraticIFp(r1, i1, p), QuadraticIFp(r2, i2, p)
                 res = a_obj + b_obj
                 st.success(f"Result: $({a_obj}) + ({b_obj}) \\equiv {res} \\pmod{{{p}}}$")
             else:
-                st.info("Input a & b")
+                st.info("Input values for a & b")
 
     with row1_col2:
         # --- Multiplication ---
@@ -118,15 +116,15 @@ def extension_math():
                     st.latex(f"b = {r2_m % p} + {i2_m % p}i")
                     st.markdown("</div>", unsafe_allow_html=True)
 
-            # Updated Result Printing for Multiplication
             if all(v is not None for v in [r1_m, i1_m, r2_m, i2_m]):
-                a_obj = QuadraticIFp(r1_m, i1_m, p)
-                b_obj = QuadraticIFp(r2_m, i2_m, p)
+                a_obj, b_obj = QuadraticIFp(r1_m, i1_m, p), QuadraticIFp(r2_m, i2_m, p)
                 res = a_obj * b_obj
-                # Success box with inline LaTeX
                 st.success(f"Result: $({a_obj}) \\cdot ({b_obj}) \\equiv {res} \\pmod{{{p}}}$")
             else:
-                st.info("Input a & b")
+                st.info("Input values for a & b")
+
+    # --- ROW 2: Exponentiation & Inverse ---
+    row2_col1, row2_col2 = st.columns(2)
 
     with row2_col1:
         # --- Exponentiation ---
@@ -147,8 +145,9 @@ def extension_math():
             if all(v is not None for v in [r1_e, i1_e, exp]):
                 a_obj = QuadraticIFp(r1_e, i1_e, p)
                 res = a_obj ** exp
-                # Inline LaTeX inside the success box
                 st.success(f"Result: $({a_obj})^{{{exp}}} \\equiv {res} \\pmod{{{p}}}$")
+            else:
+                st.info("Input exponent and base number 'a'")
 
     with row2_col2:
         # --- Inverse ---
@@ -168,7 +167,8 @@ def extension_math():
                 a_obj = QuadraticIFp(r1_v, i1_v, p)
                 try:
                     res = a_obj.inverse()
-                    # Inline LaTeX inside the success box
                     st.success(f"Result: $({a_obj})^{{-1}} \\equiv {res} \\pmod{{{p}}}$")
                 except ZeroDivisionError:
                     st.error("Error: Element is not invertible")
+            else:
+                st.info("Input values for 'a'")
