@@ -72,42 +72,6 @@ def extension_math2():
         else:
             st.success(f"a+b = {a + b}")
 
-        # --- Addition Section ---
-        with st.expander("➕ Addition", expanded=False):
-            st.write("### 🔢 Addition Operation")
-            
-            # ایجاد دو ستون برای ورودی‌های a و b
-            col_a, col_b = st.columns(2)
-            
-            with col_a:
-                st.markdown("**Number a:**")
-                r1 = st.number_input("Real part (a)", value=None, step=1, format="%d", key="r1_add")
-                i1 = st.number_input("Imaginary part (a)", value=None, step=1, format="%d", key="i1_add")
-                # نمایش مقدار a به صورت ریاضی
-                if r1 is not None and i1 is not None:
-                    st.latex(f"a = {r1 % p} + {i1 % p}i")
-                    
-            with col_b:
-                st.markdown("**Number b:**")
-                r2 = st.number_input("Real part (b)", value=None, step=1, format="%d", key="r2_add")
-                i2 = st.number_input("Imaginary part (b)", value=None, step=1, format="%d", key="i2_add")
-                # نمایش مقدار b به صورت ریاضی
-                if r2 is not None and i2 is not None:
-                    st.latex(f"b = {r2 % p} + {i2 % p}i")
-            
-            # بررسی پر بودن تمام ورودی‌ها و محاسبه نتیجه
-            if all(v is not None for v in [r1, i1, r2, i2]):
-                a = QuadraticIFp(r1, i1, p)
-                b = QuadraticIFp(r2, i2, p)
-                result = a + b
-                
-                st.divider()
-                st.success(f"Result: {result}")
-                # نمایش معادله کامل حاصل‌جمع
-                st.latex(f"({a}) + ({b}) \equiv {result} \pmod{{{p}}}")
-            else:
-                st.info("Please enter all real and imaginary parts for both numbers.")
-
     elif op == "Multiplication":
         st.write("### 🔢 Multiplication")
         real1 = st.number_input("Input the real part for a", value=None, step=1, format="%d", key="r1_mul")
