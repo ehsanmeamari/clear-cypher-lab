@@ -88,7 +88,8 @@ def extension_math2():
         if all(v is not None for v in [r1, i1, r2, i2]):
             a_obj = QuadraticIFp(r1, i1, p)
             b_obj = QuadraticIFp(r2, i2, p)
-            st.success(f"Result: a + b = {a_obj + b_obj}")
+            result_add = a_obj + b_obj
+            st.latex(f"({a_obj}) + ({b_obj}) \equiv {result_add} \pmod{{{p}}}")
         else:
             st.warning("Please input all values for Addition")
 
@@ -129,8 +130,6 @@ def extension_math2():
             a_mul_obj = QuadraticIFp(r1_mul, i1_mul, p)
             b_mul_obj = QuadraticIFp(r2_mul, i2_mul, p)
             result_mul = a_mul_obj * b_mul_obj
-            #st.success(f"Result: a · b = {result_mul}")
-            # نمایش خروجی نهایی به صورت فرمول برای زیبایی بیشتر
             st.latex(f"({a_mul_obj}) \cdot ({b_mul_obj}) \equiv {result_mul} \pmod{{{p}}}")
         else:
             st.warning("Please input all values for Multiplication")
