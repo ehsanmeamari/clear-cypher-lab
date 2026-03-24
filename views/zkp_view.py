@@ -2,6 +2,8 @@ import streamlit as st
 from modules.ecc_tool import run_ecc_visualizer
 from modules.modular_math import run_modular_math
 from modules.ecc_math import ecc_fp
+from modules.extension_math import extension_math
+from modules.extension_math2 import extension_math2
 
 def render_zkp_tab():
     # Optimized CSS to remove extra white spaces and compress elements
