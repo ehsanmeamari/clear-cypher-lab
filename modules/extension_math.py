@@ -53,27 +53,25 @@ def extension_math():
     p = 101
 
     # --- 1. Addition ---
-    with st.expander("➕ Addition", expanded=True):
+    with st.expander("➕ Addition", expanded=False):
         c1, c2 = st.columns(2)
         with c1:
-            real1 = st.number_input("Real part (a)", value=None, step=1, format="%d", key="r1_add")
-            img1 = st.number_input("Imaginary part (a)", value=None, step=1, format="%d", key="i1_add")
-            if real1 is not None and img1 is not None:
-                st.latex(f"a = {real1 % p} + {img1 % p}i")
-                
+            r1 = st.number_input("Real part (a)", value=None, step=1, key="r1_add")
+            i1 = st.number_input("Imaginary part (a)", value=None, step=1, key="i1_add")
+            if r1 is not None and i1 is not None:
+                st.latex(f"a = {r1 % p} + {i1 % p}i")
         with c2:
-            real2 = st.number_input("Real part (b)", value=None, step=1, format="%d", key="r2_add")
-            img2 = st.number_input("Imaginary part (b)", value=None, step=1, format="%d", key="i2_add")
-            if real2 is not None and img2 is not None:
-                st.latex(f"b = {real2 % p} + {img2 % p}i")
+            r2 = st.number_input("Real part (b)", value=None, step=1, key="r2_add")
+            i2 = st.number_input("Imaginary part (b)", value=None, step=1, key="i2_add")
+            if r2 is not None and i2 is not None:
+                st.latex(f"b = {r2 % p} + {i2 % p}i")
         
-        a = QuadraticIFp(real1, img1, p) if (real1 is not None and img1 is not None) else None
-        b = QuadraticIFp(real2, img2, p) if (real2 is not None and img2 is not None) else None
-        
-        if a and b:
+        if all(v is not None for v in [r1, i1, r2, i2]):
+            a, b = QuadraticIFp(r1, i1, p), QuadraticIFp(r2, i2, p)
+            res = a + b
             st.divider()
-            st.success(f"Result: a + b = {a + b}")
-            st.latex(f"({a}) + ({b}) \equiv {a + b} \pmod{{{p}}}")
+            st.success(f"Result: {res}")
+            st.latex(f"({a}) + ({b}) \equiv {res} \pmod{{{p}}}")
 
     # --- 2. Multiplication ---
     with st.expander("✖️ Multiplication", expanded=False):
