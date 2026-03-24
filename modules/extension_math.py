@@ -49,93 +49,87 @@ class QuadraticIFp:
         return QuadraticIFp(conj.a * norm_inv, conj.b * norm_inv, p)
 
 def extension_math():
-    st.write("For this version of our application p=101 and i^2 = 4i + 99 in Extension Fields.")
+    st.subheader("Extension Fields")
+    st.write("For this version of our application p=101 and i^2 = 4i + 99 in Extension Fields. We will extend it for all cases soon.")
+    
+    op = st.radio("Operations:", ["Addition", "Multiplication", "Subtraction", "Exponentiation", "Inverse"], horizontal=True)
     p = 101
 
-    # --- 1. Addition ---
-    with st.expander("➕ Addition", expanded=False):
-        c1, c2 = st.columns(2)
-        with c1:
-            r1 = st.number_input("Real part (a)", value=None, step=1, key="r1_add")
-            i1 = st.number_input("Imaginary part (a)", value=None, step=1, key="i1_add")
-            if r1 is not None and i1 is not None:
-                st.latex(f"a = {r1 % p} + {i1 % p}i")
-        with c2:
-            r2 = st.number_input("Real part (b)", value=None, step=1, key="r2_add")
-            i2 = st.number_input("Imaginary part (b)", value=None, step=1, key="i2_add")
-            if r2 is not None and i2 is not None:
-                st.latex(f"b = {r2 % p} + {i2 % p}i")
-        
-        if all(v is not None for v in [r1, i1, r2, i2]):
-            a, b = QuadraticIFp(r1, i1, p), QuadraticIFp(r2, i2, p)
-            res = a + b
-            st.divider()
-            st.success(f"Result: {res}")
-            st.latex(f"({a}) + ({b}) \equiv {res} \pmod{{{p}}}")
-
-    # --- 2. Multiplication ---
-    with st.expander("✖️ Multiplication", expanded=False):
-        c1, c2 = st.columns(2)
-        with c1:
-            real1 = st.number_input("Real part (a)", value=None, step=1, format="%d", key="r1_mul")
-            img1 = st.number_input("Imaginary part (a)", value=None, step=1, format="%d", key="i1_mul")
-        with c2:
-            real2 = st.number_input("Real part (b)", value=None, step=1, format="%d", key="r2_mul")
-            img2 = st.number_input("Imaginary part (b)", value=None, step=1, format="%d", key="i2_mul")
-            
+    if op == "Addition":
+        st.write("### 🔢 Addition")
+        real1 = st.number_input("Input the real part for a", value=None, step=1, format="%d", key="r1_add")
+        img1 = st.number_input("Input the imaginary part for a", value=None, step=1, format="%d", key="i1_add")
         a = QuadraticIFp(real1, img1, p) if (real1 is not None and img1 is not None) else None
+        if a: st.latex(f"a={real1 % p} + {img1 % p}i")
+        
+        real2 = st.number_input("Input the real part for b", value=None, step=1, format="%d", key="r2_add")
+        img2 = st.number_input("Input the imaginary part for b", value=None, step=1, format="%d", key="i2_add")
         b = QuadraticIFp(real2, img2, p) if (real2 is not None and img2 is not None) else None
+        if b: st.latex(f"b={real2 % p} + {img2 % p}i")
         
-        if a and b:
-            st.success(f"Result: a * b = {a * b}")
+        if a is None or b is None:
+            st.warning("Input the values for all")
         else:
-            st.info("Please input all values for a and b")
+            st.success(f"a+b = {a + b}")
 
-    # --- 3. Subtraction ---
-    with st.expander("➖ Subtraction", expanded=False):
-        c1, c2 = st.columns(2)
-        with c1:
-            real1 = st.number_input("Real part (a)", value=None, step=1, format="%d", key="r1_sub")
-            img1 = st.number_input("Imaginary part (a)", value=None, step=1, format="%d", key="i1_sub")
-        with c2:
-            real2 = st.number_input("Real part (b)", value=None, step=1, format="%d", key="r2_sub")
-            img2 = st.number_input("Imaginary part (b)", value=None, step=1, format="%d", key="i2_sub")
-            
+    elif op == "Multiplication":
+        st.write("### 🔢 Multiplication")
+        real1 = st.number_input("Input the real part for a", value=None, step=1, format="%d", key="r1_mul")
+        img1 = st.number_input("Input the imaginary part for a", value=None, step=1, format="%d", key="i1_mul")
         a = QuadraticIFp(real1, img1, p) if (real1 is not None and img1 is not None) else None
+        if a: st.latex(f"a={real1 % p} + {img1 % p}i")
+        
+        real2 = st.number_input("Input the real part for b", value=None, step=1, format="%d", key="r2_mul")
+        img2 = st.number_input("Input the imaginary part for b", value=None, step=1, format="%d", key="i2_mul")
         b = QuadraticIFp(real2, img2, p) if (real2 is not None and img2 is not None) else None
+        if b: st.latex(f"b={real2 % p} + {img2 % p}i")
         
-        if a and b:
-            st.success(f"Result: a - b = {a - b}")
+        if a is None or b is None:
+            st.warning("Input the values for all")
         else:
-            st.info("Please input all values for a and b")
+            st.success(f"a.b = {a * b}")
 
-    # --- 4. Exponentiation ---
-    with st.expander("🔢 Exponentiation", expanded=False):
-        c1, c2 = st.columns(2)
-        with c1:
-            real1 = st.number_input("Real part (a)", value=None, step=1, format="%d", key="r1_exp")
-            img1 = st.number_input("Imaginary part (a)", value=None, step=1, format="%d", key="i1_exp")
-        with c2:
-            exp = st.number_input("Exponent (n)", value=None, step=1, format="%d", key="exp_val")
-            
+    elif op == "Subtraction":
+        st.write("### 🔢 Subtraction")
+        real1 = st.number_input("Input the real part for a", value=None, step=1, format="%d", key="r1_sub")
+        img1 = st.number_input("Input the imaginary part for a", value=None, step=1, format="%d", key="i1_sub")
         a = QuadraticIFp(real1, img1, p) if (real1 is not None and img1 is not None) else None
+        if a: st.latex(f"a={real1 % p} + {img1 % p}i")
         
-        if a and exp is not None:
-            st.success(f"Result: a^{exp} = {a ** exp}")
+        real2 = st.number_input("Input the real part for b", value=None, step=1, format="%d", key="r2_sub")
+        img2 = st.number_input("Input the imaginary part for b", value=None, step=1, format="%d", key="i2_sub")
+        b = QuadraticIFp(real2, img2, p) if (real2 is not None and img2 is not None) else None
+        if b: st.latex(f"b={real2 % p} + {img2 % p}i")
+        
+        if a is None or b is None:
+            st.warning("Input the values for all")
         else:
-            st.info("Please input base (a) and exponent (n)")
+            st.success(f"a-b = {a - b}")
 
-    # --- 5. Inverse ---
-    with st.expander("🔄 Inverse", expanded=False):
-        real1 = st.number_input("Real part (a)", value=None, step=1, format="%d", key="r1_inv")
-        img1 = st.number_input("Imaginary part (a)", value=None, step=1, format="%d", key="i1_inv")
-        
+    elif op == "Exponentiation":
+        st.write("### 🔢 Exponentiation")
+        exp = st.number_input("Input the exponent", value=None, step=1, format="%d", key="exp")
+        real1 = st.number_input("Input the real part for a", value=None, step=1, format="%d", key="r1_exp")
+        img1 = st.number_input("Input the imaginary part for a", value=None, step=1, format="%d", key="i1_exp")
         a = QuadraticIFp(real1, img1, p) if (real1 is not None and img1 is not None) else None
+        if a: st.latex(f"a={real1 % p} + {img1 % p}i")
         
-        if a:
+        if a is None or exp is None:
+            st.warning("Input the values for all")
+        else:
+            st.success(rf"a^{{{exp}}} = {a ** exp}")
+
+    elif op == "Inverse":
+        st.write("### 🔢 Inverse")
+        real1 = st.number_input("Input the real part for a", value=None, step=1, format="%d", key="r1_inv")
+        img1 = st.number_input("Input the imaginary part for a", value=None, step=1, format="%d", key="i1_inv")
+        a = QuadraticIFp(real1, img1, p) if (real1 is not None and img1 is not None) else None
+        if a: st.latex(f"a={real1 % p} + {img1 % p}i")
+        
+        if a is None:
+            st.warning("Input the values for all")
+        else:
             try:
-                st.success(f"Result: a⁻¹ = {a.inverse()}")
+                st.success(f"The inverse of a is {a.inverse()}")
             except ZeroDivisionError:
                 st.error("Element not invertible")
-        else:
-            st.info("Please input values for a")
