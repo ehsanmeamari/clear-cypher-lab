@@ -83,14 +83,7 @@ def extension_math():
                     st.latex(f"b = {r2 % p} + {i2 % p}i")
                     st.markdown("</div>", unsafe_allow_html=True)
 
-            if all(v is not None for v in [r1, i1, r2, i2]):
-                a_obj = QuadraticIFp(r1, i1, p)
-                b_obj = QuadraticIFp(r2, i2, p)
-                res = a_obj + b_obj
-                st.latex(f"({a_obj}) + ({b_obj}) \equiv {res} \pmod{{{p}}}")
-            else:
-                st.info("Input a & b")
-
+            # Printing the result
             if all(v is not None for v in [r1, i1, r2, i2]):
                 a_obj = QuadraticIFp(r1, i1, p)
                 b_obj = QuadraticIFp(r2, i2, p)
