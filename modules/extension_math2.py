@@ -187,16 +187,28 @@ def extension_math2():
     st.divider()
 
     # --- Inverse ---
-    st.write("### 🔢 Inverse")
-    real1_inv = st.number_input("Input the real part for a", value=None, step=1, format="%d", key="r1_inv")
-    img1_inv = st.number_input("Input the imaginary part for a", value=None, step=1, format="%d", key="i1_inv")
-    a_inv = QuadraticIFp(real1_inv, img1_inv, p) if (real1_inv is not None and img1_inv is not None) else None
-    if a_inv: st.latex(f"a={real1_inv % p} + {img1_inv % p}i")
-    
-    if a_inv is None:
-        st.warning("Input the values for Inverse")
-    else:
-        try:
-            st.success(f"The inverse of a is {a_inv.inverse()}")
-        except ZeroDivisionError:
-            st.error("Element not invertible")
+    with st.expander("🔄 Inverse", expanded=False):
+        # Row for Input 'a' with real-time display in 3 columns
+        col1, col2, col3 = st.columns([2, 2, 2])
+        with col1:
+            r1_inv = st.number_input("Real part (a)", value=None, step=1, format="%d", key="r1_inv")
+        with col2:
+            i1_inv = st.number_input("Imaginary part (a)", value=None, step=1, format="%d", key="i1_inv")
+        with col3:
+            if r1_inv is not None and i1_inv is not None:
+                st.markdown("<div style='padding-top: 25px;'>", unsafe_allow_html=True)
+                st.latex(f"a = {r1_inv % p} + {i1_inv % p}i")
+                st.markdown("</div>", unsafe_allow_html=True)
+
+        # --- Result ---
+        if r1_inv is not None and i1_inv is not None:
+            a_inv_obj = QuadraticIFp(r1_inv, i1_inv, p)
+            try:
+                result_inv = a_inv_obj.inverse()
+                st.latex(f"({a_inv_obj})^{{-1}} \equiv {result_inv} \pmod{{{p}}}")
+            except ZeroDivisionError:
+                st.error("Element not invertible (Zero divisor or norm is 0)")
+        else:
+            st.warning("Please input the real and imaginary parts for 'a'")
+
+    st.divider()
