@@ -56,22 +56,34 @@ def extension_math2():
 
     # --- Addition ---
     with st.expander("🔢 Addition", expanded=False):
-        real1_add = st.number_input("Input the real part for a", value=None, step=1, format="%d", key="r1_add")
-        img1_add = st.number_input("Input the imaginary part for a", value=None, step=1, format="%d", key="i1_add")
+        # Organizing inputs for 'a' in one row
+        col1, col2 = st.columns(2)
+        with col1:
+            real1_add = st.number_input("Real part (a)", value=None, step=1, format="%d", key="r1_add")
+        with col2:
+            img1_add = st.number_input("Imaginary part (a)", value=None, step=1, format="%d", key="i1_add")
+        
         a_add = QuadraticIFp(real1_add, img1_add, p) if (real1_add is not None and img1_add is not None) else None
         if a_add: 
-            st.latex(f"a={real1_add % p} + {img1_add % p}i")
+            st.latex(f"a = {real1_add % p} + {img1_add % p}i")
         
-        real2_add = st.number_input("Input the real part for b", value=None, step=1, format="%d", key="r2_add")
-        img2_add = st.number_input("Input the imaginary part for b", value=None, step=1, format="%d", key="i2_add")
+        st.divider()
+
+        # Organizing inputs for 'b' in one row
+        col3, col4 = st.columns(2)
+        with col3:
+            real2_add = st.number_input("Real part (b)", value=None, step=1, format="%d", key="r2_add")
+        with col4:
+            img2_add = st.number_input("Imaginary part (b)", value=None, step=1, format="%d", key="i2_add")
+            
         b_add = QuadraticIFp(real2_add, img2_add, p) if (real2_add is not None and img2_add is not None) else None
         if b_add: 
-            st.latex(f"b={real2_add % p} + {img2_add % p}i")
+            st.latex(f"b = {real2_add % p} + {img2_add % p}i")
         
         if a_add is None or b_add is None:
-            st.warning("Input the values for Addition")
+            st.warning("Please input all values for Addition")
         else:
-            st.success(f"a+b = {a_add + b_add}")
+            st.success(f"a + b = {a_add + b_add}")
 
     st.divider()
 
