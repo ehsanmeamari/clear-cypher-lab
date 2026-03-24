@@ -92,6 +92,14 @@ def extension_math():
             else:
                 st.info("Input a & b")
 
+            if all(v is not None for v in [r1, i1, r2, i2]):
+                a_obj = QuadraticIFp(r1, i1, p)
+                b_obj = QuadraticIFp(r2, i2, p)
+                res = a_obj + b_obj
+                st.success(f"Result: $({a_obj}) + ({b_obj}) \\equiv {res} \\pmod{{{p}}}$")
+            else:
+                st.info("Input a & b")
+
     with row1_col2:
         # --- Multiplication ---
         with st.expander("✖️ Multiplication", expanded=False):
