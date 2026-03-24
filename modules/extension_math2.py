@@ -180,8 +180,6 @@ def extension_math2():
         if all(v is not None for v in [r1_exp, i1_exp, exp]):
             a_exp_obj = QuadraticIFp(r1_exp, i1_exp, p)
             result_exp = a_exp_obj ** exp
-            st.success(f"Result: a^{exp} = {result_exp}")
-            # نمایش ریاضی شکیل‌تر برای نتیجه
             st.latex(f"({a_exp_obj})^{{{exp}}} \equiv {result_exp} \pmod{{{p}}}")
         else:
             st.warning("Please input both the exponent and all parts of 'a'")
