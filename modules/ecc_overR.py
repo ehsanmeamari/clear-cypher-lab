@@ -2,7 +2,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
 
-def run_ecc_visualizer():
+def run_ecc_overR():
     st.subheader("Elliptic Curve Visualizer")
     st.latex(r"y^2 = x^3 + ax + b")
     
