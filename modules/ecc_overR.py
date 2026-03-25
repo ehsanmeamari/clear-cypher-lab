@@ -3,8 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def run_ecc_overR():
-    st.subheader("Elliptic Curve Visualizer (Real Numbers)")
-    
     # --- Layout: Two Main Columns ---
     col_left, col_right = st.columns([2, 2])
     
