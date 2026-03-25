@@ -3,9 +3,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def run_ecc_overR():
-       
+    st.subheader("Elliptic Curve Visualizer (Real Numbers)")
+    
     # --- Layout: Two Main Columns ---
-    col_left, col_right = st.columns([2, 2])
+    col_left, col_right = st.columns([2, 2.5])
     
     with col_left:
         with st.expander("Curve Definition", expanded=True):
@@ -22,10 +23,10 @@ def run_ecc_overR():
             with input_row[2]:
                 if discriminant != 0:
                     st.markdown("<div style='padding-top: 25px;'>", unsafe_allow_html=True)
-                    # Dynamic formula with proper signs
-                    a_str = f"{a:+.1f}x" if a != 0 else ""
-                    b_str = f"{b:+.1f}" if b != 0 else ""
-                    st.latex(f"y^2 = x^3 {a_str} {b_str}")
+                    # Logic for clean formula display
+                    a_part = f"{a:+.1f}x" if a != 0 else ""
+                    b_part = f"{b:+.1f}" if b != 0 else ""
+                    st.latex(f"y^2 = x^3 {a_part} {b_part}")
                     st.markdown("</div>", unsafe_allow_html=True)
 
             st.divider()
@@ -37,26 +38,30 @@ def run_ecc_overR():
                 st.info(f"Discriminant (Δ) = {discriminant:.2f}")
 
     with col_right:
-        if discriminant != 0:
-            plt.rcParams['mathtext.fontset'] = 'stix'
-            plt.rcParams['font.family'] = 'STIXGeneral'
-            
-            fig, ax = plt.subplots(figsize=(6, 5), dpi=150)
-            y, x = np.ogrid[-5:5:500j, -5:5:500j]
-            
-            ax.contour(x.ravel(), y.ravel(), y**2 - x**3 - a*x - b, [0], 
-                       colors='#3498db', linewidths=2.5)
-            
-            ax.grid(True, linestyle='--', alpha=0.3, color='#bdc3c7')
-            ax.axhline(0, color='#7f8c8d', linewidth=1, alpha=0.5)
-            ax.axvline(0, color='#7f8c8d', linewidth=1, alpha=0.5)
-            
-            for spine in ax.spines.values():
-                spine.set_visible(False)
-            
-            ax.tick_params(axis='both', labelsize=9, colors='#95a5a6')
-            st.pyplot(fig)
-        else:
-            st.warning("Adjust parameters to see the curve.")
+        # Putting the plot inside an expander named "Visualizer"
+        with st.expander("Visualizer", expanded=True):
+            if discriminant != 0:
+                plt.rcParams['mathtext.fontset'] = 'stix'
+                plt.rcParams['font.family'] = 'STIXGeneral'
+                
+                fig, ax = plt.subplots(figsize=(6, 5), dpi=150)
+                y, x = np.ogrid[-5:5:500j, -5:5:500j]
+                
+                ax.contour(x.ravel(), y.ravel(), y**2 - x**3 - a*x - b, [0], 
+                           colors='#3498db', linewidths=2.5)
+                
+                ax.grid(True, linestyle='--', alpha=0.3, color='#bdc3c7')
+                ax.axhline(0, color='#7f8c8d', linewidth=1, alpha=0.5)
+                ax.axvline(0, color='#7f8c8d', linewidth=1, alpha=0.5)
+                
+                for spine in ax.spines.values():
+                    spine.set_visible(False)
+                
+                ax.tick_params(axis='both', labelsize=9, colors='#95a5a6')
+                
+                # Display the plot
+                st.pyplot(fig)
+            else:
+                st.warning("Adjust parameters to enable the Visualizer.")
 
     st.divider()
