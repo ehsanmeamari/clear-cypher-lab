@@ -58,7 +58,7 @@ def run_ecc_overR():
             if discriminant == 0: st.error("Singular Curve: Δ = 0")
             else: st.info(f"Discriminant (Δ) = {discriminant:.2f}")
 
-        # --- Section 2: Input Helper Logic ---
+        # --- Section 2: Input Helper Logic (Reusable) ---
         def get_point_input(label, suffix, color, default_x=1.0):
             st.markdown(f"<span style='color:{color}'>●</span> **Point {label}**", unsafe_allow_html=True)
             mode = st.radio(f"Input mode {label}", ["X", "Y"], key=f"m_{suffix}", horizontal=True)
@@ -81,39 +81,58 @@ def run_ecc_overR():
                     fy = yin
             return fx, fy
 
-        # --- Section 3: Scalar Multiplication Expander ---
+        # --- Section 3: Point Addition Calculator ---
+        with st.expander("Point Addition Calculator", expanded=False):
+            col_p, col_q = st.columns(2)
+            with col_p: px_add, py_add = get_point_input("P", "add_p", "red", default_x=1.0)
+            with col_q: qx_add, qy_add = get_point_input("Q", "add_q", "orange", default_x=0.0)
+            
+            res_add_x, res_add_y = None, None
+            if st.button("Calculate P + Q", use_container_width=True):
+                if px_add is not None and qx_add is not None:
+                    res_add_x, res_add_y = add_points(px_add, py_add, qx_add, qy_add, a)
+                    if res_add_x is not None:
+                        st.success(f"P + Q = ({res_add_x:.3f}, {res_add_y:.3f})")
+                    else: st.error("Result is Point at Infinity")
+
+        # --- Section 4: Scalar Multiplication Calculator ---
         with st.expander("Scalar Multiplication", expanded=True):
-            px_s, py_s = get_point_input("P", "scaler", "red", default_x=1.0)
+            px_s, py_s = get_point_input("P", "scaler", "blue", default_x=1.0)
             n_val = st.number_input("Multiplier (n)", min_value=1, value=2, step=1)
             
             res_nx, res_ny = None, None
-            if px_s is not None and py_s is not None:
-                if st.button(f"Calculate {n_val}P", use_container_width=True):
+            if st.button(f"Calculate {n_val}P", use_container_width=True):
+                if px_s is not None:
                     res_nx, res_ny = scalar_mult(n_val, px_s, py_s, a)
                     if res_nx is not None:
-                        st.success(f"Result {n_val}P: $({res_nx:.3f}, {res_ny:.3f})$")
+                        st.success(f"{n_val}P = ({res_nx:.3f}, {res_ny:.3f})")
                     else: st.error("Result is Point at Infinity")
 
     with col_right:
-        # --- Section 4: Visualizer ---
+        # --- Section 5: Visualizer ---
         with st.expander("Visualizer", expanded=True):
             plot_range = st.number_input("🔍 Plot Range (±)", value=5, min_value=1, step=1, key="combined_range")
             st.divider()
             if discriminant != 0:
                 plt.rcParams['mathtext.fontset'] = 'stix'
                 fig, ax = plt.subplots(figsize=(6, 5), dpi=150)
-                
-                # Plot Curve
                 y_m, x_m = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
                 ax.contour(x_m.ravel(), y_m.ravel(), y_m**2 - x_m**3 - a*x_m - b, [0], colors='#3498db', linewidths=2.5)
                 
-                # Plot Point P
-                if py_s is not None:
-                    ax.scatter(px_s, py_s, color='red', s=60, zorder=5, label='P')
+                # Plot points for Addition if they exist
+                if 'px_add' in locals() and py_add is not None:
+                    ax.scatter(px_add, py_add, color='red', s=40, label='P (Add)')
+                    ax.scatter(qx_add, qy_add, color='orange', s=40, label='Q (Add)')
                 
-                # Plot Result nP
-                if res_nx is not None and abs(res_nx) < plot_range and abs(res_ny) < plot_range:
-                    ax.scatter(res_nx, res_ny, color='#e74c3c', s=100, marker='D', zorder=6, label=f'{n_val}P')
+                # Plot points for Multiplication if they exist
+                if py_s is not None:
+                    ax.scatter(px_s, py_s, color='blue', s=40, label='P (Mult)')
+                
+                # Plot results
+                if res_add_x is not None:
+                    ax.scatter(res_add_x, res_add_y, color='green', s=80, marker='X', label='P+Q')
+                if res_nx is not None:
+                    ax.scatter(res_nx, res_ny, color='purple', s=80, marker='D', label=f'{n_val}P')
 
                 ax.set_xlim([-plot_range, plot_range]); ax.set_ylim([-plot_range, plot_range])
                 ax.grid(True, linestyle='--', alpha=0.3)
