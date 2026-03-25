@@ -6,7 +6,7 @@ def run_ecc_overR():
     st.subheader("Elliptic Curve Visualizer (Real Numbers)")
     
     # --- Layout: Two Main Columns ---
-    col_left, col_right = st.columns([1.8, 2.5])
+    col_left, col_right = st.columns([2, 2])
     
     with col_left:
         with st.expander("Curve Definition", expanded=True):
