@@ -37,13 +37,8 @@ def run_ecc_overR():
     with col_right:
         # Putting everything inside the Visualizer expander
         with st.expander("Visualizer", expanded=True):
-            # Plot Range Settings placed ABOVE the chart
-            st.write("🔍 **Plot Range Settings**")
-            range_col1, range_col2 = st.columns(2)
-            with range_col1:
-                x_range = st.number_input("x-axis range (±)", value=5, min_value=1, step=1, key="xr")
-            with range_col2:
-                y_range = st.number_input("y-axis range (±)", value=5, min_value=1, step=1, key="yr")
+            # Single range input for both axes
+            plot_range = st.number_input("🔍 Plot Range (±)", value=5, min_value=1, step=1, key="combined_range")
             
             st.divider()
 
@@ -53,18 +48,18 @@ def run_ecc_overR():
                 
                 fig, ax = plt.subplots(figsize=(6, 4.5), dpi=150)
                 
-                # Dynamic meshgrid based on user input
-                y, x = np.ogrid[-y_range:y_range:500j, -x_range:x_range:500j]
+                # Dynamic meshgrid based on the single range input
+                y, x = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
                 
-                # Plot the curve: y^2 - x^3 - ax - b = 0
+                # Plot the curve
                 ax.contour(x.ravel(), y.ravel(), y**2 - x**3 - a*x - b, [0], 
                            colors='#3498db', linewidths=2.5)
                 
-                # Set axis limits precisely
-                ax.set_xlim([-x_range, x_range])
-                ax.set_ylim([-y_range, y_range])
+                # Set symmetrical axis limits
+                ax.set_xlim([-plot_range, plot_range])
+                ax.set_ylim([-plot_range, plot_range])
                 
-                # Minimalist styling
+                # Styling
                 ax.grid(True, linestyle='--', alpha=0.3, color='#bdc3c7')
                 ax.axhline(0, color='#7f8c8d', linewidth=1, alpha=0.5)
                 ax.axvline(0, color='#7f8c8d', linewidth=1, alpha=0.5)
