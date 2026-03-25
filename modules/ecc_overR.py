@@ -4,7 +4,7 @@ import numpy as np
 import math
 
 def run_ecc_overR():
-    col_left, col_right = st.columns([2, 2.5])
+    col_left, col_right = st.columns([2, 2])
     
     # --- Helper function for Point Addition ---
     def add_points(x1, y1, x2, y2, a):
