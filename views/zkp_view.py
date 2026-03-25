@@ -1,5 +1,5 @@
 import streamlit as st
-from modules.ecc_tool import run_ecc_visualizer
+from modules.ecc_overR import run_ecc_overR
 from modules.modular_math import run_modular_math
 from modules.ecc_math import ecc_fp
 from modules.extension_math import extension_math
@@ -70,7 +70,7 @@ def render_zkp_tab():
             st.divider()
             
             if ecc_sub == "Visualizer over R":
-                run_ecc_visualizer()
+                run_ecc_overR()
             elif ecc_sub in ["Addition over Fp", "Multiplication over Fp", "Visualizer over Fp"]:
                 # Calling the ECC Fp logic
                 ecc_fp()
