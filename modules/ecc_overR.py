@@ -4,8 +4,6 @@ import numpy as np
 import math
 
 def run_ecc_overR():
-    st.subheader("Elliptic Curve Visualizer (Real Numbers)")
-    
     col_left, col_right = st.columns([2, 2.5])
     
     # --- Helper function for Point Addition ---
