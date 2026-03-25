@@ -1,6 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 
 def run_ecc_overR():
     st.subheader("Elliptic Curve Visualizer (Real Numbers)")
@@ -35,43 +36,58 @@ def run_ecc_overR():
 
         # --- Section 2: Point Addition Formulas ---
         with st.expander("Point Addition Formulas", expanded=False):
-            st.markdown("**Case 1: $P \\neq Q$ (Addition)**")
-            st.latex(r"s = \frac{y_Q - y_P}{x_Q - x_P}")
-            st.markdown("**Case 2: $P = Q$ (Doubling)**")
-            st.latex(r"s = \frac{3x_P^2 + a}{2y_P}")
-            st.markdown("**Resulting Point R:**")
-            st.latex(r"x_R = s^2 - x_P - x_Q")
-            st.latex(r"y_R = s(x_P - x_R) - y_P")
+            st.markdown("**Slope (s):** $s = (y_Q - y_P)/(x_Q - x_P)$ or $(3x_P^2 + a)/(2y_P)$")
+            st.latex(r"x_R = s^2 - x_P - x_Q, \quad y_R = s(x_P - x_R) - y_P")
 
-        # --- Section 3: Calculator (Point Addition) ---
+        # --- Section 3: Smart Calculator ---
         with st.expander("Point Addition Calculator", expanded=True):
             col_p, col_q = st.columns(2)
+            
+            # --- Point P Logic ---
             with col_p:
                 st.markdown("<span style='color:red'>●</span> **Point P**", unsafe_allow_html=True)
-                px = st.number_input("xP", value=0.0, step=0.1, key="px")
-                py = st.number_input("yP", value=0.0, step=0.1, key="py")
+                px = st.number_input("xP", value=1.0, step=0.1, key="px")
+                y2_p = px**3 + a*px + b
+                if y2_p >= 0:
+                    py_val = math.sqrt(y2_p)
+                    p_sign = st.radio("Sign of yP", ["+", "-"], key="p_sign", horizontal=True)
+                    py = py_val if p_sign == "+" else -py_val
+                    st.latex(f"y_P \approx {py:.3f}")
+                else:
+                    st.error("xP is out of curve domain")
+                    py = None
+
+            # --- Point Q Logic ---
             with col_q:
                 st.markdown("<span style='color:orange'>●</span> **Point Q**", unsafe_allow_html=True)
                 qx = st.number_input("xQ", value=0.0, step=0.1, key="qx")
-                qy = st.number_input("yQ", value=0.0, step=0.1, key="qy")
+                y2_q = qx**3 + a*qx + b
+                if y2_q >= 0:
+                    qy_val = math.sqrt(y2_q)
+                    q_sign = st.radio("Sign of yQ", ["+", "-"], key="q_sign", horizontal=True)
+                    qy = qy_val if q_sign == "+" else -qy_val
+                    st.latex(f"y_Q \approx {qy:.3f}")
+                else:
+                    st.error("xQ is out of curve domain")
+                    qy = None
             
+            st.divider()
             res_xr, res_yr = None, None
-            if st.button("Calculate R = P + Q", use_container_width=True):
-                try:
-                    if px == qx and py == qy:
-                        if py == 0: s = None
-                        else: s = (3 * px**2 + a) / (2 * py)
-                    elif px == qx: s = None
-                    else: s = (qy - py) / (qx - px)
-                    
-                    if s is not None:
-                        res_xr = s**2 - px - qx
-                        res_yr = s * (px - res_xr) - py
-                        st.success(f"Resulting Point R: $({res_xr:.3f}, {res_yr:.3f})$")
-                    else:
-                        st.error("Result is Point at Infinity")
-                except ZeroDivisionError:
-                    st.error("Error: Division by zero")
+            if py is not None and qy is not None:
+                if st.button("Calculate R = P + Q", use_container_width=True):
+                    try:
+                        if px == qx and py == qy:
+                            if py == 0: s = None
+                            else: s = (3 * px**2 + a) / (2 * py)
+                        elif px == qx: s = None
+                        else: s = (qy - py) / (qx - px)
+                        
+                        if s is not None:
+                            res_xr = s**2 - px - qx
+                            res_yr = s * (px - res_xr) - py
+                            st.success(f"Resulting Point R: $({res_xr:.3f}, {res_yr:.3f})$")
+                    except ZeroDivisionError:
+                        st.error("Point at infinity")
 
     with col_right:
         # --- Section 4: Visualizer ---
@@ -90,29 +106,21 @@ def run_ecc_overR():
                 fig, ax = plt.subplots(figsize=(6, 4.5), dpi=150)
                 
                 y_m, x_m = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
-                ax.contour(x_m.ravel(), y_m.ravel(), y_m**2 - x_m**3 - a*x_m - b, [0], 
-                           colors='#3498db', linewidths=2.5)
+                ax.contour(x_m.ravel(), y_m.ravel(), y_m**2 - x_m**3 - a*x_m - b, [0], colors='#3498db', linewidths=2.5)
                 
-                # --- Plotting the Points ---
-                # Point P (Red)
-                ax.scatter(px, py, color='red', s=40, zorder=5, label='Point P')
-                # Point Q (Orange)
-                ax.scatter(qx, qy, color='orange', s=40, zorder=5, label='Point Q')
+                # Plot P and Q
+                if py is not None:
+                    ax.scatter(px, py, color='red', s=50, zorder=5, label='P')
+                if qy is not None:
+                    ax.scatter(qx, qy, color='orange', s=50, zorder=5, label='Q')
                 
-                # Plot Resulting Point R (Green) if calculated
-                if res_xr is not None and abs(res_xr) < plot_range and abs(res_yr) < plot_range:
-                    ax.scatter(res_xr, res_yr, color='green', s=60, marker='X', zorder=6, label='Point R')
+                # Plot R
+                if res_xr is not None and abs(res_xr) < plot_range:
+                    ax.scatter(res_xr, res_yr, color='green', s=70, marker='X', zorder=6, label='R')
 
-                ax.set_xlim([-plot_range, plot_range])
-                ax.set_ylim([-plot_range, plot_range])
-                ax.grid(True, linestyle='--', alpha=0.3, color='#bdc3c7')
-                ax.axhline(0, color='#7f8c8d', linewidth=1, alpha=0.5)
-                ax.axvline(0, color='#7f8c8d', linewidth=1, alpha=0.5)
+                ax.set_xlim([-plot_range, plot_range]); ax.set_ylim([-plot_range, plot_range])
+                ax.grid(True, linestyle='--', alpha=0.3); ax.axhline(0, color='grey', alpha=0.5); ax.axvline(0, color='grey', alpha=0.5)
                 for spine in ax.spines.values(): spine.set_visible(False)
-                ax.tick_params(axis='both', labelsize=9, colors='#95a5a6')
-                
                 st.pyplot(fig)
-            else:
-                st.warning("Adjust parameters to see the plot.")
 
     st.divider()
