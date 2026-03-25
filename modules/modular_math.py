@@ -1,8 +1,6 @@
 import streamlit as st
 
-def run_modular_math():
-    st.subheader("Modular Arithmetic")
-    
+def run_modular_math():    
     # Using a clean layout with two main columns
     col_left, col_right = st.columns(2)
     
