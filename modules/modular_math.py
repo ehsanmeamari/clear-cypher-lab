@@ -42,6 +42,6 @@ def run_modular_math():
             # Math formula
             try:
                 res = pow(int(inv_a), -1, int(inv_n))
-                st.latex(f"{inv_a} \\cdot {res} \\equiv 1 \\pmod{{{inv_n}}}")
+                st.latex(f"{inv_a} \\times {res} \\equiv 1 \\pmod{{{inv_n}}}")
             except:
                 pass
