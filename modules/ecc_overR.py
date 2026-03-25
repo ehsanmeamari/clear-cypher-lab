@@ -11,7 +11,6 @@ def run_ecc_overR():
     with col_left:
         # --- Section 1: Curve Definition ---
         with st.expander("Curve Definition", expanded=True):
-            # Row 1: Parameters and Equation in one line
             input_row = st.columns([1, 1, 2])
             with input_row[0]:
                 a = st.number_input("a", value=-1.0, step=0.1, format="%.1f", key="ecc_r_a")
@@ -29,27 +28,65 @@ def run_ecc_overR():
                     st.markdown("</div>", unsafe_allow_html=True)
 
             st.divider()
-            
             if discriminant == 0:
                 st.error("Singular Curve: Δ = 0")
             else:
                 st.info(f"Discriminant (Δ) = {discriminant:.2f}")
 
         # --- Section 2: Point Addition Formulas ---
-        with st.expander("Point Addition Formulas", expanded=True):
-            st.markdown("**Slope (s):**")
+        with st.expander("Point Addition Formulas", expanded=False):
+            st.markdown("**Case 1: $P \\neq Q$ (Addition)**")
             st.latex(r"s = \frac{y_Q - y_P}{x_Q - x_P}")
-            
-            st.markdown("**Resulting Point (R):**")
+            st.markdown("**Case 2: $P = Q$ (Doubling)**")
+            st.latex(r"s = \frac{3x_P^2 + a}{2y_P}")
+            st.markdown("**Resulting Point R:**")
             st.latex(r"x_R = s^2 - x_P - x_Q")
             st.latex(r"y_R = s(x_P - x_R) - y_P")
+
+        # --- Section 3: Calculator (Point Addition) ---
+        with st.expander("Point Addition Calculator", expanded=True):
+            col_p, col_q = st.columns(2)
+            with col_p:
+                st.markdown("**Point P**")
+                px = st.number_input("xP", value=0.0, step=0.1, key="px")
+                py = st.number_input("yP", value=0.0, step=0.1, key="py")
+            with col_q:
+                st.markdown("**Point Q**")
+                qx = st.number_input("xQ", value=0.0, step=0.1, key="qx")
+                qy = st.number_input("yQ", value=0.0, step=0.1, key="qy")
             
-            st.divider()
+            if st.button("Calculate R = P + Q", use_container_width=True):
+                try:
+                    # Check if points are on the curve (Optional but recommended)
+                    # Check P: y^2 = x^3 + ax + b
+                    if abs(py**2 - (px**3 + a*px + b)) > 0.1:
+                        st.warning("Note: Point P is not exactly on the curve.")
+                    
+                    if px == qx and py == qy:
+                        # Case P = Q (Doubling)
+                        if py == 0:
+                            st.error("Point at Infinity: Vertical tangent at y=0")
+                            s = None
+                        else:
+                            s = (3 * px**2 + a) / (2 * py)
+                    elif px == qx:
+                        # Vertical line
+                        st.error("Result is Point at Infinity (Vertical Line)")
+                        s = None
+                    else:
+                        # Case P != Q (Addition)
+                        s = (qy - py) / (qx - px)
+                    
+                    if s is not None:
+                        xr = s**2 - px - qx
+                        yr = s * (px - xr) - py
+                        st.success(f"Resulting Point R: $({xr:.3f}, {yr:.3f})$")
+                except ZeroDivisionError:
+                    st.error("Error: Division by zero (Point at infinity)")
 
     with col_right:
-        # --- Section 3: Visualizer ---
+        # --- Section 4: Visualizer ---
         with st.expander("Visualizer", expanded=True):
-            # Inline Plot Range Settings
             r_col1, r_col2 = st.columns([1, 1])
             with r_col1:
                 st.markdown("<p style='padding-top: 5px; font-weight: bold;'>🔍 Plot Range (±)</p>", unsafe_allow_html=True)
@@ -59,37 +96,23 @@ def run_ecc_overR():
             st.divider()
 
             if discriminant != 0:
-                # High-quality plot settings
                 plt.rcParams['mathtext.fontset'] = 'stix'
                 plt.rcParams['font.family'] = 'STIXGeneral'
-                
                 fig, ax = plt.subplots(figsize=(6, 4.5), dpi=150)
-                
-                # Dynamic meshgrid for smooth lines
-                y, x = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
-                
-                # Plotting the curve: y^2 - x^3 - ax - b = 0
-                ax.contour(x.ravel(), y.ravel(), y**2 - x**3 - a*x - b, [0], 
+                y_mesh, x_mesh = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
+                ax.contour(x_mesh.ravel(), y_mesh.ravel(), y_mesh**2 - x_mesh**3 - a*x_mesh - b, [0], 
                            colors='#3498db', linewidths=2.5)
                 
-                # Setting axis limits
+                # Optional: Plot the points P and Q on the graph
+                # ax.scatter([px, qx], [py, qy], color='red', zorder=5)
+                
                 ax.set_xlim([-plot_range, plot_range])
                 ax.set_ylim([-plot_range, plot_range])
-                
-                # Grid and Axis Styling
                 ax.grid(True, linestyle='--', alpha=0.3, color='#bdc3c7')
                 ax.axhline(0, color='#7f8c8d', linewidth=1, alpha=0.5)
                 ax.axvline(0, color='#7f8c8d', linewidth=1, alpha=0.5)
-                
-                # Removing frame spines
-                for spine in ax.spines.values():
-                    spine.set_visible(False)
-                
+                for spine in ax.spines.values(): spine.set_visible(False)
                 ax.tick_params(axis='both', labelsize=9, colors='#95a5a6')
-                
-                # Display the plot
                 st.pyplot(fig)
-            else:
-                st.warning("Please adjust parameters to see the plot.")
 
     st.divider()
