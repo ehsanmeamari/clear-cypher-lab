@@ -35,10 +35,13 @@ def run_ecc_overR():
                 st.info(f"Discriminant (Δ) = {discriminant:.2f}")
 
     with col_right:
-        # Putting everything inside the Visualizer expander
         with st.expander("Visualizer", expanded=True):
-            # Single range input for both axes
-            plot_range = st.number_input("🔍 Plot Range (±)", value=5, min_value=1, step=1, key="combined_range")
+            # --- Inline Plot Range Settings ---
+            r_col1, r_col2 = st.columns([1, 1])
+            with r_col1:
+                st.markdown("<p style='padding-top: 5px; font-weight: bold;'>🔍 Plot Range (±)</p>", unsafe_allow_html=True)
+            with r_col2:
+                plot_range = st.number_input("", value=5, min_value=1, step=1, key="combined_range", label_visibility="collapsed")
             
             st.divider()
 
@@ -48,18 +51,17 @@ def run_ecc_overR():
                 
                 fig, ax = plt.subplots(figsize=(6, 4.5), dpi=150)
                 
-                # Dynamic meshgrid based on the single range input
+                # Dynamic meshgrid
                 y, x = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
                 
                 # Plot the curve
                 ax.contour(x.ravel(), y.ravel(), y**2 - x**3 - a*x - b, [0], 
                            colors='#3498db', linewidths=2.5)
                 
-                # Set symmetrical axis limits
                 ax.set_xlim([-plot_range, plot_range])
                 ax.set_ylim([-plot_range, plot_range])
                 
-                # Styling
+                # Minimalist Grid & Axes
                 ax.grid(True, linestyle='--', alpha=0.3, color='#bdc3c7')
                 ax.axhline(0, color='#7f8c8d', linewidth=1, alpha=0.5)
                 ax.axvline(0, color='#7f8c8d', linewidth=1, alpha=0.5)
@@ -68,9 +70,8 @@ def run_ecc_overR():
                     spine.set_visible(False)
                 
                 ax.tick_params(axis='both', labelsize=9, colors='#95a5a6')
-                
                 st.pyplot(fig)
             else:
-                st.warning("Please adjust parameters in 'Curve Definition' to see the plot.")
+                st.warning("Please adjust parameters to see the plot.")
 
     st.divider()
