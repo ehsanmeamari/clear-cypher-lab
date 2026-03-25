@@ -47,42 +47,31 @@ def run_ecc_overR():
         with st.expander("Point Addition Calculator", expanded=True):
             col_p, col_q = st.columns(2)
             with col_p:
-                st.markdown("**Point P**")
+                st.markdown("<span style='color:red'>●</span> **Point P**", unsafe_allow_html=True)
                 px = st.number_input("xP", value=0.0, step=0.1, key="px")
                 py = st.number_input("yP", value=0.0, step=0.1, key="py")
             with col_q:
-                st.markdown("**Point Q**")
+                st.markdown("<span style='color:orange'>●</span> **Point Q**", unsafe_allow_html=True)
                 qx = st.number_input("xQ", value=0.0, step=0.1, key="qx")
                 qy = st.number_input("yQ", value=0.0, step=0.1, key="qy")
             
+            res_xr, res_yr = None, None
             if st.button("Calculate R = P + Q", use_container_width=True):
                 try:
-                    # Check if points are on the curve (Optional but recommended)
-                    # Check P: y^2 = x^3 + ax + b
-                    if abs(py**2 - (px**3 + a*px + b)) > 0.1:
-                        st.warning("Note: Point P is not exactly on the curve.")
-                    
                     if px == qx and py == qy:
-                        # Case P = Q (Doubling)
-                        if py == 0:
-                            st.error("Point at Infinity: Vertical tangent at y=0")
-                            s = None
-                        else:
-                            s = (3 * px**2 + a) / (2 * py)
-                    elif px == qx:
-                        # Vertical line
-                        st.error("Result is Point at Infinity (Vertical Line)")
-                        s = None
-                    else:
-                        # Case P != Q (Addition)
-                        s = (qy - py) / (qx - px)
+                        if py == 0: s = None
+                        else: s = (3 * px**2 + a) / (2 * py)
+                    elif px == qx: s = None
+                    else: s = (qy - py) / (qx - px)
                     
                     if s is not None:
-                        xr = s**2 - px - qx
-                        yr = s * (px - xr) - py
-                        st.success(f"Resulting Point R: $({xr:.3f}, {yr:.3f})$")
+                        res_xr = s**2 - px - qx
+                        res_yr = s * (px - res_xr) - py
+                        st.success(f"Resulting Point R: $({res_xr:.3f}, {res_yr:.3f})$")
+                    else:
+                        st.error("Result is Point at Infinity")
                 except ZeroDivisionError:
-                    st.error("Error: Division by zero (Point at infinity)")
+                    st.error("Error: Division by zero")
 
     with col_right:
         # --- Section 4: Visualizer ---
@@ -99,13 +88,21 @@ def run_ecc_overR():
                 plt.rcParams['mathtext.fontset'] = 'stix'
                 plt.rcParams['font.family'] = 'STIXGeneral'
                 fig, ax = plt.subplots(figsize=(6, 4.5), dpi=150)
-                y_mesh, x_mesh = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
-                ax.contour(x_mesh.ravel(), y_mesh.ravel(), y_mesh**2 - x_mesh**3 - a*x_mesh - b, [0], 
+                
+                y_m, x_m = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
+                ax.contour(x_m.ravel(), y_m.ravel(), y_m**2 - x_m**3 - a*x_m - b, [0], 
                            colors='#3498db', linewidths=2.5)
                 
-                # Optional: Plot the points P and Q on the graph
-                # ax.scatter([px, qx], [py, qy], color='red', zorder=5)
+                # --- Plotting the Points ---
+                # Point P (Red)
+                ax.scatter(px, py, color='red', s=40, zorder=5, label='Point P')
+                # Point Q (Orange)
+                ax.scatter(qx, qy, color='orange', s=40, zorder=5, label='Point Q')
                 
+                # Plot Resulting Point R (Green) if calculated
+                if res_xr is not None and abs(res_xr) < plot_range and abs(res_yr) < plot_range:
+                    ax.scatter(res_xr, res_yr, color='green', s=60, marker='X', zorder=6, label='Point R')
+
                 ax.set_xlim([-plot_range, plot_range])
                 ax.set_ylim([-plot_range, plot_range])
                 ax.grid(True, linestyle='--', alpha=0.3, color='#bdc3c7')
@@ -113,6 +110,9 @@ def run_ecc_overR():
                 ax.axvline(0, color='#7f8c8d', linewidth=1, alpha=0.5)
                 for spine in ax.spines.values(): spine.set_visible(False)
                 ax.tick_params(axis='both', labelsize=9, colors='#95a5a6')
+                
                 st.pyplot(fig)
+            else:
+                st.warning("Adjust parameters to see the plot.")
 
     st.divider()
