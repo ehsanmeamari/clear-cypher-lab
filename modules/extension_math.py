@@ -127,7 +127,7 @@ def extension_math():
 
     with row2_col1:
         # --- Exponentiation Section ---
-        with st.expander("🔢 Exponentiation", expanded=False):
+        with st.expander("aᵇ Exponentiation", expanded=False):
             exp = st.number_input("Exponent (n)", value=None, step=1, format="%d", key="exp")
             st.divider()
             col1, col2, col3 = st.columns([2, 2, 2])
