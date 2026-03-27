@@ -56,7 +56,7 @@ def extension_math():
 
     with row1_col1:
         # --- Addition Section ---
-        with st.expander("➕ Addition", expanded=False):
+        with st.expander("Addition", expanded=False):
             col1, col2, col3 = st.columns([2, 2, 2])
             with col1:
                 r1 = st.number_input("Real part (a)", value=None, step=1, format="%d", key="r1_add")
@@ -90,7 +90,7 @@ def extension_math():
 
     with row1_col2:
         # --- Multiplication Section ---
-        with st.expander("✖️ Multiplication", expanded=False):
+        with st.expander("Multiplication", expanded=False):
             col1, col2, col3 = st.columns([2, 2, 2])
             with col1:
                 r1_m = st.number_input("Real part (a)", value=None, step=1, format="%d", key="r1_mul")
@@ -127,7 +127,7 @@ def extension_math():
 
     with row2_col1:
         # --- Exponentiation Section ---
-        with st.expander("幂 aᴮ Exponentiation", expanded=False):            
+        with st.expander("Exponentiation", expanded=False):            
             exp = st.number_input("Exponent (n)", value=None, step=1, format="%d", key="exp")
             st.divider()
             col1, col2, col3 = st.columns([2, 2, 2])
@@ -150,7 +150,7 @@ def extension_math():
 
     with row2_col2:
         # --- Inverse Section ---
-        with st.expander("🔄 Inverse", expanded=False):
+        with st.expander("Inverse", expanded=False):
             col1, col2, col3 = st.columns([2, 2, 2])
             with col1:
                 r1_v = st.number_input("Real part (a)", value=None, step=1, format="%d", key="r1_inv")
