@@ -4,28 +4,18 @@ from modules.modular_math import run_modular_math
 from modules.ecc_math import ecc_fp
 from modules.pairing import pairing
 from modules.extension_math import extension_math
+# Step 1: Import your new module here (Create a file named number_systems.py in modules)
+# from modules.number_systems import run_number_systems 
 
 def render_zkp_tab():
-    # Optimized CSS to remove extra white spaces and compress elements
+    # CSS remains the same to keep the UI compact
     st.markdown("""
         <style>
-            /* 1. Reduce gap between all Streamlit vertical blocks */
             [data-testid="stVerticalBlock"] > div { gap: 0.1rem !important; padding-top: 0rem; }
-            
-            /* 2. Remove radio button margins to align with dividers */
             div[data-testid="stRadio"] { margin-top: -18px !important; margin-bottom: -12px !important; }
-            
-            /* 3. Minimize thickness and spacing of dividers */
             hr { margin-top: 2px !important; margin-bottom: 5px !important; opacity: 0.1; }
-
-            /* 4. Remove top page padding */
             .main .block-container { padding-top: 0rem; }
-
-            /* 5. Remove internal padding from Expanders for a compact look */
-            [data-testid="stExpanderDetails"] {
-                padding-top: 0px !important;
-                padding-bottom: 0px !important;
-            }
+            [data-testid="stExpanderDetails"] { padding-top: 0px !important; padding-bottom: 0px !important; }
         </style>
         """, unsafe_allow_html=True)
 
@@ -41,23 +31,30 @@ def render_zkp_tab():
 
     if zkp_protocol == "Groth16":
         # --- 2. Module Selection for Groth16 ---
+        # Added "Number Systems" as the first step for Digital Literacy
         zkp_module = st.radio(
             label="Module", 
-            options=["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation"], 
+            options=["Number Systems", "Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation"], 
             key="g16_m", 
             horizontal=True, 
             label_visibility="collapsed"
         )
         st.divider()
         
-        if zkp_module == "Modular Arithmetic":
+        # --- 3. Logic for Each Module ---
+        if zkp_module == "Number Systems":
+            # This is where your Binary/Hex logic goes
+            st.subheader("🌐 Digital Literacy: Number Systems")
+            st.info("Module for Binary, Hexadecimal, and Data Representation is being integrated.")
+            # run_number_systems() # Call your function here
+            
+        elif zkp_module == "Modular Arithmetic":
             run_modular_math()
             
         elif zkp_module == "Extension Field":
             extension_math()
         
         elif zkp_module == "ECC":
-            # --- 3. ECC Sub-module Selection ---
             ecc_sub = st.radio(
                 label="ECC Sub", 
                 options=[
@@ -73,12 +70,12 @@ def render_zkp_tab():
             if ecc_sub == "Visualizer over R":
                 run_ecc_overR()
             elif ecc_sub in ["Addition over Fp", "Multiplication over Fp", "Visualizer over Fp"]:
-                # Calling the ECC Fp logic
                 ecc_fp()
             else:
                 st.info(f"{ecc_sub} logic is coming soon.")
 
         elif zkp_module == "Weil Pairing":
+            # Using the improved pairing() function we just fixed
             pairing()
             
         elif zkp_module == "Lagrange Interpolation":
