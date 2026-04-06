@@ -2,6 +2,7 @@ import streamlit as st
 from modules.ecc_overR import run_ecc_overR
 from modules.modular_math import run_modular_math
 from modules.ecc_math import ecc_fp
+from modules.pairing import pairing
 from modules.extension_math import extension_math
 
 def render_zkp_tab():
@@ -78,7 +79,7 @@ def render_zkp_tab():
                 st.info(f"{ecc_sub} logic is coming soon.")
 
         elif zkp_module == "Weil Pairing":
-            st.info("Weil Pairing is coming soon.")
+            pairing()
             
         elif zkp_module == "Lagrange Interpolation":
             st.info("Lagrange Interpolation logic is coming soon.")
