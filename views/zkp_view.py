@@ -34,21 +34,14 @@ def render_zkp_tab():
         # Added "Number Systems" as the first step for Digital Literacy
         zkp_module = st.radio(
             label="Module", 
-            options=["Number Systems", "Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation"], 
+            options=["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation"], 
             key="g16_m", 
             horizontal=True, 
             label_visibility="collapsed"
         )
         st.divider()
-        
-        # --- 3. Logic for Each Module ---
-        if zkp_module == "Number Systems":
-            # This is where your Binary/Hex logic goes
-            st.subheader("🌐 Digital Literacy: Number Systems")
-            st.info("Module for Binary, Hexadecimal, and Data Representation is being integrated.")
-            # run_number_systems() # Call your function here
-            
-        elif zkp_module == "Modular Arithmetic":
+         
+        if zkp_module == "Modular Arithmetic":
             run_modular_math()
             
         elif zkp_module == "Extension Field":
