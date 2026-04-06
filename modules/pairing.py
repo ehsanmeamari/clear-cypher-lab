@@ -105,11 +105,6 @@ def pairing():
         st.latex('e_{Tate}(P, Q) = f_P(Q)^{\\frac{p^k-1}{n}}')
     
 
-    
-
-    
-
-
 
 ### Quadratic Fields
 class QuadraticFp:
