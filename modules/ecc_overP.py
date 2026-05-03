@@ -90,34 +90,36 @@ def ecc_fp():
 
     # --- Section: Visualization (Right Column) ---
     with col2:
-        if points_list:
-            fig, ax = plt.subplots(figsize=(6, 6))
-            px, py = zip(*points_list)
-            
-            # Draw grid and all points
-            ax.scatter(px, py, facecolors='none', edgecolors='#3498db', s=50, label='Curve Points', linewidth=1.5)
-            
-            # Highlight Points from Addition
-            if is_on_curve(P, a, b, p):
-                ax.scatter(P[0], P[1], color='#f1c40f', s=100, label='P', zorder=5)
-            if is_on_curve(Q, a, b, p):
-                ax.scatter(Q[0], Q[1], color='#e74c3c', s=100, label='Q', zorder=5)
-            if R_add:
-                ax.scatter(R_add[0], R_add[1], color='#2ecc71', s=150, marker='X', label='P+Q', zorder=6)
+        # اینجا نمودار را داخل کشو قرار دادیم
+        with st.expander("Curve Visualization", expanded=True):
+            if points_list:
+                fig, ax = plt.subplots(figsize=(6, 6))
+                px, py = zip(*points_list)
+                
+                # Draw grid and all points
+                ax.scatter(px, py, facecolors='none', edgecolors='#3498db', s=50, label='Curve Points', linewidth=1.5)
+                
+                # Highlight Points from Addition
+                if is_on_curve(P, a, b, p):
+                    ax.scatter(P[0], P[1], color='#f1c40f', s=100, label='P', zorder=5)
+                if is_on_curve(Q, a, b, p):
+                    ax.scatter(Q[0], Q[1], color='#e74c3c', s=100, label='Q', zorder=5)
+                if R_add:
+                    ax.scatter(R_add[0], R_add[1], color='#2ecc71', s=150, marker='X', label='P+Q', zorder=6)
 
-            # Highlight Points from Scalar
-            if is_on_curve(Ps, a, b, p) and Ps != P: # Only if different to avoid overlap mess
-                ax.scatter(Ps[0], Ps[1], color='#9b59b6', s=100, marker='D', label='P (Scalar)', zorder=5)
+                # Highlight Points from Scalar
+                if is_on_curve(Ps, a, b, p) and Ps != P: # Only if different to avoid overlap mess
+                    ax.scatter(Ps[0], Ps[1], color='#9b59b6', s=100, marker='D', label='P (Scalar)', zorder=5)
 
-            ax.set_title(f"Points on Elliptic Curve over F_{p}", fontsize=12)
-            ax.set_xlabel("x")
-            ax.set_ylabel("y")
-            ax.set_xticks(range(0, p))
-            ax.set_yticks(range(0, p))
-            ax.grid(True, linestyle='--', alpha=0.6)
-            ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1))
-            
-            st.pyplot(fig)
+                ax.set_title(f"Points on Elliptic Curve over F_{p}", fontsize=12)
+                ax.set_xlabel("x")
+                ax.set_ylabel("y")
+                ax.set_xticks(range(0, p))
+                ax.set_yticks(range(0, p))
+                ax.grid(True, linestyle='--', alpha=0.6)
+                ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1))
+                
+                st.pyplot(fig)
 
 # --- Helper Functions ---
 def mod_inv(n, p): return pow(n % p, p - 2, p)
