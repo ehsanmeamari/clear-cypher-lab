@@ -41,7 +41,7 @@ def run_ecc_overR():
 
     with col_left:
         # --- Section 1: Curve Definition ---
-        with st.expander("Curve Definition", expanded=True):
+        with st.expander("Curve Definition", expanded=False):
             input_row = st.columns([1, 1, 2])
             with input_row[0]: a = st.number_input("a", value=-1.0, step=0.1, key="ecc_r_a")
             with input_row[1]: b = st.number_input("b", value=1.0, step=0.1, key="ecc_r_b")
@@ -89,7 +89,7 @@ def run_ecc_overR():
 
         # --- Section 3: Scalar Multiplication (Controlled by Button) ---
         show_mult = False
-        with st.expander("Scalar Multiplication", expanded=True):
+        with st.expander("Scalar Multiplication", expanded=False):
             px_s, py_s = get_point_input("P", "scaler", "blue", default_x=1.0)
             n_val = st.number_input("Multiplier (n)", min_value=1, value=2)
             if st.button(f"Calculate {n_val}P", use_container_width=True):
@@ -99,7 +99,7 @@ def run_ecc_overR():
                     st.session_state['mult_result'] = (rx, ry, px_s, py_s, n_val)
 
     with col_right:
-        with st.expander("Visualizer", expanded=True):
+        with st.expander("Visualizer", expanded=False):
             plot_range = st.number_input("🔍 Plot Range", value=5, key="range")
             fig, ax = plt.subplots(figsize=(6, 5), dpi=150)
             y_m, x_m = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
