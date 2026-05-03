@@ -4,6 +4,24 @@ import numpy as np
 import math
 
 def run_ecc_overR():    
+    # --- Custom CSS for Cream Styling ---
+    st.markdown("""
+        <style>
+        /* Styling the header of expanders to be cream-colored */
+        div[data-testid="stExpander"] details summary {
+            background-color: #FDF5E6; /* OldLace color */
+            border-radius: 5px;
+            padding: 10px;
+        }
+        /* Optional: Border styling for the expander container */
+        div[data-testid="stExpander"] {
+            border: 1px solid #e6e6e6;
+            border-radius: 5px;
+            background-color: transparent;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
     col_left, col_right = st.columns([2, 2.5])
     
     # --- Helper function for Point Addition ---
@@ -74,7 +92,7 @@ def run_ecc_overR():
                     fy = yin
             return fx, fy
 
-        # --- Section 2: Point Addition (Controlled by Button) ---
+        # --- Section 2: Point Addition ---
         show_add = False
         with st.expander("Point Addition Calculator", expanded=False):
             col_p, col_q = st.columns(2)
@@ -87,7 +105,7 @@ def run_ecc_overR():
                     st.session_state['add_result'] = (res_add_x, res_add_y, add_slope, px_add, py_add, qx_add, qy_add)
                 else: st.error("Point at Infinity")
 
-        # --- Section 3: Scalar Multiplication (Controlled by Button) ---
+        # --- Section 3: Scalar Multiplication ---
         show_mult = False
         with st.expander("Scalar Multiplication", expanded=False):
             px_s, py_s = get_point_input("P", "scaler", "blue", default_x=1.0)
@@ -99,8 +117,8 @@ def run_ecc_overR():
                     st.session_state['mult_result'] = (rx, ry, px_s, py_s, n_val)
 
     with col_right:
-        with st.expander("Visualizer", expanded=False):
-            plot_range = st.number_input("🔍 Plot Range", value=5, key="range")
+        with st.expander("Visualizer", expanded=True):
+            plot_range = st.number_input("Plot Range", value=5, key="range")
             fig, ax = plt.subplots(figsize=(6, 5), dpi=150)
             y_m, x_m = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
             ax.contour(x_m.ravel(), y_m.ravel(), y_m**2 - x_m**3 - a*x_m - b, [0], colors='#3498db')
