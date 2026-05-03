@@ -5,7 +5,7 @@ def run_modular_math():
     col_left, col_right = st.columns(2)
     
     with col_left:
-        with st.expander("Modulo Calculator", expanded=True):
+        with st.expander("Modulo Calculator", expanded=False):
             # Layout: Input A, Input N, and the result in one row
             c1, c2, c3 = st.columns([1, 1, 1.2])
             with c1:
@@ -21,7 +21,7 @@ def run_modular_math():
                 st.markdown("</div>", unsafe_allow_html=True)
 
     with col_right:
-        with st.expander("Modular Inverse", expanded=True):
+        with st.expander("Modular Inverse", expanded=False):
             # Layout: Input A, Input N, and the result
             i1, i2, i3 = st.columns([1, 1, 1.2])
             with i1:
