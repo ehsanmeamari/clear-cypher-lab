@@ -37,7 +37,7 @@ def run_modular_math():
     
     # --- Left Column: Modulo Calculator ---
     with col_left:
-        with st.expander("🔢 Modulo Calculator", expanded=False):
+        with st.expander("Modulo Calculator", expanded=False):
             c1, c2, c3 = st.columns([1, 1, 1.2])
             with c1:
                 val_a = st.number_input("a:", value=17, key="unique_mod_a")
@@ -53,7 +53,7 @@ def run_modular_math():
 
     # --- Right Column: Modular Inverse ---
     with col_right:
-        with st.expander("🔄 Modular Inverse", expanded=False):
+        with st.expander("Modular Inverse", expanded=False):
             i1, i2, i3 = st.columns([1, 1, 1.2])
             with i1:
                 inv_a = st.number_input("a:", value=3, key="unique_inv_a")
