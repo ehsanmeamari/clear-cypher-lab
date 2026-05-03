@@ -145,7 +145,6 @@ def pairing():
     a = QuadraticFp(1, 0, p)
     b = QuadraticFp(9, 0, p)
     
-    st.title("🛡️ Cryptographic Pairing Lab")
     st.markdown("---")
     
     with st.expander("Protocol Overview", expanded=True):
