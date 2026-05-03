@@ -117,7 +117,7 @@ def run_ecc_overR():
                     st.session_state['mult_result'] = (rx, ry, px_s, py_s, n_val)
 
     with col_right:
-        with st.expander("Visualizer", expanded=False):
+        with st.expander("Curve Visualization", expanded=False):
             plot_range = st.number_input("Plot Range", value=5, key="range")
             fig, ax = plt.subplots(figsize=(6, 5), dpi=150)
             y_m, x_m = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
