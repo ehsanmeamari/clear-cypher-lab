@@ -90,8 +90,7 @@ def ecc_fp():
 
     # --- Section: Visualization (Right Column) ---
     with col2:
-        # اینجا نمودار را داخل کشو قرار دادیم
-        with st.expander("Curve Visualization", expanded=True):
+        with st.expander("Curve Visualization", expanded=False):
             if points_list:
                 fig, ax = plt.subplots(figsize=(6, 6))
                 px, py = zip(*points_list)
