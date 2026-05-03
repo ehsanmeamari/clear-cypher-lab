@@ -1,5 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 
 def ecc_fp():
     st.set_page_config(layout="wide")
@@ -60,7 +61,6 @@ def ecc_fp():
         # --- Section: Point Addition ---
         with st.expander("Point Addition", expanded=False):
             cols_add = st.columns([0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4])
-            sym = "<div style='text-align: center; font-size: 20px; font-weight: bold; line-height: 45px;'>"
             with cols_add[1]: xP = st.number_input("xP", value=0, key="xP")
             with cols_add[3]: yP = st.number_input("yP", value=8, key="yP")
             with cols_add[7]: xQ = st.number_input("xQ", value=0, key="xQ")
@@ -107,14 +107,20 @@ def ecc_fp():
                     ax.scatter(R_add[0], R_add[1], color='#2ecc71', s=150, marker='X', label='P+Q', zorder=6)
 
                 # Highlight Points from Scalar
-                if is_on_curve(Ps, a, b, p) and Ps != P: # Only if different to avoid overlap mess
+                if is_on_curve(Ps, a, b, p) and Ps != P:
                     ax.scatter(Ps[0], Ps[1], color='#9b59b6', s=100, marker='D', label='P (Scalar)', zorder=5)
 
                 ax.set_title(f"Points on Elliptic Curve over F_{p}", fontsize=12)
                 ax.set_xlabel("x")
                 ax.set_ylabel("y")
-                ax.set_xticks(range(0, p))
-                ax.set_yticks(range(0, p))
+                
+                # Use MaxNLocator to limit the number of grid lines/ticks to approx 5
+                ax.xaxis.set_major_locator(MaxNLocator(nbins=5, integer=True))
+                ax.yaxis.set_major_locator(MaxNLocator(nbins=5, integer=True))
+                
+                ax.set_xlim(-0.5, p - 0.5)
+                ax.set_ylim(-0.5, p - 0.5)
+                
                 ax.grid(True, linestyle='--', alpha=0.6)
                 ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1))
                 
