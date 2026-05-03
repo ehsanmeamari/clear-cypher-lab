@@ -22,7 +22,7 @@ def run_ecc_overR():
         </style>
     """, unsafe_allow_html=True)
 
-    col_left, col_right = st.columns([2, 2.5])
+    col_left, col_right = st.columns([2, 2])
     
     # --- Helper function for Point Addition ---
     def add_points(x1, y1, x2, y2, a):
