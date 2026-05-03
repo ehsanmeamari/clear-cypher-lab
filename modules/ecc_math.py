@@ -9,7 +9,7 @@ def ecc_fp():
     col1, col2 = st.columns([8, 5])
 
     with col1:
-        with st.expander("Curve Definition", expanded=True):
+        with st.expander("Curve Definition", expanded=False):
             c1, c2, c3, c4 = st.columns([1, 1, 1, 2.5])            
             with c1: 
                 p = st.number_input("Prime (p)", value=17, step=1)
@@ -46,7 +46,7 @@ def ecc_fp():
             str_points = [f"({pt[0]},{pt[1]})" for pt in points_list]
             all_points_str = ", ".join(str_points)
             
-            with st.expander(f"📍 Points on curve ({len(points_list)+1} points):", expanded=True):
+            with st.expander(f"📍 Points on curve ({len(points_list)+1} points):", expanded=False):
                 points_html = f"""
                     <div style='font-family: monospace; font-size: 16px; line-height: 1.6; color: #2c3e50; padding: 5px 0px; word-break: break-all;'>
                         {{ {all_points_str} }}
