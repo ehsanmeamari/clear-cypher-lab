@@ -27,7 +27,7 @@ def ecc_fp():
 
     with col1:
         # --- Section: Curve Definition ---
-        with st.expander("Curve Definition", expanded=True):
+        with st.expander("Curve Definition", expanded=False):
             c1, c2, c3, c4 = st.columns([1, 1, 1, 2.5])            
             with c1: p = st.number_input("Prime (p)", value=17, step=1)
             with c2: a = st.number_input("Parameter (a)", value=2, step=1)
@@ -58,7 +58,7 @@ def ecc_fp():
         st.divider()
 
         # --- Section: Point Addition ---
-        with st.expander("Point Addition", expanded=True):
+        with st.expander("Point Addition", expanded=False):
             cols_add = st.columns([0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4])
             sym = "<div style='text-align: center; font-size: 20px; font-weight: bold; line-height: 45px;'>"
             with cols_add[1]: xP = st.number_input("xP", value=0, key="xP")
@@ -75,7 +75,7 @@ def ecc_fp():
                 with cols_add[15]: st.text_input("yR", value=str(R_add[1]) if R_add else "∞", disabled=True, key="ry1")
 
         # --- Section: Scalar Multiplication ---
-        with st.expander("Scalar Multiplication", expanded=True):
+        with st.expander("Scalar Multiplication", expanded=False):
             cols_mul = st.columns([1, 0.4, 0.4, 1, 0.2, 1, 0.2, 0.3, 0.2, 1.2, 0.2, 1.2, 0.2])
             with cols_mul[0]: n_val = st.number_input("n", value=3, key="n_s")
             with cols_mul[3]: xPs = st.number_input("xP", value=0, key="xP_s")
