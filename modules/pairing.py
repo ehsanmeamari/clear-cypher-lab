@@ -147,10 +147,9 @@ def pairing():
     a = QuadraticFp(1, 0, p)
     b = QuadraticFp(9, 0, p)
     
-    st.title("🧪 Cryptographic Pairing Lab")
     st.markdown("---")
     
-    with st.expander("📝 Protocol Overview", expanded=True):
+    with st.expander("Protocol Overview", expanded=True):
         st.write("Current Curve Configuration (Demo Purpose):")
         st.latex(f"E: y^2 \\equiv x^3 + x + 9 \\pmod{{101}}")
         st.info("This lab demonstrates Weil Pairing over extension fields for ZKP systems.")
@@ -181,7 +180,7 @@ def pairing():
             st.success(f"Final Pairing Result: {result}")
             st.latex(r"e_{Weil}(P, Q) = (-1)^n \cdot \frac{f_P(Q)}{f_Q(P)}")
     else:
-        st.info("🚀 Tate Pairing module is optimized for high-performance blockchain verification. Coming soon.")
+        st.info("Tate Pairing module is optimized for high-performance blockchain verification. Coming soon.")
 
 if __name__ == "__main__":
     pairing()
