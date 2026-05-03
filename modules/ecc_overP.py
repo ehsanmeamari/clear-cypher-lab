@@ -23,7 +23,7 @@ def ecc_fp():
 
     points_list = []
     
-    col1, col2 = st.columns([7, 6])
+    col1, col2 = st.columns([2, 2.5])
 
     with col1:
         # --- Section: Curve Definition ---
