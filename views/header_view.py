@@ -1,7 +1,7 @@
 import streamlit as st
 
 def render_header_view():
-    # استایل داخلی برای کنترل دقیق فواصل هدر
+    # Internal styles for header spacing and horizontal rule
     st.markdown("""
         <style>
             .header-wrapper { margin-top: 5px; padding-bottom: 0px; }
@@ -14,7 +14,7 @@ def render_header_view():
     col_left, col_center, col_right = st.columns([1, 2.5, 1.2])
 
     with col_center:
-        # لوگو و شعار مرکزی
+        # Central Logo and Slogan
         st.markdown(
             """
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -28,7 +28,7 @@ def render_header_view():
         )
 
     with col_right:
-        # دکمه‌های شبکه‌های اجتماعی در سمت راست
+        # Social Media buttons container
         st.markdown("""
             <div style="display: flex; flex-direction: column; align-items: flex-end; width: 100%; padding-top: 10px;">
                 <div style="font-weight: bold; font-size: 0.8em; color: #555; margin-bottom: 5px;">🔗 Social Media</div>
@@ -38,6 +38,9 @@ def render_header_view():
                     </a>
                     <a href="https://www.linkedin.com/company/113012501/" target="_blank" style="text-decoration: none;">
                         <div style="background-color: #0077B5; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.7em; width: 95px; text-align: center;">🔗 LINKEDIN</div>
+                    </a>
+                    <a href="https://github.com/ehsanmeamari/clear-cypher-lab" target="_blank" style="text-decoration: none;">
+                        <div style="background-color: #24292e; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.7em; width: 95px; text-align: center;">💻 GITHUB</div>
                     </a>
                 </div>
             </div>
