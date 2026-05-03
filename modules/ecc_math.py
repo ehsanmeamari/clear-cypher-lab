@@ -53,13 +53,7 @@ def ecc_fp():
                     </div>
                 """
                 st.markdown(points_html, unsafe_allow_html=True)
-
-        with st.expander("Point Addition Formulas", expanded=True):
-            st.latex(r"s = \frac{y_Q - y_P}{x_Q - x_P} \pmod{p}")
-            st.latex(r"x_R = s^2 - x_P - x_Q \pmod{p}")
-            st.latex(r"y_R = s(x_P - x_R) - y_P \pmod{p}")
-
-        st.divider()
+                
 
         op = st.radio("Choose Operation:", ["Point Addition (P + Q)", "Scalar Multiplication (nP)"], horizontal=True)
         
