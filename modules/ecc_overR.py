@@ -94,7 +94,7 @@ def run_ecc_overR():
 
         # --- Section 2: Point Addition ---
         show_add = False
-        with st.expander("Point Addition Calculator", expanded=False):
+        with st.expander("Point Addition", expanded=False):
             col_p, col_q = st.columns(2)
             with col_p: px_add, py_add = get_point_input("P", "add_p", "red", default_x=1.0)
             with col_q: qx_add, qy_add = get_point_input("Q", "add_q", "orange", default_x=0.0)
