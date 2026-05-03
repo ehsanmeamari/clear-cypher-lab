@@ -141,13 +141,13 @@ def pairing():
     
     st.markdown("---")
     
-    with st.expander("Protocol Overview", expanded=True):
+    with st.expander("Protocol Overview", expanded=False):
         st.write("Current Curve Configuration (ZKP Demonstration):")
         st.latex(f"E: y^2 \\equiv x^3 + x + 9 \\pmod{{101}}")
         st.info("This module simulates Weil Pairing over extension fields for Zero-Knowledge Proof systems.")
 
     # Main Computation Expander
-    with st.expander("Pairing Computation", expanded=True):
+    with st.expander("Pairing Computation", expanded=False):
         col1, col2 = st.columns(2)
         with col1:
             st.subheader("Point P (Base Domain)")
