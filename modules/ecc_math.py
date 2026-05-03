@@ -22,6 +22,7 @@ def ecc_fp():
             background-color: transparent !important;
             border: 1px solid #e6e6e6;
             border-radius: 8px;
+            margin-bottom: 10px;
         }
 
         /* Ensure the inner content area remains transparent */
@@ -48,8 +49,8 @@ def ecc_fp():
             with c3: 
                 b = st.number_input("Parameter (b)", value=13, step=1)
 
+            discriminant = 4*(a**3) + 27*(b**2)
             with c4:
-                discriminant = 4*(a**3) + 27*(b**2)
                 if discriminant == 0:
                     st.error("Singular Curve: Select different parameters")
                 else:
@@ -61,8 +62,6 @@ def ecc_fp():
                     else:
                         st.latex(f"E: y^2 \\equiv x^3 + {a % p}x + {b % p} \\pmod{{{p}}}")
                     st.markdown("</div>", unsafe_allow_html=True)
-
-        st.divider()
 
         # Calculation of points on the curve
         if p and p < 1000 and discriminant != 0:
@@ -85,31 +84,30 @@ def ecc_fp():
                     </div>
                 """
                 st.markdown(points_html, unsafe_allow_html=True)
-                
 
-        op = st.radio("Choose Operation:", ["Point Addition (P + Q)", "Scalar Multiplication (nP)"], horizontal=True)
-        
-        # --- Operation: Point Addition ---
-        if op == "Point Addition (P + Q)":
+        st.divider()
+
+        # --- Section: Point Addition Expander ---
+        with st.expander("Point Addition", expanded=False):
             st.write("**Enter Coordinates for P and Q:**")
-            cols = st.columns([0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4])
+            cols_add = st.columns([0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4])
             symbol_style = "<div style='text-align: center; font-size: 24px; font-weight: bold; line-height: 45px; height: 45px;'>"
         
-            with cols[0]: st.markdown(f"{symbol_style}(</div>", unsafe_allow_html=True)
-            with cols[1]: xP = st.number_input("xP", value=None, key="xP", label_visibility="collapsed", step=1, format="%d")
-            with cols[2]: st.markdown(f"{symbol_style},</div>", unsafe_allow_html=True)
-            with cols[3]: yP = st.number_input("yP", value=None, key="yP", label_visibility="collapsed", step=1, format="%d")
-            with cols[4]: st.markdown(f"{symbol_style})</div>", unsafe_allow_html=True)
+            with cols_add[0]: st.markdown(f"{symbol_style}(</div>", unsafe_allow_html=True)
+            with cols_add[1]: xP = st.number_input("xP", value=None, key="xP", label_visibility="collapsed", step=1, format="%d")
+            with cols_add[2]: st.markdown(f"{symbol_style},</div>", unsafe_allow_html=True)
+            with cols_add[3]: yP = st.number_input("yP", value=None, key="yP", label_visibility="collapsed", step=1, format="%d")
+            with cols_add[4]: st.markdown(f"{symbol_style})</div>", unsafe_allow_html=True)
             
             P = (xP, yP) if xP is not None and yP is not None else None
             
-            with cols[5]: st.markdown(f"{symbol_style}+</div>", unsafe_allow_html=True)
+            with cols_add[5]: st.markdown(f"{symbol_style}+</div>", unsafe_allow_html=True)
             
-            with cols[6]: st.markdown(f"{symbol_style}(</div>", unsafe_allow_html=True)
-            with cols[7]: xQ = st.number_input("xQ", value=None, key="xQ", label_visibility="collapsed", step=1, format="%d")
-            with cols[8]: st.markdown(f"{symbol_style},</div>", unsafe_allow_html=True)
-            with cols[9]: yQ = st.number_input("yQ", value=None, key="yQ", label_visibility="collapsed", step=1, format="%d")
-            with cols[10]: st.markdown(f"{symbol_style})</div>", unsafe_allow_html=True)
+            with cols_add[6]: st.markdown(f"{symbol_style}(</div>", unsafe_allow_html=True)
+            with cols_add[7]: xQ = st.number_input("xQ", value=None, key="xQ", label_visibility="collapsed", step=1, format="%d")
+            with cols_add[8]: st.markdown(f"{symbol_style},</div>", unsafe_allow_html=True)
+            with cols_add[9]: yQ = st.number_input("yQ", value=None, key="yQ", label_visibility="collapsed", step=1, format="%d")
+            with cols_add[10]: st.markdown(f"{symbol_style})</div>", unsafe_allow_html=True)
             
             Q = (xQ, yQ) if xQ is not None and yQ is not None else None
 
@@ -119,69 +117,67 @@ def ecc_fp():
                 st.error("Point Q is not on the curve.")
 
             if P is None or Q is None:
-                st.warning("Please input coordinates for both points.")
+                st.info("Please input coordinates for both points.")
             else:
                 if is_on_curve(P, a, b, p) and is_on_curve(Q, a, b, p):
                     R = point_add(P, Q, a, p)
-                    with cols[11]: st.markdown(f"{symbol_style}=</div>", unsafe_allow_html=True)
-                    with cols[12]: st.markdown(f"{symbol_style}(</div>", unsafe_allow_html=True)
-                    with cols[13]: st.number_input("xR", value=R[0] if R else None, key="xR_res", label_visibility="collapsed", disabled=True)
-                    with cols[14]: st.markdown(f"{symbol_style},</div>", unsafe_allow_html=True)
-                    with cols[15]: st.number_input("yR", value=R[1] if R else None, key="yR_res", label_visibility="collapsed", disabled=True)
-                    with cols[16]: st.markdown(f"{symbol_style})</div>", unsafe_allow_html=True)
+                    with cols_add[11]: st.markdown(f"{symbol_style}=</div>", unsafe_allow_html=True)
+                    with cols_add[12]: st.markdown(f"{symbol_style}(</div>", unsafe_allow_html=True)
+                    with cols_add[13]: st.number_input("xR", value=R[0] if R else None, key="xR_res", label_visibility="collapsed", disabled=True)
+                    with cols_add[14]: st.markdown(f"{symbol_style},</div>", unsafe_allow_html=True)
+                    with cols_add[15]: st.number_input("yR", value=R[1] if R else None, key="yR_res", label_visibility="collapsed", disabled=True)
+                    with cols_add[16]: st.markdown(f"{symbol_style})</div>", unsafe_allow_html=True)
                     if R is None:
                         st.caption("**Result:** Point at infinity 𝒪")
 
-        # --- Operation: Scalar Multiplication ---
-        if op == "Scalar Multiplication (nP)":
+        # --- Section: Scalar Multiplication Expander ---
+        with st.expander("Scalar Multiplication (nP)", expanded=False):
             st.write("**Enter Scalar n and Point P:**")
             
-            cols = st.columns([1, 0.4, 0.4, 1, 0.2, 1, 0.2, 0.3, 0.2, 1.2, 0.2, 1.2, 0.2])
+            cols_mul = st.columns([1, 0.4, 0.4, 1, 0.2, 1, 0.2, 0.3, 0.2, 1.2, 0.2, 1.2, 0.2])
             symbol_style = "<div style='text-align: center; font-size: 24px; font-weight: bold; line-height: 45px; height: 45px;'>"
 
-            with cols[0]:
+            with cols_mul[0]:
                 n = st.number_input("Scalar n", value=None, key="n_scalar", label_visibility="collapsed", step=1, format="%d", min_value=0)
-            with cols[1]:
+            with cols_mul[1]:
                 st.markdown(f"{symbol_style}×</div>", unsafe_allow_html=True)
-            with cols[2]:
+            with cols_mul[2]:
                 st.markdown(f"{symbol_style}(</div>", unsafe_allow_html=True)
-            with cols[3]:
-                xP = st.number_input("xP", value=None, key="xP_scalar", label_visibility="collapsed", step=1, format="%d")
-            with cols[4]:
+            with cols_mul[3]:
+                xP_s = st.number_input("xP", value=None, key="xP_scalar", label_visibility="collapsed", step=1, format="%d")
+            with cols_mul[4]:
                 st.markdown(f"{symbol_style},</div>", unsafe_allow_html=True)
-            with cols[5]:
-                yP = st.number_input("yP", value=None, key="yP_scalar", label_visibility="collapsed", step=1, format="%d")
-            with cols[6]:
+            with cols_mul[5]:
+                yP_s = st.number_input("yP", value=None, key="yP_scalar", label_visibility="collapsed", step=1, format="%d")
+            with cols_mul[6]:
                 st.markdown(f"{symbol_style})</div>", unsafe_allow_html=True)
 
-            P = (xP % p, yP % p) if xP is not None and yP is not None else None
+            P_s = (xP_s % p, yP_s % p) if xP_s is not None and yP_s is not None else None
 
-            if P and not is_on_curve(P, a, b, p):
+            if P_s and not is_on_curve(P_s, a, b, p):
                 st.error("The selected point is not on the curve.")
 
-            if n is None or P is None:
-                st.warning("Please provide both scalar n and point P.")
+            if n is None or P_s is None:
+                st.info("Please provide both scalar n and point P.")
             else:
-                if is_on_curve(P, a, b, p):
-                    R = scalar_mul(n, P, a, p)
-                    with cols[7]:
+                if is_on_curve(P_s, a, b, p):
+                    R_s = scalar_mul(n, P_s, a, p)
+                    with cols_mul[7]:
                         st.markdown(f"{symbol_style}=</div>", unsafe_allow_html=True)
 
-                    if R is None:
-                        # Display Infinity Symbol
-                        with cols[8]: st.markdown(f"{symbol_style}(</div>", unsafe_allow_html=True)
-                        with cols[9]: st.markdown("<div style='text-align: center; font-size: 28px; font-weight: bold; line-height: 52px;'>∞</div>", unsafe_allow_html=True)
-                        with cols[10]: st.markdown(f"{symbol_style},</div>", unsafe_allow_html=True)
-                        with cols[11]: st.markdown("<div style='text-align: center; font-size: 28px; font-weight: bold; line-height: 52px;'>∞</div>", unsafe_allow_html=True)
-                        with cols[12]: st.markdown(f"{symbol_style})</div>", unsafe_allow_html=True)
+                    if R_s is None:
+                        with cols_mul[8]: st.markdown(f"{symbol_style}(</div>", unsafe_allow_html=True)
+                        with cols_mul[9]: st.markdown("<div style='text-align: center; font-size: 28px; font-weight: bold; line-height: 52px;'>∞</div>", unsafe_allow_html=True)
+                        with cols_mul[10]: st.markdown(f"{symbol_style},</div>", unsafe_allow_html=True)
+                        with cols_mul[11]: st.markdown("<div style='text-align: center; font-size: 28px; font-weight: bold; line-height: 52px;'>∞</div>", unsafe_allow_html=True)
+                        with cols_mul[12]: st.markdown(f"{symbol_style})</div>", unsafe_allow_html=True)
                         st.caption("**Result:** Point at infinity 𝒪")
                     else:
-                        # Display Resulting Point
-                        with cols[8]: st.markdown(f"{symbol_style}(</div>", unsafe_allow_html=True)
-                        with cols[9]: st.number_input("xR", value=R[0], key="xR_sc", label_visibility="collapsed", disabled=True)
-                        with cols[10]: st.markdown(f"{symbol_style},</div>", unsafe_allow_html=True)
-                        with cols[11]: st.number_input("yR", value=R[1], key="yR_sc", label_visibility="collapsed", disabled=True)
-                        with cols[12]: st.markdown(f"{symbol_style})</div>", unsafe_allow_html=True)
+                        with cols_mul[8]: st.markdown(f"{symbol_style}(</div>", unsafe_allow_html=True)
+                        with cols_mul[9]: st.number_input("xR", value=R_s[0], key="xR_sc", label_visibility="collapsed", disabled=True)
+                        with cols_mul[10]: st.markdown(f"{symbol_style},</div>", unsafe_allow_html=True)
+                        with cols_mul[11]: st.number_input("yR", value=R_s[1], key="yR_sc", label_visibility="collapsed", disabled=True)
+                        with cols_mul[12]: st.markdown(f"{symbol_style})</div>", unsafe_allow_html=True)
 
 # --- Mathematical Helper Functions ---
 
