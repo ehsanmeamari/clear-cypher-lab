@@ -22,6 +22,7 @@ class QuadraticIFp:
         a, b = self.a, self.b
         c, d = other.a, other.b
         p = self.p
+        # Based on the specific curve/field rule: i^2 = 4i + 99
         real_part = (a * c + b * d * 99) % p
         i_part = (a * d + b * c + 4 * b * d) % p
         return QuadraticIFp(real_part, i_part, p)
@@ -40,13 +41,37 @@ class QuadraticIFp:
         p = self.p
         a, b = self.a, self.b
         conj = QuadraticIFp(a + 4 * b, -b, p)
-        norm = (self * conj).a 
+        norm = (self * conj).a  
         if norm == 0:
             raise ZeroDivisionError("Element not invertible")
         norm_inv = pow(norm, p - 2, p)
         return QuadraticIFp(conj.a * norm_inv, conj.b * norm_inv, p)
 
 def extension_math():
+    # Inject Custom CSS for Cream Headers and Transparent Content
+    st.markdown("""
+        <style>
+        /* Target the clickable header of the expander */
+        div[data-testid="stExpander"] details summary {
+            background-color: #FDF5E6; /* Cream color */
+            border-radius: 8px 8px 0px 0px;
+            padding: 10px;
+        }
+
+        /* Make the main expander container background transparent */
+        div[data-testid="stExpander"] {
+            background-color: transparent !important;
+            border: 1px solid #e6e6e6;
+            border-radius: 8px;
+        }
+
+        /* Ensure the inner content area remains transparent */
+        div[data-testid="stExpander"] details > div[role="region"] {
+            background-color: transparent !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
     st.write("Current configuration: p=101 and $i^2 = 4i + 99$ in Extension Fields.")
     
     p = 101
@@ -86,7 +111,7 @@ def extension_math():
                 res = a_obj + b_obj
                 st.success(f"Result: $({a_obj}) + ({b_obj}) \\equiv {res} \\pmod{{{p}}}$")
             else:
-                st.info("Input a & b")
+                st.info("Please input both a & b values.")
 
     with row1_col2:
         # --- Multiplication Section ---
@@ -120,14 +145,14 @@ def extension_math():
                 res = a_obj * b_obj
                 st.success(f"Result: $({a_obj}) \\cdot ({b_obj}) \\equiv {res} \\pmod{{{p}}}$")
             else:
-                st.info("Input a & b")
+                st.info("Please input both a & b values.")
 
-    # --- ROW 2: Defining columns to fix NameError ---
+    # --- ROW 2: Exponentiation & Inverse ---
     row2_col1, row2_col2 = st.columns(2)
 
     with row2_col1:
         # --- Exponentiation Section ---
-        with st.expander("Exponentiation", expanded=False):            
+        with st.expander("⚡ Exponentiation", expanded=False):            
             exp = st.number_input("Exponent (n)", value=None, step=1, format="%d", key="exp")
             st.divider()
             col1, col2, col3 = st.columns([2, 2, 2])
@@ -146,7 +171,7 @@ def extension_math():
                 res = a_obj ** exp
                 st.success(f"Result: $({a_obj})^{{{exp}}} \\equiv {res} \\pmod{{{p}}}$")
             else:
-                st.info("Input base and exponent")
+                st.info("Please input base and exponent.")
 
     with row2_col2:
         # --- Inverse Section ---
@@ -168,6 +193,6 @@ def extension_math():
                     res = a_obj.inverse()
                     st.success(f"Result: $({a_obj})^{{-1}} \\equiv {res} \\pmod{{{p}}}$")
                 except ZeroDivisionError:
-                    st.error("Error: Element is not invertible")
+                    st.error("Error: Element is not invertible.")
             else:
-                st.info("Input a")
+                st.info("Please input value a.")
