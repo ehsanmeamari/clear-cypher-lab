@@ -27,9 +27,6 @@ class QuadraticFp:
         return QuadraticFp(-self.a, -self.b, self.p)
 
     def __mul__(self, other):
-        """
-        Multiplication over Fp^2 based on i^2 = 4i + 99
-        """
         a, b, c, d, p = self.a, self.b, other.a, other.b, self.p
         real_part = (a * c + b * d * 99) % p
         i_part = (a * d + b * c + 4 * b * d) % p
@@ -122,17 +119,14 @@ def weil_pairing(P, Q, n, a, b, p):
 def pairing():
     """ Renders the Pairing Simulation Lab with Cream Styling """
     
-    # Custom CSS for Cream Theme
     st.markdown("""
         <style>
-        /* Expanders header styling */
         div[data-testid="stExpander"] details summary {
-            background-color: #FDF5E6; /* OldLace cream */
+            background-color: #FDF5E6;
             border-radius: 8px 8px 0px 0px;
             padding: 10px;
             font-weight: bold;
         }
-        /* Expander body styling */
         div[data-testid="stExpander"] {
             background-color: transparent !important;
             border: 1px solid #e6e6e6;
@@ -152,34 +146,34 @@ def pairing():
         st.latex(f"E: y^2 \\equiv x^3 + x + 9 \\pmod{{101}}")
         st.info("This module simulates Weil Pairing over extension fields for Zero-Knowledge Proof systems.")
 
-    # UI Inputs for Points
-    col1, col2 = st.columns(2)
-    with col1:
-        st.subheader("Point P (Base Domain)")
-        xP_r = st.number_input("xP (Real Part)", value=25)
-        yP_r = st.number_input("yP (Real Part)", value=2)
-        P = (QuadraticFp(xP_r, 0, p), QuadraticFp(yP_r, 0, p))
-        
-    with col2:
-        st.subheader("Point Q (Twist Domain)")
-        xQ_r = st.number_input("xQ (Real Part)", value=92)
-        xQ_i = st.number_input("xQ (Imaginary Part)", value=53)
-        # Using specific demo coordinates for stability
-        Q = (QuadraticFp(xQ_r, xQ_i, p), QuadraticFp(6, 7, p))
+    # Main Computation Expander
+    with st.expander("Pairing Computation", expanded=True):
+        col1, col2 = st.columns(2)
+        with col1:
+            st.subheader("Point P (Base Domain)")
+            xP_r = st.number_input("xP (Real Part)", value=25, key="pair_xpr")
+            yP_r = st.number_input("yP (Real Part)", value=2, key="pair_ypr")
+            P = (QuadraticFp(xP_r, 0, p), QuadraticFp(yP_r, 0, p))
+            
+        with col2:
+            st.subheader("Point Q (Twist Domain)")
+            xQ_r = st.number_input("xQ (Real Part)", value=92, key="pair_xqr")
+            xQ_i = st.number_input("xQ (Imaginary Part)", value=53, key="pair_xqi")
+            Q = (QuadraticFp(xQ_r, xQ_i, p), QuadraticFp(6, 7, p))
 
-    st.divider()
-    n = st.number_input("Torsion Order (n)", value=119)
-    method = st.radio("Calculation Method:", ["Weil Pairing", "Tate Pairing"], horizontal=True)
+        st.divider()
+        n_val = st.number_input("Torsion Order (n)", value=119, key="torsion_n")
+        method = st.radio("Calculation Method:", ["Weil Pairing", "Tate Pairing"], horizontal=True)
 
-    if method == "Weil Pairing":
-        if not is_on_curve(P, a, b, p) or not is_on_curve(Q, a, b, p):
-            st.error("Validation Error: Input points do not lie on the curve E(Fp^2).")
+        if method == "Weil Pairing":
+            if not is_on_curve(P, a, b, p) or not is_on_curve(Q, a, b, p):
+                st.error("Validation Error: Input points do not lie on the curve E(Fp^2).")
+            else:
+                result = weil_pairing(P, Q, n_val, a, b, p)
+                st.success(f"Final Pairing Result: {result}")
+                st.latex(r"e_{Weil}(P, Q) = (-1)^n \cdot \frac{f_P(Q)}{f_Q(P)}")
         else:
-            result = weil_pairing(P, Q, n, a, b, p)
-            st.success(f"Final Pairing Result: {result}")
-            st.latex(r"e_{Weil}(P, Q) = (-1)^n \cdot \frac{f_P(Q)}{f_Q(P)}")
-    else:
-        st.info("Tate Pairing module is currently being optimized for high-performance blockchain verification.")
+            st.info("Tate Pairing module is currently being optimized for high-performance blockchain verification.")
 
 if __name__ == "__main__":
     pairing()
