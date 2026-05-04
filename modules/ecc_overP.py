@@ -18,14 +18,14 @@ def ecc_fp():
             border-radius: 8px;
             margin-bottom: 10px;
         }
-        /* Style for disabled input text and labels */
+        /* Style for disabled input text */
         input:disabled {
             -webkit-text-fill-color: black !important;
             color: black !important;
             opacity: 1 !important;
             background: #f0f2f6 !important;
         }
-        /* Style to make labels of disabled widgets black */
+        /* Style to make labels of disabled widgets black (xR, yR) */
         div[data-testid="stWidgetLabel"] p {
             color: black !important;
             opacity: 1 !important;
@@ -65,13 +65,13 @@ def ecc_fp():
 
         st.divider()
 
-        # --- Updated Point Addition Section ---
+        # --- Point Addition Section ---
         with st.expander("Point Addition", expanded=True):
             cols_add = st.columns([0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4])
             with cols_add[1]: xP = st.number_input("xP", value=0, key="xP")
             with cols_add[3]: yP = st.number_input("yP", value=8, key="yP")
-            with cols_add[7]: xQ = st.number_input("xQ", value=1, key="xQ")
-            with cols_add[9]: yQ = st.number_input("yQ", value=12, key="yQ")
+            with cols_add[7]: xQ = st.number_input("xQ", value=4, key="xQ")
+            with cols_add[9]: yQ = st.number_input("yQ", value=0, key="yQ")
             
             P = (xP % p, yP % p)
             Q = (xQ % p, yQ % p)
@@ -85,8 +85,9 @@ def ecc_fp():
                 with cols_add[13]: st.text_input("xR", value=str(R_add[0]) if R_add else "∞", disabled=True, key="rx1")
                 with cols_add[15]: st.text_input("yR", value=str(R_add[1]) if R_add else "∞", disabled=True, key="ry1")
             else:
-                st.warning("One or both points are NOT on the curve! Check the list of points above.")
+                st.warning("One or both points are NOT on the curve!")
 
+        # --- Scalar Multiplication Section ---
         with st.expander("Scalar Multiplication", expanded=False):
             cols_mul = st.columns([1, 0.4, 0.4, 1, 0.2, 1, 0.2, 0.3, 0.2, 1.2, 0.2, 1.2, 0.2])
             with cols_mul[0]: n_val = st.number_input("n", value=3, key="n_s")
