@@ -33,6 +33,10 @@ def ecc_fp():
             opacity: 1 !important;
             font-weight: 500;
         }
+        div[data-testid="stTextInput"] label p {
+            color: black !important;
+            opacity: 1 !important;
+        }
         </style>
     """, unsafe_allow_html=True)
 
