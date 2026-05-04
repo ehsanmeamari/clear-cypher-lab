@@ -59,7 +59,7 @@ def ecc_fp():
             with cols_add[1]: xP = st.number_input("xP", value=0, key="xP")
             with cols_add[3]: yP = st.number_input("yP", value=8, key="yP")
             with cols_add[7]: xQ = st.number_input("xQ", value=1, key="xQ")
-            with cols_add[9]: yQ = st.number_input("yQ", value=12, key="yQ") # (1, 12) is on the curve
+            with cols_add[9]: yQ = st.number_input("yQ", value=12, key="yQ") 
             
             P = (xP % p, yP % p)
             Q = (xQ % p, yQ % p)
@@ -70,8 +70,9 @@ def ecc_fp():
             
             if p_on and q_on:
                 R_add = point_add(P, Q, a, p)
-                with cols_add[13]: st.text_input("xR", value=str(R_add[0]) if R_add else "∞", disabled=True, key="rx1")
-                with cols_add[15]: st.text_input("yR", value=str(R_add[1]) if R_add else "∞", disabled=True, key="ry1")
+                # Using read_only=True instead of disabled=True for high contrast text
+                with cols_add[13]: st.text_input("xR", value=str(R_add[0]) if R_add else "∞", read_only=True, key="rx1")
+                with cols_add[15]: st.text_input("yR", value=str(R_add[1]) if R_add else "∞", read_only=True, key="ry1")
             else:
                 st.warning("One or both points are NOT on the curve! Check the list of points above.")
 
@@ -85,8 +86,9 @@ def ecc_fp():
             Rs_mul = None
             if is_on_curve(Ps, a, b, p):
                 Rs_mul = scalar_mul(n_val, Ps, a, p)
-                with cols_mul[9]: st.text_input("xR", value=str(Rs_mul[0]) if Rs_mul else "∞", disabled=True, key="rx2")
-                with cols_mul[11]: st.text_input("yR", value=str(Rs_mul[1]) if Rs_mul else "∞", disabled=True, key="ry2")
+                # Using read_only=True instead of disabled=True for high contrast text
+                with cols_mul[9]: st.text_input("xR", value=str(Rs_mul[0]) if Rs_mul else "∞", read_only=True, key="rx2")
+                with cols_mul[11]: st.text_input("yR", value=str(Rs_mul[1]) if Rs_mul else "∞", read_only=True, key="ry2")
 
     with col2:
         with st.expander("Curve Visualization", expanded=True):
