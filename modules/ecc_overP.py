@@ -18,14 +18,12 @@ def ecc_fp():
             border-radius: 8px;
             margin-bottom: 10px;
         }
-        /* Style for disabled input text */
         input:disabled {
             -webkit-text-fill-color: black !important;
             color: black !important;
             opacity: 1 !important;
             background: #f0f2f6 !important;
         }
-        /* Enhanced style for labels of disabled widgets */
         div[data-testid="stWidgetLabel"] label p, 
         div[data-testid="stWidgetLabel"] p,
         .st-emotion-cache-16ids9d p {
@@ -72,41 +70,47 @@ def ecc_fp():
         
         st.divider()
 
-        # --- Point Addition Section ---
-        with st.expander("Point Addition", expanded=True):
-            cols_add = st.columns([0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4])
-            with cols_add[1]: xP = st.number_input("xP", value=0, key="xP")
-            with cols_add[3]: yP = st.number_input("yP", value=8, key="yP")
-            with cols_add[7]: xQ = st.number_input("xQ", value=0, key="xQ")
-            with cols_add[9]: yQ = st.number_input("yQ", value=9, key="yQ")
-            
-            P = (xP % p, yP % p)
-            Q = (xQ % p, yQ % p)
-            R_add = None
-            
-            p_on = is_on_curve(P, a, b, p)
-            q_on = is_on_curve(Q, a, b, p)
-            
-            if p_on and q_on:
-                R_add = point_add(P, Q, a, p)
-                with cols_add[13]: st.text_input("xR", value=str(R_add[0]) if R_add else "∞", disabled=True, key="rx1")
-                with cols_add[15]: st.text_input("yR", value=str(R_add[1]) if R_add else "∞", disabled=True, key="ry1")
-            else:
-                st.warning("One or both points are NOT on the curve!")
+        # --- Point Addition & Scalar Multiplication کنار هم ---
+        sub_col1, sub_col2 = st.columns(2)
 
-        # --- Scalar Multiplication Section ---
-        with st.expander("Scalar Multiplication", expanded=False):
-            cols_mul = st.columns([1, 0.4, 0.4, 1, 0.2, 1, 0.2, 0.3, 0.2, 1.2, 0.2, 1.2, 0.2])
-            with cols_mul[0]: n_val = st.number_input("n", value=3, key="n_s")
-            with cols_mul[3]: xPs = st.number_input("xP", value=0, key="xP_s")
-            with cols_mul[5]: yPs = st.number_input("yP", value=8, key="yP_s")
-            
-            Ps = (xPs % p, yPs % p)
-            Rs_mul = None
-            if is_on_curve(Ps, a, b, p):
-                Rs_mul = scalar_mul(n_val, Ps, a, p)
-                with cols_mul[9]: st.text_input("xR", value=str(Rs_mul[0]) if Rs_mul else "∞", disabled=True, key="rx2")
-                with cols_mul[11]: st.text_input("yR", value=str(Rs_mul[1]) if Rs_mul else "∞", disabled=True, key="ry2")
+        with sub_col1:
+            with st.expander("Point Addition", expanded=True):
+                c1, c2 = st.columns(2)
+                with c1: xP = st.number_input("xP", value=0, key="xP")
+                with c2: yP = st.number_input("yP", value=8, key="yP")
+                c3, c4 = st.columns(2)
+                with c3: xQ = st.number_input("xQ", value=0, key="xQ")
+                with c4: yQ = st.number_input("yQ", value=9, key="yQ")
+
+                P = (xP % p, yP % p)
+                Q = (xQ % p, yQ % p)
+                R_add = None
+
+                p_on = is_on_curve(P, a, b, p)
+                q_on = is_on_curve(Q, a, b, p)
+
+                if p_on and q_on:
+                    R_add = point_add(P, Q, a, p)
+                    c5, c6 = st.columns(2)
+                    with c5: st.text_input("xR", value=str(R_add[0]) if R_add else "∞", disabled=True, key="rx1")
+                    with c6: st.text_input("yR", value=str(R_add[1]) if R_add else "∞", disabled=True, key="ry1")
+                else:
+                    st.warning("One or both points are NOT on the curve!")
+
+        with sub_col2:
+            with st.expander("Scalar Multiplication", expanded=True):
+                n_val = st.number_input("n", value=3, key="n_s")
+                c1, c2 = st.columns(2)
+                with c1: xPs = st.number_input("xP", value=0, key="xP_s")
+                with c2: yPs = st.number_input("yP", value=8, key="yP_s")
+
+                Ps = (xPs % p, yPs % p)
+                Rs_mul = None
+                if is_on_curve(Ps, a, b, p):
+                    Rs_mul = scalar_mul(n_val, Ps, a, p)
+                    c3, c4 = st.columns(2)
+                    with c3: st.text_input("xR", value=str(Rs_mul[0]) if Rs_mul else "∞", disabled=True, key="rx2")
+                    with c4: st.text_input("yR", value=str(Rs_mul[1]) if Rs_mul else "∞", disabled=True, key="ry2")
 
     with col2:
         with st.expander("Curve Visualization", expanded=True):
