@@ -64,7 +64,18 @@ def ecc_fp():
         if points_list:
             str_points = [f"({pt[0]},{pt[1]})" for pt in points_list]
             with st.expander(f"Points on curve ({len(points_list)+1} points):", expanded=False):
-                st.markdown(f"<div style='font-family: monospace; word-break: break-all;'>{{ 𝒪, {', '.join(str_points)} }}</div>", unsafe_allow_html=True)
+                all_points = ["𝒪"] + str_points
+                cols_per_row = 6
+                rows = [all_points[i:i+cols_per_row] for i in range(0, len(all_points), cols_per_row)]
+                for row in rows:
+                    grid_cols = st.columns(cols_per_row)
+                    for j, pt in enumerate(row):
+                        with grid_cols[j]:
+                            st.markdown(
+                                f"<div style='text-align:center; font-family:monospace; "
+                                f"background:#f8f4ed; border-radius:6px; padding:4px 2px; margin:2px;'>{pt}</div>",
+                                unsafe_allow_html=True
+                            )
 
         st.divider()
 
