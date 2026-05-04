@@ -65,16 +65,18 @@ def ecc_fp():
 
         if points_list:
             with st.expander(f"Points on curve ({len(points_list)+1} points):", expanded=False):
-                all_points = ["\\mathcal{O}"] + [f"({pt[0]},{pt[1]})" for pt in points_list]
-                chunk_size = 6
-                chunks = [all_points[i:i+chunk_size] for i in range(0, len(all_points), chunk_size)]
-                for i, chunk in enumerate(chunks):
-                    if i == 0:
-                        st.latex("\\{" + ",\\, ".join(chunk) + ",")
-                    elif i == len(chunks) - 1:
-                        st.latex(",\\, ".join(chunk) + "\\}")
-                    else:
-                        st.latex(",\\, ".join(chunk) + ",")
+                str_points = [f"({pt[0]},{pt[1]})" for pt in points_list]
+                all_points = "𝒪, " + ", ".join(str_points)
+                st.markdown(f"""
+                    <div style='font-family: "Computer Modern", "Latin Modern Math", Georgia, serif;
+                                font-size: 15px;
+                                line-height: 2;
+                                word-wrap: break-word;
+                                overflow-wrap: break-word;
+                                padding: 8px 4px 16px 4px;'>
+                        {{ {all_points} }}
+                    </div>
+                """, unsafe_allow_html=True)
 
         st.divider()
 
