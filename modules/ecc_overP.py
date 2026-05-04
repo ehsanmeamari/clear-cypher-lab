@@ -106,10 +106,6 @@ def ecc_fp():
                 if R_add:
                     ax.scatter(R_add[0], R_add[1], color='#2ecc71', s=150, marker='X', label='P+Q', zorder=6)
 
-                # Highlight Points from Scalar
-                if is_on_curve(Ps, a, b, p) and Ps != P:
-                    ax.scatter(Ps[0], Ps[1], color='#9b59b6', s=100, marker='D', label='P (Scalar)', zorder=5)
-
                 ax.set_title(f"Points on Elliptic Curve over F_{p}", fontsize=12)
                 ax.set_xlabel("x")
                 ax.set_ylabel("y")
