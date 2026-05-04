@@ -89,13 +89,9 @@ def ecc_fp():
 
                 if p_on and q_on:
                     R_add = point_add(P, Q, a, p)
-                    xR_val = str(R_add[0]) if R_add else "∞"
-                    yR_val = str(R_add[1]) if R_add else "∞"
-                    st.markdown(f"""
-                        <div style='font-family: monospace; font-size: 16px; padding: 8px 0 12px 0;'>
-                            ({xP}, {yP}) + ({xQ}, {yQ}) = ({xR_val}, {yR_val})
-                        </div>
-                    """, unsafe_allow_html=True)
+                    xR_val = str(R_add[0]) if R_add else "\\infty"
+                    yR_val = str(R_add[1]) if R_add else "\\infty"
+                    st.latex(f"({xP}, {yP}) + ({xQ}, {yQ}) = ({xR_val}, {yR_val})")
                 else:
                     st.warning("One or both points are NOT on the curve!")
 
@@ -110,13 +106,9 @@ def ecc_fp():
                 Rs_mul = None
                 if is_on_curve(Ps, a, b, p):
                     Rs_mul = scalar_mul(n_val, Ps, a, p)
-                    xR_val = str(Rs_mul[0]) if Rs_mul else "∞"
-                    yR_val = str(Rs_mul[1]) if Rs_mul else "∞"
-                    st.markdown(f"""
-                        <div style='font-family: monospace; font-size: 16px; padding: 8px 0 12px 0;'>
-                            {n_val} × ({xPs}, {yPs}) = ({xR_val}, {yR_val})
-                        </div>
-                    """, unsafe_allow_html=True)
+                    xR_val = str(Rs_mul[0]) if Rs_mul else "\\infty"
+                    yR_val = str(Rs_mul[1]) if Rs_mul else "\\infty"
+                    st.latex(f"{n_val} \\times ({xPs}, {yPs}) = ({xR_val}, {yR_val})")
 
     with col2:
         with st.expander("Curve Visualization", expanded=True):
