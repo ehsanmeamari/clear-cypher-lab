@@ -70,15 +70,13 @@ def ecc_fp():
         
         st.divider()
 
-        # --- Point Addition & Scalar Multiplication کنار هم ---
         sub_col1, sub_col2 = st.columns(2)
 
         with sub_col1:
             with st.expander("Point Addition", expanded=True):
-                c1, c2 = st.columns(2)
+                c1, c2, c3, c4, c5, c6 = st.columns(6)
                 with c1: xP = st.number_input("xP", value=0, key="xP")
                 with c2: yP = st.number_input("yP", value=8, key="yP")
-                c3, c4 = st.columns(2)
                 with c3: xQ = st.number_input("xQ", value=0, key="xQ")
                 with c4: yQ = st.number_input("yQ", value=9, key="yQ")
 
@@ -91,7 +89,6 @@ def ecc_fp():
 
                 if p_on and q_on:
                     R_add = point_add(P, Q, a, p)
-                    c5, c6 = st.columns(2)
                     with c5: st.text_input("xR", value=str(R_add[0]) if R_add else "∞", disabled=True, key="rx1")
                     with c6: st.text_input("yR", value=str(R_add[1]) if R_add else "∞", disabled=True, key="ry1")
                 else:
@@ -99,18 +96,17 @@ def ecc_fp():
 
         with sub_col2:
             with st.expander("Scalar Multiplication", expanded=True):
-                n_val = st.number_input("n", value=3, key="n_s")
-                c1, c2 = st.columns(2)
-                with c1: xPs = st.number_input("xP", value=0, key="xP_s")
-                with c2: yPs = st.number_input("yP", value=8, key="yP_s")
+                c1, c2, c3, c4, c5 = st.columns(5)
+                with c1: n_val = st.number_input("n", value=3, key="n_s")
+                with c2: xPs = st.number_input("xP", value=0, key="xP_s")
+                with c3: yPs = st.number_input("yP", value=8, key="yP_s")
 
                 Ps = (xPs % p, yPs % p)
                 Rs_mul = None
                 if is_on_curve(Ps, a, b, p):
                     Rs_mul = scalar_mul(n_val, Ps, a, p)
-                    c3, c4 = st.columns(2)
-                    with c3: st.text_input("xR", value=str(Rs_mul[0]) if Rs_mul else "∞", disabled=True, key="rx2")
-                    with c4: st.text_input("yR", value=str(Rs_mul[1]) if Rs_mul else "∞", disabled=True, key="ry2")
+                    with c4: st.text_input("xR", value=str(Rs_mul[0]) if Rs_mul else "∞", disabled=True, key="rx2")
+                    with c5: st.text_input("yR", value=str(Rs_mul[1]) if Rs_mul else "∞", disabled=True, key="ry2")
 
     with col2:
         with st.expander("Curve Visualization", expanded=True):
