@@ -64,10 +64,17 @@ def ecc_fp():
                         points_list.append((x, y))
 
         if points_list:
-            str_points = [f"({pt[0]},{pt[1]})" for pt in points_list]
             with st.expander(f"Points on curve ({len(points_list)+1} points):", expanded=False):
-                latex_points = ",\\, ".join([f"({pt[0]},{pt[1]})" for pt in points_list])
-                st.latex(f"\\{{ \\mathcal{{O}},\\, {latex_points} \\}}")
+                all_points = ["\\mathcal{O}"] + [f"({pt[0]},{pt[1]})" for pt in points_list]
+                chunk_size = 6
+                chunks = [all_points[i:i+chunk_size] for i in range(0, len(all_points), chunk_size)]
+                for i, chunk in enumerate(chunks):
+                    if i == 0:
+                        st.latex("\\{" + ",\\, ".join(chunk) + ",")
+                    elif i == len(chunks) - 1:
+                        st.latex(",\\, ".join(chunk) + "\\}")
+                    else:
+                        st.latex(",\\, ".join(chunk) + ",")
 
         st.divider()
 
