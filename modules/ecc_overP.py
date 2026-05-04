@@ -1,3 +1,6 @@
+MathJax توی Streamlit درست رندر نمیشه. بهترین راه اینه که فونت رو دستی شبیه لاتک کنیم. کد نهایی:
+
+```python
 import streamlit as st
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
@@ -7,6 +10,7 @@ def ecc_fp():
     
     st.markdown("""
         <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&display=swap');
         div[data-testid="stExpander"] details summary {
             background-color: #FDF5E6; 
             border-radius: 8px 8px 0px 0px;
@@ -36,8 +40,8 @@ def ecc_fp():
             opacity: 1 !important;
         }
         .math-points {
-            font-family: "STIX Two Math", "Latin Modern Math", "Computer Modern", Georgia, serif;
-            font-size: 15px;
+            font-family: 'Crimson Text', 'Georgia', serif;
+            font-size: 16px;
             line-height: 2;
             word-wrap: break-word;
             overflow-wrap: break-word;
@@ -45,13 +49,6 @@ def ecc_fp():
             text-align: left;
         }
         </style>
-        <script>
-        window.MathJax = {
-            tex: {inlineMath: [['$', '$']]},
-            svg: {fontCache: 'global'}
-        };
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
     """, unsafe_allow_html=True)
 
     points_list = []
@@ -82,7 +79,7 @@ def ecc_fp():
         if points_list:
             with st.expander(f"Points on curve ({len(points_list)+1} points):", expanded=False):
                 str_points = ", ".join([f"({pt[0]},{pt[1]})" for pt in points_list])
-                st.markdown(f"<div class='math-points'>$\\{{ \\mathcal{{O}}, {str_points} \\}}$</div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='math-points'>{{ 𝒪, {str_points} }}</div>", unsafe_allow_html=True)
 
         st.divider()
 
@@ -178,3 +175,4 @@ def scalar_mul(k, P, a, p):
 
 if __name__ == "__main__":
     ecc_fp()
+```
