@@ -74,11 +74,19 @@ def ecc_fp():
 
         with sub_col1:
             with st.expander("Point Addition", expanded=True):
-                c1, c2, c3, c4, c5, c6 = st.columns(6)
-                with c1: xP = st.number_input("xP", value=0, key="xP")
-                with c2: yP = st.number_input("yP", value=8, key="yP")
-                with c3: xQ = st.number_input("xQ", value=0, key="xQ")
-                with c4: yQ = st.number_input("yQ", value=9, key="yQ")
+                c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 = st.columns([0.2, 1, 0.2, 1, 0.2, 0.3, 0.2, 1, 0.2, 1, 0.2])
+                
+                with c1: st.markdown("<div style='margin-top:32px; text-align:center;'>(</div>", unsafe_allow_html=True)
+                with c2: xP = st.number_input("xP", value=0, key="xP")
+                with c3: st.markdown("<div style='margin-top:32px; text-align:center;'>,</div>", unsafe_allow_html=True)
+                with c4: yP = st.number_input("yP", value=8, key="yP")
+                with c5: st.markdown("<div style='margin-top:32px; text-align:center;'>)</div>", unsafe_allow_html=True)
+                with c6: st.markdown("<div style='margin-top:32px; text-align:center;'>+</div>", unsafe_allow_html=True)
+                with c7: st.markdown("<div style='margin-top:32px; text-align:center;'>(</div>", unsafe_allow_html=True)
+                with c8: xQ = st.number_input("xQ", value=0, key="xQ")
+                with c9: st.markdown("<div style='margin-top:32px; text-align:center;'>,</div>", unsafe_allow_html=True)
+                with c10: yQ = st.number_input("yQ", value=9, key="yQ")
+                with c11: st.markdown("<div style='margin-top:32px; text-align:center;'>)</div>", unsafe_allow_html=True)
 
                 P = (xP % p, yP % p)
                 Q = (xQ % p, yQ % p)
@@ -89,8 +97,13 @@ def ecc_fp():
 
                 if p_on and q_on:
                     R_add = point_add(P, Q, a, p)
-                    with c5: st.text_input("xR", value=str(R_add[0]) if R_add else "∞", disabled=True, key="rx1")
-                    with c6: st.text_input("yR", value=str(R_add[1]) if R_add else "∞", disabled=True, key="ry1")
+                    d1, d2, d3, d4, d5, d6, d7 = st.columns([0.3, 0.2, 1, 0.2, 1, 0.2, 0.3])
+                    with d1: st.markdown("<div style='margin-top:32px; text-align:center;'>=</div>", unsafe_allow_html=True)
+                    with d2: st.markdown("<div style='margin-top:32px; text-align:center;'>(</div>", unsafe_allow_html=True)
+                    with d3: st.text_input("xR", value=str(R_add[0]) if R_add else "∞", disabled=True, key="rx1")
+                    with d4: st.markdown("<div style='margin-top:32px; text-align:center;'>,</div>", unsafe_allow_html=True)
+                    with d5: st.text_input("yR", value=str(R_add[1]) if R_add else "∞", disabled=True, key="ry1")
+                    with d6: st.markdown("<div style='margin-top:32px; text-align:center;'>)</div>", unsafe_allow_html=True)
                 else:
                     st.warning("One or both points are NOT on the curve!")
 
