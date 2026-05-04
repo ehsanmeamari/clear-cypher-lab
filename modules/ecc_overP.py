@@ -35,7 +35,23 @@ def ecc_fp():
             color: black !important;
             opacity: 1 !important;
         }
+        .math-points {
+            font-family: "STIX Two Math", "Latin Modern Math", "Computer Modern", Georgia, serif;
+            font-size: 15px;
+            line-height: 2;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            padding: 8px 4px 16px 4px;
+            text-align: left;
+        }
         </style>
+        <script>
+        window.MathJax = {
+            tex: {inlineMath: [['$', '$']]},
+            svg: {fontCache: 'global'}
+        };
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
     """, unsafe_allow_html=True)
 
     points_list = []
@@ -65,18 +81,8 @@ def ecc_fp():
 
         if points_list:
             with st.expander(f"Points on curve ({len(points_list)+1} points):", expanded=False):
-                str_points = [f"({pt[0]},{pt[1]})" for pt in points_list]
-                all_points = "𝒪, " + ", ".join(str_points)
-                st.markdown(f"""
-                    <div style='font-family: "Computer Modern", "Latin Modern Math", Georgia, serif;
-                                font-size: 15px;
-                                line-height: 2;
-                                word-wrap: break-word;
-                                overflow-wrap: break-word;
-                                padding: 8px 4px 16px 4px;'>
-                        {{ {all_points} }}
-                    </div>
-                """, unsafe_allow_html=True)
+                str_points = ", ".join([f"({pt[0]},{pt[1]})" for pt in points_list])
+                st.markdown(f"<div class='math-points'>$\\{{ \\mathcal{{O}}, {str_points} \\}}$</div>", unsafe_allow_html=True)
 
         st.divider()
 
