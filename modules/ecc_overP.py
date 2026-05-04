@@ -74,23 +74,11 @@ def ecc_fp():
 
         with sub_col1:
             with st.expander("Point Addition", expanded=True):
-                s = "<div style='margin-top:32px; text-align:center; font-size:16px;'>"
-                c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15 = st.columns(
-                    [0.1, 1, 0.1, 1, 0.1, 0.15, 0.1, 1, 0.1, 1, 0.1, 0.15, 0.1, 1, 0.1])
-
-                with c1:  st.markdown(s+"(</div>", unsafe_allow_html=True)
-                with c2:  xP = st.number_input("xP", value=0, key="xP")
-                with c3:  st.markdown(s+",</div>", unsafe_allow_html=True)
-                with c4:  yP = st.number_input("yP", value=8, key="yP")
-                with c5:  st.markdown(s+")</div>", unsafe_allow_html=True)
-                with c6:  st.markdown(s+"+</div>", unsafe_allow_html=True)
-                with c7:  st.markdown(s+"(</div>", unsafe_allow_html=True)
-                with c8:  xQ = st.number_input("xQ", value=0, key="xQ")
-                with c9:  st.markdown(s+",</div>", unsafe_allow_html=True)
-                with c10: yQ = st.number_input("yQ", value=9, key="yQ")
-                with c11: st.markdown(s+")</div>", unsafe_allow_html=True)
-                with c12: st.markdown(s+"=</div>", unsafe_allow_html=True)
-                with c13: st.markdown(s+"(</div>", unsafe_allow_html=True)
+                c1, c2, c3, c4 = st.columns(4)
+                with c1: xP = st.number_input("xP", value=0, key="xP")
+                with c2: yP = st.number_input("yP", value=8, key="yP")
+                with c3: xQ = st.number_input("xQ", value=0, key="xQ")
+                with c4: yQ = st.number_input("yQ", value=9, key="yQ")
 
                 P = (xP % p, yP % p)
                 Q = (xQ % p, yQ % p)
@@ -101,16 +89,19 @@ def ecc_fp():
 
                 if p_on and q_on:
                     R_add = point_add(P, Q, a, p)
-                    with c14: st.text_input("xR", value=str(R_add[0]) if R_add else "∞", disabled=True, key="rx1")
-                    with c15: st.markdown(s+",yR)</div>", unsafe_allow_html=True)
-                    # نمایش yR به صورت جداگانه زیر
-                    st.markdown(f"<div style='text-align:center; font-family:monospace; margin-top:4px;'>yR = {R_add[1] if R_add else '∞'}</div>", unsafe_allow_html=True)
+                    xR_val = str(R_add[0]) if R_add else "∞"
+                    yR_val = str(R_add[1]) if R_add else "∞"
+                    st.markdown(f"""
+                        <div style='font-family: monospace; font-size: 16px; padding: 8px 0 12px 0;'>
+                            ({xP}, {yP}) + ({xQ}, {yQ}) = ({xR_val}, {yR_val})
+                        </div>
+                    """, unsafe_allow_html=True)
                 else:
                     st.warning("One or both points are NOT on the curve!")
 
         with sub_col2:
             with st.expander("Scalar Multiplication", expanded=True):
-                c1, c2, c3, c4, c5 = st.columns(5)
+                c1, c2, c3 = st.columns(3)
                 with c1: n_val = st.number_input("n", value=3, key="n_s")
                 with c2: xPs = st.number_input("xP", value=0, key="xP_s")
                 with c3: yPs = st.number_input("yP", value=8, key="yP_s")
@@ -119,8 +110,13 @@ def ecc_fp():
                 Rs_mul = None
                 if is_on_curve(Ps, a, b, p):
                     Rs_mul = scalar_mul(n_val, Ps, a, p)
-                    with c4: st.text_input("xR", value=str(Rs_mul[0]) if Rs_mul else "∞", disabled=True, key="rx2")
-                    with c5: st.text_input("yR", value=str(Rs_mul[1]) if Rs_mul else "∞", disabled=True, key="ry2")
+                    xR_val = str(Rs_mul[0]) if Rs_mul else "∞"
+                    yR_val = str(Rs_mul[1]) if Rs_mul else "∞"
+                    st.markdown(f"""
+                        <div style='font-family: monospace; font-size: 16px; padding: 8px 0 12px 0;'>
+                            {n_val} × ({xPs}, {yPs}) = ({xR_val}, {yR_val})
+                        </div>
+                    """, unsafe_allow_html=True)
 
     with col2:
         with st.expander("Curve Visualization", expanded=True):
