@@ -1,6 +1,3 @@
-MathJax توی Streamlit درست رندر نمیشه. بهترین راه اینه که فونت رو دستی شبیه لاتک کنیم. کد نهایی:
-
-```python
 import streamlit as st
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
@@ -175,4 +172,3 @@ def scalar_mul(k, P, a, p):
 
 if __name__ == "__main__":
     ecc_fp()
-```
