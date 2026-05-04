@@ -25,10 +25,13 @@ def ecc_fp():
             opacity: 1 !important;
             background: #f0f2f6 !important;
         }
-        /* Style to make labels of disabled widgets black (xR, yR) */
-        div[data-testid="stWidgetLabel"] p {
+        /* Enhanced style for labels of disabled widgets */
+        div[data-testid="stWidgetLabel"] label p, 
+        div[data-testid="stWidgetLabel"] p,
+        .st-emotion-cache-16ids9d p {
             color: black !important;
             opacity: 1 !important;
+            font-weight: 500;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -70,8 +73,8 @@ def ecc_fp():
             cols_add = st.columns([0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4, 0.6, 0.4, 1, 0.2, 1, 0.4])
             with cols_add[1]: xP = st.number_input("xP", value=0, key="xP")
             with cols_add[3]: yP = st.number_input("yP", value=8, key="yP")
-            with cols_add[7]: xQ = st.number_input("xQ", value=4, key="xQ")
-            with cols_add[9]: yQ = st.number_input("yQ", value=0, key="yQ")
+            with cols_add[7]: xQ = st.number_input("xQ", value=0, key="xQ")
+            with cols_add[9]: yQ = st.number_input("yQ", value=9, key="yQ")
             
             P = (xP % p, yP % p)
             Q = (xQ % p, yQ % p)
