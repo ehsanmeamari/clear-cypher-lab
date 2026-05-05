@@ -45,6 +45,13 @@ def ecc_fp():
             padding: 8px 4px 16px 4px;
             text-align: left;
         }
+        .centered-label {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: black;
+        }
         </style>
     """, unsafe_allow_html=True)
 
@@ -85,10 +92,18 @@ def ecc_fp():
         with sub_col1:
             with st.expander("Point Addition", expanded=True):
                 c1, c2, c3, c4 = st.columns(4)
-                with c1: xP = st.number_input("xP", value=0, key="xP")
-                with c2: yP = st.number_input("yP", value=8, key="yP")
-                with c3: xQ = st.number_input("xQ", value=0, key="xQ")
-                with c4: yQ = st.number_input("yQ", value=9, key="yQ")
+                with c1:
+                    st.markdown("<div class='centered-label'>xP</div>", unsafe_allow_html=True)
+                    xP = st.number_input("xP", value=0, key="xP", label_visibility="collapsed")
+                with c2:
+                    st.markdown("<div class='centered-label'>yP</div>", unsafe_allow_html=True)
+                    yP = st.number_input("yP", value=8, key="yP", label_visibility="collapsed")
+                with c3:
+                    st.markdown("<div class='centered-label'>xQ</div>", unsafe_allow_html=True)
+                    xQ = st.number_input("xQ", value=0, key="xQ", label_visibility="collapsed")
+                with c4:
+                    st.markdown("<div class='centered-label'>yQ</div>", unsafe_allow_html=True)
+                    yQ = st.number_input("yQ", value=9, key="yQ", label_visibility="collapsed")
 
                 P = (xP % p, yP % p)
                 Q = (xQ % p, yQ % p)
@@ -108,9 +123,15 @@ def ecc_fp():
         with sub_col2:
             with st.expander("Scalar Multiplication", expanded=True):
                 c1, c2, c3 = st.columns(3)
-                with c1: n_val = st.number_input("n", value=3, key="n_s")
-                with c2: xPs = st.number_input("xP", value=0, key="xP_s")
-                with c3: yPs = st.number_input("yP", value=8, key="yP_s")
+                with c1:
+                    st.markdown("<div class='centered-label'>n</div>", unsafe_allow_html=True)
+                    n_val = st.number_input("n", value=3, key="n_s", label_visibility="collapsed")
+                with c2:
+                    st.markdown("<div class='centered-label'>xP</div>", unsafe_allow_html=True)
+                    xPs = st.number_input("xP", value=0, key="xP_s", label_visibility="collapsed")
+                with c3:
+                    st.markdown("<div class='centered-label'>yP</div>", unsafe_allow_html=True)
+                    yPs = st.number_input("yP", value=8, key="yP_s", label_visibility="collapsed")
 
                 Ps = (xPs % p, yPs % p)
                 Rs_mul = None
