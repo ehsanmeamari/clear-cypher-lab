@@ -148,14 +148,22 @@ def ecc_fp():
             if points_list:
                 fig, ax = plt.subplots(figsize=(6, 6))
                 px, py = zip(*points_list)
-                ax.scatter(px, py, facecolors='none', edgecolors='#3498db', s=50, label='Curve Points', linewidth=1.5)
-                
+                ax.scatter(px, py, facecolors='none', edgecolors='#3498db', s=50, linewidth=1.5)
+
                 if is_on_curve(P, a, b, p):
-                    ax.scatter(P[0], P[1], color='#f1c40f', s=100, label='P', zorder=5)
+                    ax.scatter(P[0], P[1], color='#f1c40f', s=100, zorder=5)
+                    ax.annotate('P', xy=(P[0], P[1]), xytext=(P[0]+0.3, P[1]+0.3),
+                                fontsize=12, fontweight='bold', color='#f1c40f')
+
                 if is_on_curve(Q, a, b, p):
-                    ax.scatter(Q[0], Q[1], color='#e74c3c', s=100, label='Q', zorder=5)
+                    ax.scatter(Q[0], Q[1], color='#e74c3c', s=100, zorder=5)
+                    ax.annotate('Q', xy=(Q[0], Q[1]), xytext=(Q[0]+0.3, Q[1]+0.3),
+                                fontsize=12, fontweight='bold', color='#e74c3c')
+
                 if R_add:
-                    ax.scatter(R_add[0], R_add[1], color='#2ecc71', s=150, marker='X', label='P+Q', zorder=6)
+                    ax.scatter(R_add[0], R_add[1], color='#2ecc71', s=150, marker='X', zorder=6)
+                    ax.annotate('P+Q', xy=(R_add[0], R_add[1]), xytext=(R_add[0]+0.3, R_add[1]+0.3),
+                                fontsize=12, fontweight='bold', color='#2ecc71')
 
                 ax.set_title(f"Points on Elliptic Curve over F_{p}", fontsize=12)
                 ax.xaxis.set_major_locator(MaxNLocator(nbins=5, integer=True))
@@ -163,7 +171,6 @@ def ecc_fp():
                 ax.set_xlim(-0.5, p - 0.5)
                 ax.set_ylim(-0.5, p - 0.5)
                 ax.grid(True, linestyle='--', alpha=0.6)
-                ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1))
                 st.pyplot(fig)
 
 def mod_inv(n, p): return pow(n % p, p - 2, p)
