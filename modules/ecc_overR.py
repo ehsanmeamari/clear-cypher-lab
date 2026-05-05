@@ -4,16 +4,13 @@ import numpy as np
 import math
 
 def run_ecc_overR():    
-    # --- Custom CSS for Cream Styling ---
     st.markdown("""
         <style>
-        /* Styling the header of expanders to be cream-colored */
         div[data-testid="stExpander"] details summary {
-            background-color: #FDF5E6; /* OldLace color */
+            background-color: #FDF5E6;
             border-radius: 5px;
             padding: 10px;
         }
-        /* Optional: Border styling for the expander container */
         div[data-testid="stExpander"] {
             border: 1px solid #e6e6e6;
             border-radius: 5px;
@@ -24,7 +21,6 @@ def run_ecc_overR():
 
     col_left, col_right = st.columns([2, 2])
     
-    # --- Helper function for Point Addition ---
     def add_points(x1, y1, x2, y2, a):
         if x1 is None: return x2, y2
         if x2 is None: return x1, y1
@@ -36,14 +32,12 @@ def run_ecc_overR():
                 return None, None
             else:
                 s = (y2 - y1) / (x2 - x1)
-            
             xr = s**2 - x1 - x2
             yr = s * (x1 - xr) - y1
             return xr, yr, s 
         except ZeroDivisionError:
             return None, None, None
 
-    # --- Scalar Multiplication ---
     def scalar_mult(n, px, py, a):
         qx, qy = px, py
         rx, ry = None, None
@@ -58,7 +52,6 @@ def run_ecc_overR():
         return rx, ry
 
     with col_left:
-        # --- Section 1: Curve Definition ---
         with st.expander("Curve Definition", expanded=False):
             input_row = st.columns([1, 1, 2])
             with input_row[0]: a = st.number_input("a", value=-1.0, step=0.1, key="ecc_r_a")
@@ -70,7 +63,6 @@ def run_ecc_overR():
                     st.latex(f"y^2 = x^3 {'+' if a>=0 else ''}{a:.1f}x {'+' if b>=0 else ''}{b:.1f}")
                     st.markdown("</div>", unsafe_allow_html=True)
 
-        # --- Shared Logic for Points ---
         def get_point_input(label, suffix, color, default_x=1.0):
             st.markdown(f"<span style='color:{color}'>●</span> **Point {label}**", unsafe_allow_html=True)
             mode = st.radio(f"Input mode {label}", ["X", "Y"], key=f"m_{suffix}", horizontal=True)
@@ -92,7 +84,6 @@ def run_ecc_overR():
                     fy = yin
             return fx, fy
 
-        # --- Section 2: Point Addition ---
         show_add = False
         with st.expander("Point Addition", expanded=False):
             col_p, col_q = st.columns(2)
@@ -105,7 +96,6 @@ def run_ecc_overR():
                     st.session_state['add_result'] = (res_add_x, res_add_y, add_slope, px_add, py_add, qx_add, qy_add)
                 else: st.error("Point at Infinity")
 
-        # --- Section 3: Scalar Multiplication ---
         show_mult = False
         with st.expander("Scalar Multiplication", expanded=False):
             px_s, py_s = get_point_input("P", "scaler", "blue", default_x=1.0)
@@ -123,21 +113,33 @@ def run_ecc_overR():
             y_m, x_m = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
             ax.contour(x_m.ravel(), y_m.ravel(), y_m**2 - x_m**3 - a*x_m - b, [0], colors='#3498db')
 
-            # --- Conditional Plotting for Addition ---
             if show_add and 'add_result' in st.session_state:
                 rax, ray, rslo, rpx, rpy, rqx, rqy = st.session_state['add_result']
                 x_line = np.array([-plot_range, plot_range])
                 ax.plot(x_line, rslo*(x_line - rpx) + rpy, color='#9b59b6', linestyle='--', alpha=0.6)
                 ax.plot([rax, rax], [-ray, ray], color='grey', linestyle=':', alpha=0.5)
-                ax.scatter([rpx, rqx], [rpy, rqy], color=['red', 'orange'], s=50, zorder=5)
-                ax.scatter(rax, ray, color='green', s=100, marker='X', zorder=6, label='P+Q')
+                ax.scatter([rpx], [rpy], color='red', s=50, zorder=5)
+                ax.annotate('P', xy=(rpx, rpy), xytext=(rpx+0.15, rpy+0.15),
+                            fontsize=11, fontweight='bold', color='red')
+                ax.scatter([rqx], [rqy], color='orange', s=50, zorder=5)
+                ax.annotate('Q', xy=(rqx, rqy), xytext=(rqx+0.15, rqy+0.15),
+                            fontsize=11, fontweight='bold', color='orange')
+                ax.scatter(rax, ray, color='green', s=100, marker='X', zorder=6)
+                ax.annotate('P+Q', xy=(rax, ray), xytext=(rax+0.15, ray+0.15),
+                            fontsize=11, fontweight='bold', color='green')
 
-            # --- Conditional Plotting for Multiplication ---
             if show_mult and 'mult_result' in st.session_state:
                 mrx, mry, mpx, mpy, mn = st.session_state['mult_result']
                 ax.scatter(mpx, mpy, color='blue', s=50, zorder=5)
-                ax.scatter(mrx, mry, color='purple', s=100, marker='D', zorder=6, label=f'{mn}P')
+                ax.annotate('P', xy=(mpx, mpy), xytext=(mpx+0.15, mpy+0.15),
+                            fontsize=11, fontweight='bold', color='blue')
+                ax.scatter(mrx, mry, color='purple', s=100, marker='D', zorder=6)
+                ax.annotate(f'{mn}P', xy=(mrx, mry), xytext=(mrx+0.15, mry+0.15),
+                            fontsize=11, fontweight='bold', color='purple')
 
-            ax.set_xlim([-plot_range, plot_range]); ax.set_ylim([-plot_range, plot_range])
-            ax.grid(True, alpha=0.3); ax.axhline(0, color='grey', alpha=0.2); ax.axvline(0, color='grey', alpha=0.2)
+            ax.set_xlim([-plot_range, plot_range])
+            ax.set_ylim([-plot_range, plot_range])
+            ax.grid(True, alpha=0.3)
+            ax.axhline(0, color='grey', alpha=0.2)
+            ax.axvline(0, color='grey', alpha=0.2)
             st.pyplot(fig)
