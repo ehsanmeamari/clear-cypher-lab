@@ -47,7 +47,7 @@ def ecc_fp():
         }
         .centered-label {
             text-align: center;
-            font-size: 49px;
+            font-size: 30px;
             font-weight: 500;
             font-family: 'Crimson Text', 'Georgia', serif;
             font-style: italic;
