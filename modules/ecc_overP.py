@@ -54,18 +54,6 @@ def ecc_fp():
             margin-bottom: 4px;
             color: black;
         }
-        .math-sym {
-            text-align: center;
-            font-size: 22px;
-            font-family: 'Crimson Text', 'Georgia', serif;
-            color: black;
-            margin-top: 32px;
-        }
-        /* کم کردن padding داخلی ستون‌ها */
-        div[data-testid="stHorizontalBlock"] > div {
-            padding-left: 2px !important;
-            padding-right: 2px !important;
-        }
         </style>
     """, unsafe_allow_html=True)
 
@@ -105,29 +93,19 @@ def ecc_fp():
 
         with sub_col1:
             with st.expander("Point Addition", expanded=True):
-                s = "<div class='math-sym'>"
-                c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11 = st.columns(
-                    [0.08, 1, 0.08, 1, 0.08, 0.15, 0.08, 1, 0.08, 1, 0.08])
-
-                with c1:  st.markdown(s+"(</div>", unsafe_allow_html=True)
-                with c2:
+                c1, c2, c3, c4 = st.columns(4)
+                with c1:
                     st.markdown("<div class='centered-label'><i>x</i><sub>P</sub></div>", unsafe_allow_html=True)
                     xP = st.number_input("xP", value=0, key="xP", label_visibility="collapsed")
-                with c3:  st.markdown(s+",</div>", unsafe_allow_html=True)
-                with c4:
+                with c2:
                     st.markdown("<div class='centered-label'><i>y</i><sub>P</sub></div>", unsafe_allow_html=True)
                     yP = st.number_input("yP", value=8, key="yP", label_visibility="collapsed")
-                with c5:  st.markdown(s+")</div>", unsafe_allow_html=True)
-                with c6:  st.markdown(s+"+</div>", unsafe_allow_html=True)
-                with c7:  st.markdown(s+"(</div>", unsafe_allow_html=True)
-                with c8:
+                with c3:
                     st.markdown("<div class='centered-label'><i>x</i><sub>Q</sub></div>", unsafe_allow_html=True)
                     xQ = st.number_input("xQ", value=0, key="xQ", label_visibility="collapsed")
-                with c9:  st.markdown(s+",</div>", unsafe_allow_html=True)
-                with c10:
+                with c4:
                     st.markdown("<div class='centered-label'><i>y</i><sub>Q</sub></div>", unsafe_allow_html=True)
                     yQ = st.number_input("yQ", value=9, key="yQ", label_visibility="collapsed")
-                with c11: st.markdown(s+")</div>", unsafe_allow_html=True)
 
                 P = (xP % p, yP % p)
                 Q = (xQ % p, yQ % p)
@@ -146,23 +124,16 @@ def ecc_fp():
 
         with sub_col2:
             with st.expander("Scalar Multiplication", expanded=True):
-                s = "<div class='math-sym'>"
-                c1, c2, c3, c4, c5, c6, c7 = st.columns(
-                    [0.4, 0.12, 0.08, 1, 0.08, 1, 0.08])
-
+                c1, c2, c3 = st.columns(3)
                 with c1:
                     st.markdown("<div class='centered-label'><i>n</i></div>", unsafe_allow_html=True)
                     n_val = st.number_input("n", value=3, key="n_s", label_visibility="collapsed")
-                with c2:  st.markdown(s+"×</div>", unsafe_allow_html=True)
-                with c3:  st.markdown(s+"(</div>", unsafe_allow_html=True)
-                with c4:
+                with c2:
                     st.markdown("<div class='centered-label'><i>x</i><sub>P</sub></div>", unsafe_allow_html=True)
                     xPs = st.number_input("xP", value=0, key="xP_s", label_visibility="collapsed")
-                with c5:  st.markdown(s+",</div>", unsafe_allow_html=True)
-                with c6:
+                with c3:
                     st.markdown("<div class='centered-label'><i>y</i><sub>P</sub></div>", unsafe_allow_html=True)
                     yPs = st.number_input("yP", value=8, key="yP_s", label_visibility="collapsed")
-                with c7:  st.markdown(s+")</div>", unsafe_allow_html=True)
 
                 Ps = (xPs % p, yPs % p)
                 Rs_mul = None
