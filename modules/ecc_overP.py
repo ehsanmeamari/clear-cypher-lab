@@ -61,6 +61,11 @@ def ecc_fp():
             color: black;
             margin-top: 32px;
         }
+        /* کم کردن padding داخلی ستون‌ها */
+        div[data-testid="stHorizontalBlock"] > div {
+            padding-left: 2px !important;
+            padding-right: 2px !important;
+        }
         </style>
     """, unsafe_allow_html=True)
 
@@ -102,7 +107,7 @@ def ecc_fp():
             with st.expander("Point Addition", expanded=True):
                 s = "<div class='math-sym'>"
                 c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11 = st.columns(
-                    [0.15, 1, 0.15, 1, 0.15, 0.2, 0.15, 1, 0.15, 1, 0.15])
+                    [0.08, 1, 0.08, 1, 0.08, 0.15, 0.08, 1, 0.08, 1, 0.08])
 
                 with c1:  st.markdown(s+"(</div>", unsafe_allow_html=True)
                 with c2:
@@ -143,7 +148,7 @@ def ecc_fp():
             with st.expander("Scalar Multiplication", expanded=True):
                 s = "<div class='math-sym'>"
                 c1, c2, c3, c4, c5, c6, c7 = st.columns(
-                    [0.3, 0.2, 0.15, 1, 0.15, 1, 0.15])
+                    [0.4, 0.12, 0.08, 1, 0.08, 1, 0.08])
 
                 with c1:
                     st.markdown("<div class='centered-label'><i>n</i></div>", unsafe_allow_html=True)
