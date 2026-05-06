@@ -131,7 +131,7 @@ def run_ecc_overR():
                     fy = y_val if sign == "+" else -y_val
                     with r2c1:
                         st.markdown("<div class='small-label'>yP</div>", unsafe_allow_html=True)
-                        st.markdown(f"<div class='val-box'>{fy:.4f}</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div class='val-box'>{fy:.2f}</div>", unsafe_allow_html=True)
                     fx = xin
                 else:
                     st.error("Out of domain")
