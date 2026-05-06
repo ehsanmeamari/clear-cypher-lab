@@ -81,7 +81,7 @@ def run_ecc_overR():
                     st.latex(f"y^2 = x^3 {'+' if a>=0 else ''}{a:.1f}x {'+' if b>=0 else ''}{b:.1f}")
                     st.markdown("</div>", unsafe_allow_html=True)
 
-        def get_point_input(label, suffix, color, default_x=1.0):
+        def get_point_input(label, suffix, color, default_x=1.0, show_multiplier=False):
             st.markdown(f"<span style='color:{color}'>●</span> **Point {label}**", unsafe_allow_html=True)
 
             if f"mode_{suffix}" not in st.session_state:
@@ -91,7 +91,7 @@ def run_ecc_overR():
 
             mode = st.session_state[f"mode_{suffix}"]
 
-            r1c1, r1c2, r1c3, r1c4, r1c5, r1c6, r1c7, r1c8 = st.columns([1, 0.4, 0.3, 0.01, 0.8, 0.4, 0.3, 0.3])
+            r1c1, r1c2, r1c3, r1c4, r1c5, r1c6, r1c7, r1c8, r1c9 = st.columns([1, 0.4, 0.3, 0.01, 0.8, 0.4, 0.3, 0.4, 0.6])
             with r1c1: st.markdown("<div class='small-label' style='padding-top:8px; white-space:nowrap;'>Input mode:</div>", unsafe_allow_html=True)
             with r1c2:
                 if st.button("X", key=f"btn_x_{suffix}", use_container_width=True):
@@ -110,6 +110,13 @@ def run_ecc_overR():
                 if st.button("-", key=f"sign_m_{suffix}", use_container_width=True):
                     st.session_state[f"sign_{suffix}"] = "-"
                     st.rerun()
+
+            if show_multiplier:
+                with r1c8:
+                    st.markdown("<div class='small-label' style='padding-top:8px; white-space:nowrap;'>n =</div>", unsafe_allow_html=True)
+                with r1c9:
+                    n_val = st.number_input("n", min_value=1, value=2, key="scalar_n", label_visibility="collapsed")
+                    st.session_state['scalar_n_val'] = n_val
 
             fx, fy = None, None
             if mode == "X":
@@ -164,8 +171,8 @@ def run_ecc_overR():
                     st.session_state.pop('add_result', None)
 
         with st.expander("Scalar Multiplication", expanded=False):
-            px_s, py_s = get_point_input("P", "scaler", "blue", default_x=1.0)
-            n_val = st.number_input("Multiplier (n)", min_value=1, value=2)
+            px_s, py_s = get_point_input("P", "scaler", "blue", default_x=1.0, show_multiplier=True)
+            n_val = st.session_state.get('scalar_n_val', 2)
             
             if px_s is not None:
                 rx, ry = scalar_mult(n_val, px_s, py_s, a)
