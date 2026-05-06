@@ -113,7 +113,7 @@ def run_ecc_overR():
 
             fx, fy = None, None
             if mode == "X":
-                r2c1, r2c2 = st.columns(2)
+                r2c1, r2c2 = st.columns([1, 3])
                 with r2c1:
                     st.markdown(f"<div class='small-label'>x{label}</div>", unsafe_allow_html=True)
                     xin = st.number_input(f"x{label}", value=default_x, step=0.1, key=f"x_{suffix}", label_visibility="collapsed")
@@ -130,7 +130,7 @@ def run_ecc_overR():
                 else:
                     st.error("Out of domain")
             else:
-                r2c1, r2c2 = st.columns(2)
+                r2c1, r2c2 = st.columns([1, 3])
                 with r2c1:
                     st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
                     yin = st.number_input(f"y{label}", value=1.0, step=0.1, key=f"y_{suffix}", label_visibility="collapsed")
