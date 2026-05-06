@@ -86,12 +86,10 @@ def run_ecc_overR():
 
             if f"mode_{suffix}" not in st.session_state:
                 st.session_state[f"mode_{suffix}"] = "X"
-            if f"sign_{suffix}" not in st.session_state:
-                st.session_state[f"sign_{suffix}"] = "+"
 
             mode = st.session_state[f"mode_{suffix}"]
 
-            r1c1, r1c2, r1c3, r1c4, r1c5, r1c6, r1c7, r1c8 = st.columns([1, 0.4, 0.3, 0.01, 0.8, 0.4, 0.3, 0.3])
+            r1c1, r1c2, r1c3 = st.columns([1, 0.4, 0.3])
             with r1c1: st.markdown("<div class='small-label' style='padding-top:8px; white-space:nowrap;'>Input mode:</div>", unsafe_allow_html=True)
             with r1c2:
                 if st.button("X", key=f"btn_x_{suffix}", use_container_width=True):
@@ -100,15 +98,6 @@ def run_ecc_overR():
             with r1c3:
                 if st.button("Y", key=f"btn_y_{suffix}", use_container_width=True):
                     st.session_state[f"mode_{suffix}"] = "Y"
-                    st.rerun()
-            with r1c5: st.markdown("<div class='small-label' style='padding-top:8px'>Sign y:</div>", unsafe_allow_html=True)
-            with r1c6:
-                if st.button("+", key=f"sign_p_{suffix}", use_container_width=True):
-                    st.session_state[f"sign_{suffix}"] = "+"
-                    st.rerun()
-            with r1c7:
-                if st.button("-", key=f"sign_m_{suffix}", use_container_width=True):
-                    st.session_state[f"sign_{suffix}"] = "-"
                     st.rerun()
 
             fx, fy = None, None
@@ -119,16 +108,22 @@ def run_ecc_overR():
                     xin = st.number_input(f"x{label}", value=default_x, step=0.1, key=f"x_{suffix}", label_visibility="collapsed")
                 
                 rhs = xin**3 + a*xin + b
-                if rhs >= 0:
-                    y_val = math.sqrt(rhs)
-                    sign = st.session_state[f"sign_{suffix}"]
-                    fy = y_val if sign == "+" else -y_val
+                if rhs > 0:
+                    y_pos = round(math.sqrt(rhs), 6)
+                    y_options = [y_pos, -y_pos]
                     with r2c2:
                         inner_col, _ = st.columns([1, 1])
                         with inner_col:
                             st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
-                            st.markdown(f"<div class='val-box'>{fy:.2f}</div>", unsafe_allow_html=True)
+                            fy = st.selectbox(f"y{label}", y_options, key=f"sel_y_{suffix}", label_visibility="collapsed", format_func=lambda v: f"{v:.4f}")
                     fx = xin
+                elif rhs == 0:
+                    with r2c2:
+                        inner_col, _ = st.columns([1, 1])
+                        with inner_col:
+                            st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
+                            st.markdown(f"<div class='val-box'>0.0000</div>", unsafe_allow_html=True)
+                    fx, fy = xin, 0.0
                 else:
                     st.error("Out of domain")
             else:
@@ -138,13 +133,13 @@ def run_ecc_overR():
                     yin = st.number_input(f"y{label}", value=1.0, step=0.1, key=f"y_{suffix}", label_visibility="collapsed")
                 
                 roots = np.roots([1, 0, a, (b - yin**2)])
-                real_roots = [r.real for r in roots if np.isreal(r)]
+                real_roots = sorted([round(r.real, 6) for r in roots if abs(r.imag) < 1e-6])
                 if real_roots:
                     with r2c2:
                         inner_col, _ = st.columns([1, 1])
                         with inner_col:
                             st.markdown(f"<div class='small-label'>x{label}</div>", unsafe_allow_html=True)
-                            fx = st.selectbox(f"Select x{label}", sorted(real_roots), key=f"sel_{suffix}", label_visibility="collapsed")
+                            fx = st.selectbox(f"x{label}", real_roots, key=f"sel_{suffix}", label_visibility="collapsed", format_func=lambda v: f"{v:.4f}")
                     fy = yin
 
             return fx, fy
