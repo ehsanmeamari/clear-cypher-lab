@@ -84,82 +84,67 @@ def run_ecc_overR():
         def get_point_input(label, suffix, color, default_x=1.0):
             st.markdown(f"<span style='color:{color}'>●</span> **Point {label}**", unsafe_allow_html=True)
 
-            if btn_x := st.session_state.get(f"btn_x_{suffix}_clicked"):
-                st.session_state[f"mode_{suffix}"] = "X"
-            if btn_y := st.session_state.get(f"btn_y_{suffix}_clicked"):
-                st.session_state[f"mode_{suffix}"] = "Y"
             if f"mode_{suffix}" not in st.session_state:
                 st.session_state[f"mode_{suffix}"] = "X"
+            if f"sign_{suffix}" not in st.session_state:
+                st.session_state[f"sign_{suffix}"] = "+"
+
             mode = st.session_state[f"mode_{suffix}"]
+
+            # خط اول: Input mode: [X] [Y]    Sign y: [+] [-]
+            r1c1, r1c2, r1c3, r1c4, r1c5, r1c6, r1c7 = st.columns([1, 0.5, 0.5, 0.3, 1, 0.5, 0.5])
+            with r1c1: st.markdown("<div class='small-label' style='padding-top:8px'>Input mode:</div>", unsafe_allow_html=True)
+            with r1c2:
+                if st.button("X", key=f"btn_x_{suffix}", use_container_width=True):
+                    st.session_state[f"mode_{suffix}"] = "X"
+                    st.rerun()
+            with r1c3:
+                if st.button("Y", key=f"btn_y_{suffix}", use_container_width=True):
+                    st.session_state[f"mode_{suffix}"] = "Y"
+                    st.rerun()
+            with r1c5: st.markdown("<div class='small-label' style='padding-top:8px'>Sign y:</div>", unsafe_allow_html=True)
+            with r1c6:
+                if st.button("+", key=f"sign_p_{suffix}", use_container_width=True):
+                    st.session_state[f"sign_{suffix}"] = "+"
+                    st.rerun()
+            with r1c7:
+                if st.button("-", key=f"sign_m_{suffix}", use_container_width=True):
+                    st.session_state[f"sign_{suffix}"] = "-"
+                    st.rerun()
 
             fx, fy = None, None
             if mode == "X":
-                # خط اول: xP | Input mode: [X] [Y]
-                r1c1, r1c2, r1c3, r1c4 = st.columns([1.2, 1.2, 0.8, 0.8])
-                with r1c1:
+                # خط دوم: xP | yP
+                r2c1, r2c2 = st.columns(2)
+                with r2c1:
                     st.markdown("<div class='small-label'>xP</div>", unsafe_allow_html=True)
                     xin = st.number_input(f"x{label}", value=default_x, step=0.1, key=f"x_{suffix}", label_visibility="collapsed")
-                with r1c2:
-                    st.markdown("<div class='small-label'>Input mode:</div>", unsafe_allow_html=True)
-                with r1c3:
-                    if st.button("X", key=f"btn_x_{suffix}", use_container_width=True):
-                        st.session_state[f"mode_{suffix}"] = "X"
-                        st.rerun()
-                with r1c4:
-                    if st.button("Y", key=f"btn_y_{suffix}", use_container_width=True):
-                        st.session_state[f"mode_{suffix}"] = "Y"
-                        st.rerun()
-
+                
                 rhs = xin**3 + a*xin + b
                 if rhs >= 0:
                     y_val = math.sqrt(rhs)
-                    # خط دوم: yP | Sign y: [+] [-]
-                    r2c1, r2c2, r2c3, r2c4 = st.columns([1.2, 1.2, 0.8, 0.8])
-                    with r2c2:
-                        st.markdown("<div class='small-label'>Sign y:</div>", unsafe_allow_html=True)
-                    with r2c3:
-                        if st.button("+", key=f"sign_p_{suffix}", use_container_width=True):
-                            st.session_state[f"sign_{suffix}"] = "+"
-                            st.rerun()
-                    with r2c4:
-                        if st.button("-", key=f"sign_m_{suffix}", use_container_width=True):
-                            st.session_state[f"sign_{suffix}"] = "-"
-                            st.rerun()
-                    if f"sign_{suffix}" not in st.session_state:
-                        st.session_state[f"sign_{suffix}"] = "+"
                     sign = st.session_state[f"sign_{suffix}"]
                     fy = y_val if sign == "+" else -y_val
-                    with r2c1:
+                    with r2c2:
                         st.markdown("<div class='small-label'>yP</div>", unsafe_allow_html=True)
                         st.markdown(f"<div class='val-box'>{fy:.2f}</div>", unsafe_allow_html=True)
                     fx = xin
                 else:
                     st.error("Out of domain")
             else:
-                # حالت Y
-                r1c1, r1c2, r1c3, r1c4 = st.columns([1.2, 1.2, 0.8, 0.8])
-                with r1c1:
+                r2c1, r2c2 = st.columns(2)
+                with r2c1:
                     st.markdown("<div class='small-label'>yP</div>", unsafe_allow_html=True)
                     yin = st.number_input(f"y{label}", value=1.0, step=0.1, key=f"y_{suffix}", label_visibility="collapsed")
-                with r1c2:
-                    st.markdown("<div class='small-label'>Input mode:</div>", unsafe_allow_html=True)
-                with r1c3:
-                    if st.button("X", key=f"btn_x_{suffix}", use_container_width=True):
-                        st.session_state[f"mode_{suffix}"] = "X"
-                        st.rerun()
-                with r1c4:
-                    if st.button("Y", key=f"btn_y_{suffix}", use_container_width=True):
-                        st.session_state[f"mode_{suffix}"] = "Y"
-                        st.rerun()
-
+                
                 roots = np.roots([1, 0, a, (b - yin**2)])
                 real_roots = [r.real for r in roots if np.isreal(r)]
                 if real_roots:
-                    r2c1, r2c2 = st.columns([1.2, 2.8])
-                    with r2c1:
+                    with r2c2:
                         st.markdown("<div class='small-label'>xP</div>", unsafe_allow_html=True)
                         fx = st.selectbox(f"Select x{label}", sorted(real_roots), key=f"sel_{suffix}", label_visibility="collapsed")
                     fy = yin
+
             return fx, fy
 
         with st.expander("Point Addition", expanded=False):
