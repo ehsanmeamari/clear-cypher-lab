@@ -20,6 +20,20 @@ def run_ecc_overR():
         button[data-testid="stNumberInputStepUp"] {
             display: none !important;
         }
+        .val-box {
+            background-color: #f0f2f6;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 15px;
+            color: black;
+            margin-top: 4px;
+            text-align: left;
+        }
+        .small-label {
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 2px;
+        }
         </style>
     """, unsafe_allow_html=True)
 
@@ -69,15 +83,10 @@ def run_ecc_overR():
 
         def get_point_input(label, suffix, color, default_x=1.0):
             st.markdown(f"<span style='color:{color}'>●</span> **Point {label}**", unsafe_allow_html=True)
-            
-            row = st.columns([2, 1, 1])
-            with row[0]: st.markdown("<div style='padding-top:8px; font-size:14px;'>Input mode:</div>", unsafe_allow_html=True)
-            with row[1]: btn_x = st.button("X", key=f"btn_x_{suffix}", use_container_width=True)
-            with row[2]: btn_y = st.button("Y", key=f"btn_y_{suffix}", use_container_width=True)
 
-            if btn_x:
+            if btn_x := st.session_state.get(f"btn_x_{suffix}_clicked"):
                 st.session_state[f"mode_{suffix}"] = "X"
-            if btn_y:
+            if btn_y := st.session_state.get(f"btn_y_{suffix}_clicked"):
                 st.session_state[f"mode_{suffix}"] = "Y"
             if f"mode_{suffix}" not in st.session_state:
                 st.session_state[f"mode_{suffix}"] = "X"
@@ -85,30 +94,71 @@ def run_ecc_overR():
 
             fx, fy = None, None
             if mode == "X":
-                xin = st.number_input(f"x{label}", value=default_x, step=0.1, key=f"x_{suffix}")
+                # خط اول: xP | Input mode: [X] [Y]
+                r1c1, r1c2, r1c3, r1c4 = st.columns([1.2, 1.2, 0.8, 0.8])
+                with r1c1:
+                    st.markdown("<div class='small-label'>xP</div>", unsafe_allow_html=True)
+                    xin = st.number_input(f"x{label}", value=default_x, step=0.1, key=f"x_{suffix}", label_visibility="collapsed")
+                with r1c2:
+                    st.markdown("<div class='small-label'>Input mode:</div>", unsafe_allow_html=True)
+                with r1c3:
+                    if st.button("X", key=f"btn_x_{suffix}", use_container_width=True):
+                        st.session_state[f"mode_{suffix}"] = "X"
+                        st.rerun()
+                with r1c4:
+                    if st.button("Y", key=f"btn_y_{suffix}", use_container_width=True):
+                        st.session_state[f"mode_{suffix}"] = "Y"
+                        st.rerun()
+
                 rhs = xin**3 + a*xin + b
                 if rhs >= 0:
                     y_val = math.sqrt(rhs)
-                    sign_row = st.columns([2, 1, 1])
-                    with sign_row[0]: st.markdown("<div style='padding-top:8px; font-size:14px;'>Sign y:</div>", unsafe_allow_html=True)
-                    with sign_row[1]:
+                    # خط دوم: yP | Sign y: [+] [-]
+                    r2c1, r2c2, r2c3, r2c4 = st.columns([1.2, 1.2, 0.8, 0.8])
+                    with r2c2:
+                        st.markdown("<div class='small-label'>Sign y:</div>", unsafe_allow_html=True)
+                    with r2c3:
                         if st.button("+", key=f"sign_p_{suffix}", use_container_width=True):
                             st.session_state[f"sign_{suffix}"] = "+"
-                    with sign_row[2]:
+                            st.rerun()
+                    with r2c4:
                         if st.button("-", key=f"sign_m_{suffix}", use_container_width=True):
                             st.session_state[f"sign_{suffix}"] = "-"
+                            st.rerun()
                     if f"sign_{suffix}" not in st.session_state:
                         st.session_state[f"sign_{suffix}"] = "+"
                     sign = st.session_state[f"sign_{suffix}"]
-                    fx, fy = xin, (y_val if sign == "+" else -y_val)
-                else: 
+                    fy = y_val if sign == "+" else -y_val
+                    with r2c1:
+                        st.markdown("<div class='small-label'>yP</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div class='val-box'>{fy:.4f}</div>", unsafe_allow_html=True)
+                    fx = xin
+                else:
                     st.error("Out of domain")
             else:
-                yin = st.number_input(f"y{label}", value=1.0, step=0.1, key=f"y_{suffix}")
+                # حالت Y
+                r1c1, r1c2, r1c3, r1c4 = st.columns([1.2, 1.2, 0.8, 0.8])
+                with r1c1:
+                    st.markdown("<div class='small-label'>yP</div>", unsafe_allow_html=True)
+                    yin = st.number_input(f"y{label}", value=1.0, step=0.1, key=f"y_{suffix}", label_visibility="collapsed")
+                with r1c2:
+                    st.markdown("<div class='small-label'>Input mode:</div>", unsafe_allow_html=True)
+                with r1c3:
+                    if st.button("X", key=f"btn_x_{suffix}", use_container_width=True):
+                        st.session_state[f"mode_{suffix}"] = "X"
+                        st.rerun()
+                with r1c4:
+                    if st.button("Y", key=f"btn_y_{suffix}", use_container_width=True):
+                        st.session_state[f"mode_{suffix}"] = "Y"
+                        st.rerun()
+
                 roots = np.roots([1, 0, a, (b - yin**2)])
                 real_roots = [r.real for r in roots if np.isreal(r)]
                 if real_roots:
-                    fx = st.selectbox(f"Select x{label}", sorted(real_roots), key=f"sel_{suffix}")
+                    r2c1, r2c2 = st.columns([1.2, 2.8])
+                    with r2c1:
+                        st.markdown("<div class='small-label'>xP</div>", unsafe_allow_html=True)
+                        fx = st.selectbox(f"Select x{label}", sorted(real_roots), key=f"sel_{suffix}", label_visibility="collapsed")
                     fy = yin
             return fx, fy
 
@@ -153,23 +203,18 @@ def run_ecc_overR():
                     ax.plot(x_line, rslo*(x_line - rpx) + rpy, color='#9b59b6', linestyle='--', alpha=0.6)
                 ax.plot([rax, rax], [-ray, ray], color='grey', linestyle=':', alpha=0.5)
                 ax.scatter([rpx], [rpy], color='red', s=50, zorder=5)
-                ax.annotate('P', xy=(rpx, rpy), xytext=(rpx+0.15, rpy+0.15),
-                            fontsize=11, fontweight='bold', color='red')
+                ax.annotate('P', xy=(rpx, rpy), xytext=(rpx+0.15, rpy+0.15), fontsize=11, fontweight='bold', color='red')
                 ax.scatter([rqx], [rqy], color='orange', s=50, zorder=5)
-                ax.annotate('Q', xy=(rqx, rqy), xytext=(rqx+0.15, rqy+0.15),
-                            fontsize=11, fontweight='bold', color='orange')
+                ax.annotate('Q', xy=(rqx, rqy), xytext=(rqx+0.15, rqy+0.15), fontsize=11, fontweight='bold', color='orange')
                 ax.scatter(rax, ray, color='green', s=100, marker='X', zorder=6)
-                ax.annotate('P+Q', xy=(rax, ray), xytext=(rax+0.15, ray+0.15),
-                            fontsize=11, fontweight='bold', color='green')
+                ax.annotate('P+Q', xy=(rax, ray), xytext=(rax+0.15, ray+0.15), fontsize=11, fontweight='bold', color='green')
 
             if 'mult_result' in st.session_state:
                 mrx, mry, mpx, mpy, mn = st.session_state['mult_result']
                 ax.scatter(mpx, mpy, color='blue', s=50, zorder=5)
-                ax.annotate('P', xy=(mpx, mpy), xytext=(mpx+0.15, mpy+0.15),
-                            fontsize=11, fontweight='bold', color='blue')
+                ax.annotate('P', xy=(mpx, mpy), xytext=(mpx+0.15, mpy+0.15), fontsize=11, fontweight='bold', color='blue')
                 ax.scatter(mrx, mry, color='purple', s=100, marker='D', zorder=6)
-                ax.annotate(f'{mn}P', xy=(mrx, mry), xytext=(mrx+0.15, mry+0.15),
-                            fontsize=11, fontweight='bold', color='purple')
+                ax.annotate(f'{mn}P', xy=(mrx, mry), xytext=(mrx+0.15, mry+0.15), fontsize=11, fontweight='bold', color='purple')
 
             ax.set_xlim([-plot_range, plot_range])
             ax.set_ylim([-plot_range, plot_range])
