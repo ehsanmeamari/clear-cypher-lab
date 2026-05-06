@@ -34,6 +34,10 @@ def run_ecc_overR():
             color: #444;
             margin-bottom: 2px;
         }
+        div[data-testid="stHorizontalBlock"] > div {
+            padding-left: 2px !important;
+            padding-right: 2px !important;
+        }
         </style>
     """, unsafe_allow_html=True)
 
