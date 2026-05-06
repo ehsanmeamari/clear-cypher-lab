@@ -81,6 +81,56 @@ def run_ecc_overR():
                     st.latex(f"y^2 = x^3 {'+' if a>=0 else ''}{a:.1f}x {'+' if b>=0 else ''}{b:.1f}")
                     st.markdown("</div>", unsafe_allow_html=True)
 
+        def get_point_input_simple(label, suffix, color, default_x=1.0):
+            # toggle mode: "x_to_y" or "y_to_x"
+            mode_key = f"simple_mode_{suffix}"
+            if mode_key not in st.session_state:
+                st.session_state[mode_key] = "x_to_y"
+            
+            mode = st.session_state[mode_key]
+            
+            # toggle button
+            toggle_label = "x → y" if mode == "x_to_y" else "y → x"
+            if st.button(f"{toggle_label}", key=f"toggle_{suffix}"):
+                st.session_state[mode_key] = "y_to_x" if mode == "x_to_y" else "x_to_y"
+                st.rerun()
+
+            fx, fy = None, None
+            c1, c2 = st.columns(2)
+
+            if mode == "x_to_y":
+                with c1:
+                    st.markdown(f"<div class='small-label'>x{label}</div>", unsafe_allow_html=True)
+                    xin = st.number_input(f"x{label}", value=default_x, step=0.1, key=f"sx_{suffix}", label_visibility="collapsed")
+                rhs = xin**3 + a*xin + b
+                if rhs > 0:
+                    y_pos = round(math.sqrt(rhs), 4)
+                    with c2:
+                        st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
+                        fy = st.selectbox(f"y{label}", [y_pos, -y_pos], key=f"sy_{suffix}", label_visibility="collapsed", format_func=lambda v: f"{v:.2f}")
+                    fx = xin
+                elif rhs == 0:
+                    with c2:
+                        st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
+                        st.markdown("<div class='val-box'>0.00</div>", unsafe_allow_html=True)
+                    fx, fy = xin, 0.0
+                else:
+                    with c2:
+                        st.error("Out of domain")
+            else:
+                with c1:
+                    st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
+                    yin = st.number_input(f"y{label}", value=1.0, step=0.1, key=f"sy2_{suffix}", label_visibility="collapsed")
+                roots = np.roots([1, 0, a, (b - yin**2)])
+                real_roots = sorted([round(r.real, 4) for r in roots if abs(r.imag) < 1e-6])
+                if real_roots:
+                    with c2:
+                        st.markdown(f"<div class='small-label'>x{label}</div>", unsafe_allow_html=True)
+                        fx = st.selectbox(f"x{label}", real_roots, key=f"sx2_{suffix}", label_visibility="collapsed", format_func=lambda v: f"{v:.2f}")
+                    fy = yin
+
+            return fx, fy
+
         def get_point_input(label, suffix, color, default_x=1.0):
             st.markdown(f"<span style='color:{color}'>●</span> **Point {label}**", unsafe_allow_html=True)
 
@@ -89,7 +139,7 @@ def run_ecc_overR():
 
             mode = st.session_state[f"mode_{suffix}"]
 
-            r1c1, r1c2, r1c3, r1c4 = st.columns([0.8, 0.4, 0.4, 0.4])
+            r1c1, r1c2, r1c3 = st.columns([0.8, 0.4, 0.4])
             with r1c1: st.markdown("<div class='small-label' style='padding-top:8px; white-space:nowrap;'>Input mode:</div>", unsafe_allow_html=True)
             with r1c2:
                 if st.button("X", key=f"btn_x_{suffix}", use_container_width=True):
@@ -106,7 +156,6 @@ def run_ecc_overR():
                 with r2c1:
                     st.markdown(f"<div class='small-label'>x{label}</div>", unsafe_allow_html=True)
                     xin = st.number_input(f"x{label}", value=default_x, step=0.1, key=f"x_{suffix}", label_visibility="collapsed")
-                
                 rhs = xin**3 + a*xin + b
                 if rhs > 0:
                     y_pos = round(math.sqrt(rhs), 6)
@@ -122,7 +171,7 @@ def run_ecc_overR():
                         inner_col, _ = st.columns([1, 1])
                         with inner_col:
                             st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
-                            st.markdown(f"<div class='val-box'>0.0000</div>", unsafe_allow_html=True)
+                            st.markdown(f"<div class='val-box'>0.00</div>", unsafe_allow_html=True)
                     fx, fy = xin, 0.0
                 else:
                     st.error("Out of domain")
@@ -131,7 +180,6 @@ def run_ecc_overR():
                 with r2c1:
                     st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
                     yin = st.number_input(f"y{label}", value=1.0, step=0.1, key=f"y_{suffix}", label_visibility="collapsed")
-                
                 roots = np.roots([1, 0, a, (b - yin**2)])
                 real_roots = sorted([round(r.real, 6) for r in roots if abs(r.imag) < 1e-6])
                 if real_roots:
@@ -145,15 +193,101 @@ def run_ecc_overR():
             return fx, fy
 
         with st.expander("Point Addition", expanded=False):
-            col_p, col_q = st.columns(2)
-            with col_p: px_add, py_add = get_point_input("P", "add_p", "red", default_x=1.0)
-            with col_q: qx_add, qy_add = get_point_input("Q", "add_q", "orange", default_x=0.0)
-            
-            if px_add is not None and qx_add is not None:
-                res_add_x, res_add_y, add_slope = add_points(px_add, py_add, qx_add, qy_add, a)
+            # ردیف اول: label ها
+            h1, h2, h3, h4 = st.columns(4)
+            with h1: st.latex("x_P")
+            with h2: st.latex("y_P")
+            with h3: st.latex("x_Q")
+            with h4: st.latex("y_Q")
+
+            # مقداردهی P
+            if "pa_mode_p" not in st.session_state:
+                st.session_state["pa_mode_p"] = "x_to_y"
+            if "pa_mode_q" not in st.session_state:
+                st.session_state["pa_mode_q"] = "x_to_y"
+
+            c1, c2, c3, c4 = st.columns(4)
+
+            # Point P
+            with c1:
+                if st.session_state["pa_mode_p"] == "x_to_y":
+                    xp = st.number_input("xP", value=1.0, step=0.1, key="pa_xp", label_visibility="collapsed")
+                else:
+                    rhs_toggle = None
+                    xp = None
+                    st.markdown("<div class='val-box'>←</div>", unsafe_allow_html=True)
+
+            with c2:
+                if st.session_state["pa_mode_p"] == "x_to_y":
+                    rhs_p = xp**3 + a*xp + b if xp is not None else -1
+                    if rhs_p > 0:
+                        y_pos_p = round(math.sqrt(rhs_p), 4)
+                        yp = st.selectbox("yP", [y_pos_p, -y_pos_p], key="pa_yp", label_visibility="collapsed", format_func=lambda v: f"{v:.2f}")
+                    elif rhs_p == 0:
+                        st.markdown("<div class='val-box'>0.00</div>", unsafe_allow_html=True)
+                        yp = 0.0
+                    else:
+                        st.error("∅")
+                        yp = None
+                        xp = None
+                else:
+                    yp = st.number_input("yP", value=1.0, step=0.1, key="pa_yp2", label_visibility="collapsed")
+                    roots_p = np.roots([1, 0, a, (b - yp**2)])
+                    real_p = sorted([round(r.real, 4) for r in roots_p if abs(r.imag) < 1e-6])
+                    if real_p:
+                        xp = st.selectbox("xP sel", real_p, key="pa_xp_sel", label_visibility="collapsed", format_func=lambda v: f"{v:.2f}")
+                    else:
+                        xp = None
+
+            # toggle P
+            with c1:
+                toggle_p = "x→y" if st.session_state["pa_mode_p"] == "x_to_y" else "y→x"
+                if st.button(toggle_p, key="pa_toggle_p", use_container_width=True):
+                    st.session_state["pa_mode_p"] = "y_to_x" if st.session_state["pa_mode_p"] == "x_to_y" else "x_to_y"
+                    st.rerun()
+
+            # Point Q
+            with c3:
+                if st.session_state["pa_mode_q"] == "x_to_y":
+                    xq = st.number_input("xQ", value=0.0, step=0.1, key="pa_xq", label_visibility="collapsed")
+                else:
+                    xq = None
+                    st.markdown("<div class='val-box'>←</div>", unsafe_allow_html=True)
+
+            with c4:
+                if st.session_state["pa_mode_q"] == "x_to_y":
+                    rhs_q = xq**3 + a*xq + b if xq is not None else -1
+                    if rhs_q > 0:
+                        y_pos_q = round(math.sqrt(rhs_q), 4)
+                        yq = st.selectbox("yQ", [y_pos_q, -y_pos_q], key="pa_yq", label_visibility="collapsed", format_func=lambda v: f"{v:.2f}")
+                    elif rhs_q == 0:
+                        st.markdown("<div class='val-box'>0.00</div>", unsafe_allow_html=True)
+                        yq = 0.0
+                    else:
+                        st.error("∅")
+                        yq = None
+                        xq = None
+                else:
+                    yq = st.number_input("yQ", value=1.0, step=0.1, key="pa_yq2", label_visibility="collapsed")
+                    roots_q = np.roots([1, 0, a, (b - yq**2)])
+                    real_q = sorted([round(r.real, 4) for r in roots_q if abs(r.imag) < 1e-6])
+                    if real_q:
+                        xq = st.selectbox("xQ sel", real_q, key="pa_xq_sel", label_visibility="collapsed", format_func=lambda v: f"{v:.2f}")
+                    else:
+                        xq = None
+
+            # toggle Q
+            with c3:
+                toggle_q = "x→y" if st.session_state["pa_mode_q"] == "x_to_y" else "y→x"
+                if st.button(toggle_q, key="pa_toggle_q", use_container_width=True):
+                    st.session_state["pa_mode_q"] = "y_to_x" if st.session_state["pa_mode_q"] == "x_to_y" else "x_to_y"
+                    st.rerun()
+
+            if xp is not None and xq is not None and yp is not None and yq is not None:
+                res_add_x, res_add_y, add_slope = add_points(xp, yp, xq, yq, a)
                 if res_add_x is not None:
                     st.info(f"P + Q = ({res_add_x:.2f}, {res_add_y:.2f})")
-                    st.session_state['add_result'] = (res_add_x, res_add_y, add_slope, px_add, py_add, qx_add, qy_add)
+                    st.session_state['add_result'] = (res_add_x, res_add_y, add_slope, xp, yp, xq, yq)
                 else:
                     st.info("Result: Point at Infinity")
                     st.session_state.pop('add_result', None)
