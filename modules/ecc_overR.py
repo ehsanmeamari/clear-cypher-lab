@@ -98,6 +98,10 @@ def run_ecc_overR():
                     st.latex(f"y^2 = x^3 {'+' if a>=0 else ''}{a:.1f}x {'+' if b>=0 else ''}{b:.1f}")
                     st.markdown("</div>", unsafe_allow_html=True)
 
+        # Track which section was last updated
+        if "last_updated" not in st.session_state:
+            st.session_state["last_updated"] = None
+
         with st.expander("Point Addition", expanded=False):
             if "pa_mode_p" not in st.session_state:
                 st.session_state["pa_mode_p"] = "x_to_y"
@@ -109,6 +113,9 @@ def run_ecc_overR():
             with h2: st.latex("y_P")
             with h3: st.latex("x_Q")
             with h4: st.latex("y_Q")
+
+            # Save previous PA values for change detection
+            prev_pa = st.session_state.get("prev_pa_vals", None)
 
             c1, c2, c3, c4 = st.columns(4)
 
@@ -183,6 +190,12 @@ def run_ecc_overR():
                     st.rerun()
 
             if xp is not None and xq is not None and yp is not None and yq is not None:
+                # Detect if PA inputs changed → mark as last updated
+                curr_pa = (xp, yp, xq, yq)
+                if prev_pa != curr_pa:
+                    st.session_state["prev_pa_vals"] = curr_pa
+                    st.session_state["last_updated"] = "pa"
+
                 res_add_x, res_add_y, add_slope = add_points(xp, yp, xq, yq, a)
                 if res_add_x is not None:
                     st.info(f"P + Q = ({res_add_x:.2f}, {res_add_y:.2f})")
@@ -199,6 +212,9 @@ def run_ecc_overR():
             with h1: st.latex("x_P")
             with h2: st.latex("y_P")
             with h3: st.latex("n")
+
+            # Save previous SM values for change detection
+            prev_sm = st.session_state.get("prev_sm_vals", None)
 
             c1, c2, c3, c4 = st.columns(4)
 
@@ -241,6 +257,12 @@ def run_ecc_overR():
                 n_val = st.number_input("n_val", min_value=1, value=2, key="scalar_n", label_visibility="collapsed")
 
             if px_s is not None and py_s is not None:
+                # Detect if SM inputs changed → mark as last updated
+                curr_sm = (px_s, py_s, n_val)
+                if prev_sm != curr_sm:
+                    st.session_state["prev_sm_vals"] = curr_sm
+                    st.session_state["last_updated"] = "sm"
+
                 rx, ry = scalar_mult(n_val, px_s, py_s, a)
                 if rx is not None:
                     st.info(f"{n_val}P = ({rx:.2f}, {ry:.2f})")
@@ -256,7 +278,7 @@ def run_ecc_overR():
             y_m, x_m = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
             ax.contour(x_m.ravel(), y_m.ravel(), y_m**2 - x_m**3 - a*x_m - b, [0], colors='#3498db')
 
-            if 'add_result' in st.session_state:
+            if 'add_result' in st.session_state and st.session_state.get("last_updated") == "pa":
                 rax, ray, rslo, rpx, rpy, rqx, rqy = st.session_state['add_result']
                 if rslo is not None:
                     x_line = np.array([-plot_range, plot_range])
@@ -269,7 +291,7 @@ def run_ecc_overR():
                 ax.scatter(rax, ray, color='green', s=100, marker='X', zorder=6)
                 ax.annotate('P+Q', xy=(rax, ray), xytext=(rax+0.15, ray+0.15), fontsize=11, fontweight='bold', color='green')
 
-            if 'mult_result' in st.session_state:
+            if 'mult_result' in st.session_state and st.session_state.get("last_updated") == "sm":
                 mrx, mry, mpx, mpy, mn = st.session_state['mult_result']
                 ax.scatter(mpx, mpy, color='blue', s=50, zorder=5)
                 ax.annotate('P', xy=(mpx, mpy), xytext=(mpx+0.15, mpy+0.15), fontsize=11, fontweight='bold', color='blue')
