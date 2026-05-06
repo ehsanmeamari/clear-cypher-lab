@@ -89,7 +89,7 @@ def run_ecc_overR():
 
             mode = st.session_state[f"mode_{suffix}"]
 
-            r1c1, r1c2, r1c3 = st.columns([1, 0.4, 0.3])
+            r1c1, r1c2, r1c3, r1c4 = st.columns([1, 0.4, 0.3, 0.4])
             with r1c1: st.markdown("<div class='small-label' style='padding-top:8px; white-space:nowrap;'>Input mode:</div>", unsafe_allow_html=True)
             with r1c2:
                 if st.button("X", key=f"btn_x_{suffix}", use_container_width=True):
