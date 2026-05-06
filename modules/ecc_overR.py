@@ -152,7 +152,7 @@ def run_ecc_overR():
             if px_add is not None and qx_add is not None:
                 res_add_x, res_add_y, add_slope = add_points(px_add, py_add, qx_add, qy_add, a)
                 if res_add_x is not None:
-                    st.info(f"P + Q = ({res_add_x:.3f}, {res_add_y:.3f})")
+                    st.info(f"P + Q = ({res_add_x:.2f}, {res_add_y:.2f})")
                     st.session_state['add_result'] = (res_add_x, res_add_y, add_slope, px_add, py_add, qx_add, qy_add)
                 else:
                     st.info("Result: Point at Infinity")
