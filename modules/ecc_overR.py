@@ -65,16 +65,40 @@ def run_ecc_overR():
 
         def get_point_input(label, suffix, color, default_x=1.0):
             st.markdown(f"<span style='color:{color}'>●</span> **Point {label}**", unsafe_allow_html=True)
-            mode = st.radio(f"Input mode {label}", ["X", "Y"], key=f"m_{suffix}", horizontal=True)
+            
+            row = st.columns([2, 1, 1])
+            with row[0]: st.markdown("<div style='padding-top:8px; font-size:14px;'>Input mode:</div>", unsafe_allow_html=True)
+            with row[1]: btn_x = st.button("X", key=f"btn_x_{suffix}", use_container_width=True)
+            with row[2]: btn_y = st.button("Y", key=f"btn_y_{suffix}", use_container_width=True)
+
+            if btn_x:
+                st.session_state[f"mode_{suffix}"] = "X"
+            if btn_y:
+                st.session_state[f"mode_{suffix}"] = "Y"
+            if f"mode_{suffix}" not in st.session_state:
+                st.session_state[f"mode_{suffix}"] = "X"
+            mode = st.session_state[f"mode_{suffix}"]
+
             fx, fy = None, None
             if mode == "X":
                 xin = st.number_input(f"x{label}", value=default_x, step=0.1, key=f"x_{suffix}")
                 rhs = xin**3 + a*xin + b
                 if rhs >= 0:
                     y_val = math.sqrt(rhs)
-                    sign = st.radio(f"Sign y{label}", ["+", "-"], key=f"s_{suffix}", horizontal=True)
+                    sign_row = st.columns([2, 1, 1])
+                    with sign_row[0]: st.markdown("<div style='padding-top:8px; font-size:14px;'>Sign y:</div>", unsafe_allow_html=True)
+                    with sign_row[1]:
+                        if st.button("+", key=f"sign_p_{suffix}", use_container_width=True):
+                            st.session_state[f"sign_{suffix}"] = "+"
+                    with sign_row[2]:
+                        if st.button("-", key=f"sign_m_{suffix}", use_container_width=True):
+                            st.session_state[f"sign_{suffix}"] = "-"
+                    if f"sign_{suffix}" not in st.session_state:
+                        st.session_state[f"sign_{suffix}"] = "+"
+                    sign = st.session_state[f"sign_{suffix}"]
                     fx, fy = xin, (y_val if sign == "+" else -y_val)
-                else: st.error("Out of domain")
+                else: 
+                    st.error("Out of domain")
             else:
                 yin = st.number_input(f"y{label}", value=1.0, step=0.1, key=f"y_{suffix}")
                 roots = np.roots([1, 0, a, (b - yin**2)])
