@@ -91,7 +91,6 @@ def run_ecc_overR():
 
             mode = st.session_state[f"mode_{suffix}"]
 
-            # خط اول: Input mode: [X] [Y]    Sign y: [+] [-]
             r1c1, r1c2, r1c3, r1c4, r1c5, r1c6, r1c7 = st.columns([1, 0.5, 0.5, 0.3, 1, 0.5, 0.5])
             with r1c1: st.markdown("<div class='small-label' style='padding-top:8px'>Input mode:</div>", unsafe_allow_html=True)
             with r1c2:
@@ -114,10 +113,9 @@ def run_ecc_overR():
 
             fx, fy = None, None
             if mode == "X":
-                # خط دوم: xP | yP
                 r2c1, r2c2 = st.columns(2)
                 with r2c1:
-                    st.markdown("<div class='small-label'>xP</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div class='small-label'>x{label}</div>", unsafe_allow_html=True)
                     xin = st.number_input(f"x{label}", value=default_x, step=0.1, key=f"x_{suffix}", label_visibility="collapsed")
                 
                 rhs = xin**3 + a*xin + b
@@ -126,7 +124,7 @@ def run_ecc_overR():
                     sign = st.session_state[f"sign_{suffix}"]
                     fy = y_val if sign == "+" else -y_val
                     with r2c2:
-                        st.markdown("<div class='small-label'>yP</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
                         st.markdown(f"<div class='val-box'>{fy:.2f}</div>", unsafe_allow_html=True)
                     fx = xin
                 else:
@@ -134,14 +132,14 @@ def run_ecc_overR():
             else:
                 r2c1, r2c2 = st.columns(2)
                 with r2c1:
-                    st.markdown("<div class='small-label'>yQ</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
                     yin = st.number_input(f"y{label}", value=1.0, step=0.1, key=f"y_{suffix}", label_visibility="collapsed")
                 
                 roots = np.roots([1, 0, a, (b - yin**2)])
                 real_roots = [r.real for r in roots if np.isreal(r)]
                 if real_roots:
                     with r2c2:
-                        st.markdown("<div class='small-label'>xQ</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div class='small-label'>x{label}</div>", unsafe_allow_html=True)
                         fx = st.selectbox(f"Select x{label}", sorted(real_roots), key=f"sel_{suffix}", label_visibility="collapsed")
                     fy = yin
 
