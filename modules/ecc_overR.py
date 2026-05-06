@@ -134,14 +134,14 @@ def run_ecc_overR():
             else:
                 r2c1, r2c2 = st.columns(2)
                 with r2c1:
-                    st.markdown("<div class='small-label'>yP</div>", unsafe_allow_html=True)
+                    st.markdown("<div class='small-label'>yQ</div>", unsafe_allow_html=True)
                     yin = st.number_input(f"y{label}", value=1.0, step=0.1, key=f"y_{suffix}", label_visibility="collapsed")
                 
                 roots = np.roots([1, 0, a, (b - yin**2)])
                 real_roots = [r.real for r in roots if np.isreal(r)]
                 if real_roots:
                     with r2c2:
-                        st.markdown("<div class='small-label'>xP</div>", unsafe_allow_html=True)
+                        st.markdown("<div class='small-label'>xQ</div>", unsafe_allow_html=True)
                         fx = st.selectbox(f"Select x{label}", sorted(real_roots), key=f"sel_{suffix}", label_visibility="collapsed")
                     fy = yin
 
