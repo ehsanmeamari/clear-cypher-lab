@@ -124,16 +124,20 @@ def run_ecc_overR():
                     sign = st.session_state[f"sign_{suffix}"]
                     fy = y_val if sign == "+" else -y_val
                     with r2c2:
-                        st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
-                        st.markdown(f"<div class='val-box'>{fy:.2f}</div>", unsafe_allow_html=True)
+                        inner_col, _ = st.columns([1, 1])
+                        with inner_col:
+                            st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
+                            st.markdown(f"<div class='val-box'>{fy:.2f}</div>", unsafe_allow_html=True)
                     fx = xin
                 else:
                     st.error("Out of domain")
             else:
                 r2c1, r2c2 = st.columns([1, 3])
-                with r2c1:
-                    st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
-                    yin = st.number_input(f"y{label}", value=1.0, step=0.1, key=f"y_{suffix}", label_visibility="collapsed")
+                with r2c2:
+                    inner_col, _ = st.columns([1, 1])
+                    with inner_col:
+                        st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div class='val-box'>{fy:.2f}</div>", unsafe_allow_html=True)
                 
                 roots = np.roots([1, 0, a, (b - yin**2)])
                 real_roots = [r.real for r in roots if np.isreal(r)]
