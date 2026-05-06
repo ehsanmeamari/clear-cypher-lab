@@ -92,7 +92,7 @@ def run_ecc_overR():
             mode = st.session_state[f"mode_{suffix}"]
 
             r1c1, r1c2, r1c3, r1c4, r1c5, r1c6, r1c7 = st.columns([1, 0.5, 0.5, 0.3, 1, 0.5, 0.5])
-            with r1c1: st.markdown("<div class='small-label' style='padding-top:8px'>Input mode:</div>", unsafe_allow_html=True)
+            with r1c1: st.markdown("<div class='small-label' style='padding-top:8px; white-space:nowrap;'>Input mode:</div>", unsafe_allow_html=True)
             with r1c2:
                 if st.button("X", key=f"btn_x_{suffix}", use_container_width=True):
                     st.session_state[f"mode_{suffix}"] = "X"
@@ -133,18 +133,18 @@ def run_ecc_overR():
                     st.error("Out of domain")
             else:
                 r2c1, r2c2 = st.columns([1, 3])
-                with r2c2:
-                    inner_col, _ = st.columns([1, 1])
-                    with inner_col:
-                        st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
-                        st.markdown(f"<div class='val-box'>{fy:.2f}</div>", unsafe_allow_html=True)
+                with r2c1:
+                    st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
+                    yin = st.number_input(f"y{label}", value=1.0, step=0.1, key=f"y_{suffix}", label_visibility="collapsed")
                 
                 roots = np.roots([1, 0, a, (b - yin**2)])
                 real_roots = [r.real for r in roots if np.isreal(r)]
                 if real_roots:
                     with r2c2:
-                        st.markdown(f"<div class='small-label'>x{label}</div>", unsafe_allow_html=True)
-                        fx = st.selectbox(f"Select x{label}", sorted(real_roots), key=f"sel_{suffix}", label_visibility="collapsed")
+                        inner_col, _ = st.columns([1, 1])
+                        with inner_col:
+                            st.markdown(f"<div class='small-label'>x{label}</div>", unsafe_allow_html=True)
+                            fx = st.selectbox(f"Select x{label}", sorted(real_roots), key=f"sel_{suffix}", label_visibility="collapsed")
                     fy = yin
 
             return fx, fy
