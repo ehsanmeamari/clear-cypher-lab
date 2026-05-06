@@ -40,13 +40,19 @@ def run_ecc_overR():
     col_left, col_right = st.columns([2, 2])
     
     def add_points(x1, y1, x2, y2, a):
-        if x1 is None: return None, None, None
-        if x2 is None: return None, None, None
+        # Handle point at infinity (identity element)
+        if x1 is None:
+            return x2, y2, None
+        if x2 is None:
+            return x1, y1, None
         try:
             if abs(x1 - x2) < 1e-9 and abs(y1 - y2) < 1e-9:
-                if abs(y1) < 1e-9: return None, None, None
+                # Point doubling
+                if abs(y1) < 1e-9:
+                    return None, None, None  # 2P = infinity when y = 0
                 s = (3 * x1**2 + a) / (2 * y1)
             elif abs(x1 - x2) < 1e-9:
+                # P + (-P) = infinity
                 return None, None, None
             else:
                 s = (y2 - y1) / (x2 - x1)
@@ -57,13 +63,24 @@ def run_ecc_overR():
             return None, None, None
 
     def scalar_mult(n, px, py, a):
-        qx, qy = px, py
-        rx, ry = None, None
+        """
+        Double-and-add algorithm for scalar multiplication on ECC.
+        None represents the point at infinity (identity element).
+        """
+        qx, qy = px, py   # current doubling point
+        rx, ry = None, None  # accumulator, starts at infinity
         n = int(n)
         while n > 0:
             if n % 2 == 1:
-                res = add_points(rx, ry, qx, qy, a)
-                rx, ry = res[0], res[1]
+                if rx is None:
+                    # R = O + Q = Q
+                    rx, ry = qx, qy
+                else:
+                    res = add_points(rx, ry, qx, qy, a)
+                    rx, ry = res[0], res[1]
+            # Double Q
+            if qx is None:
+                break
             res_double = add_points(qx, qy, qx, qy, a)
             qx, qy = res_double[0], res_double[1]
             n //= 2
