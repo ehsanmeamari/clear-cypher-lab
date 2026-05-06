@@ -16,6 +16,10 @@ def run_ecc_overR():
             border-radius: 5px;
             background-color: transparent;
         }
+        button[data-testid="stNumberInputStepDown"],
+        button[data-testid="stNumberInputStepUp"] {
+            display: none !important;
+        }
         </style>
     """, unsafe_allow_html=True)
 
