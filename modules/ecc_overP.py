@@ -54,22 +54,6 @@ def ecc_fp():
             margin-bottom: 4px;
             color: black;
         }
-        .label-with-prefix {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-family: 'Crimson Text', 'Georgia', serif;
-            font-style: italic;
-            margin-bottom: 4px;
-            color: black;
-            gap: 2px;
-        }
-        .sym {
-            font-style: normal;
-            font-size: 20px;
-            font-family: 'Crimson Text', 'Georgia', serif;
-        }
         </style>
     """, unsafe_allow_html=True)
 
@@ -111,16 +95,16 @@ def ecc_fp():
             with st.expander("Point Addition", expanded=True):
                 c1, c2, c3, c4 = st.columns(4)
                 with c1:
-                    st.markdown("<div class='label-with-prefix'><span class='sym'>(</span><i>x</i><sub>P</sub><span class='sym'>,</span></div>", unsafe_allow_html=True)
+                    st.markdown("<div class='centered-label'><i>x</i><sub>P</sub></div>", unsafe_allow_html=True)
                     xP = st.number_input("xP", value=0, key="xP", label_visibility="collapsed")
                 with c2:
-                    st.markdown("<div class='label-with-prefix'><i>y</i><sub>P</sub><span class='sym'>)+(</span></div>", unsafe_allow_html=True)
+                    st.markdown("<div class='centered-label'><i>y</i><sub>P</sub></div>", unsafe_allow_html=True)
                     yP = st.number_input("yP", value=8, key="yP", label_visibility="collapsed")
                 with c3:
-                    st.markdown("<div class='label-with-prefix'><i>x</i><sub>Q</sub><span class='sym'>,</span></div>", unsafe_allow_html=True)
+                    st.markdown("<div class='centered-label'><i>x</i><sub>Q</sub></div>", unsafe_allow_html=True)
                     xQ = st.number_input("xQ", value=0, key="xQ", label_visibility="collapsed")
                 with c4:
-                    st.markdown("<div class='label-with-prefix'><i>y</i><sub>Q</sub><span class='sym'>)</span></div>", unsafe_allow_html=True)
+                    st.markdown("<div class='centered-label'><i>y</i><sub>Q</sub></div>", unsafe_allow_html=True)
                     yQ = st.number_input("yQ", value=9, key="yQ", label_visibility="collapsed")
 
                 P = (xP % p, yP % p)
@@ -142,13 +126,13 @@ def ecc_fp():
             with st.expander("Scalar Multiplication", expanded=True):
                 c1, c2, c3 = st.columns(3)
                 with c1:
-                    st.markdown("<div class='label-with-prefix'><i>n</i><span class='sym'>×(</span></div>", unsafe_allow_html=True)
+                    st.markdown("<div class='centered-label'><i>n</i></div>", unsafe_allow_html=True)
                     n_val = st.number_input("n", value=3, key="n_s", label_visibility="collapsed")
                 with c2:
-                    st.markdown("<div class='label-with-prefix'><i>x</i><sub>P</sub><span class='sym'>,</span></div>", unsafe_allow_html=True)
+                    st.markdown("<div class='centered-label'><i>x</i><sub>P</sub></div>", unsafe_allow_html=True)
                     xPs = st.number_input("xP", value=0, key="xP_s", label_visibility="collapsed")
                 with c3:
-                    st.markdown("<div class='label-with-prefix'><i>y</i><sub>P</sub><span class='sym'>)</span></div>", unsafe_allow_html=True)
+                    st.markdown("<div class='centered-label'><i>y</i><sub>P</sub></div>", unsafe_allow_html=True)
                     yPs = st.number_input("yP", value=8, key="yP_s", label_visibility="collapsed")
 
                 Ps = (xPs % p, yPs % p)
