@@ -57,6 +57,10 @@ def ecc_fp():
         </style>
     """, unsafe_allow_html=True)
 
+    # Initialize last_updated tracking
+    if "last_updated" not in st.session_state:
+        st.session_state["last_updated"] = None
+
     points_list = []
     col1, col2 = st.columns([2, 2])
 
@@ -114,6 +118,13 @@ def ecc_fp():
                 p_on = is_on_curve(P, a, b, p)
                 q_on = is_on_curve(Q, a, b, p)
 
+                # Detect PA change
+                prev_pa = st.session_state.get("prev_pa_vals", None)
+                curr_pa = (xP, yP, xQ, yQ, p, a, b)
+                if prev_pa != curr_pa:
+                    st.session_state["prev_pa_vals"] = curr_pa
+                    st.session_state["last_updated"] = "pa"
+
                 if p_on and q_on:
                     R_add = point_add(P, Q, a, p)
                     xR_val = str(R_add[0]) if R_add else "\\infty"
@@ -137,6 +148,14 @@ def ecc_fp():
 
                 Ps = (xPs % p, yPs % p)
                 Rs_mul = None
+
+                # Detect SM change
+                prev_sm = st.session_state.get("prev_sm_vals", None)
+                curr_sm = (n_val, xPs, yPs, p, a, b)
+                if prev_sm != curr_sm:
+                    st.session_state["prev_sm_vals"] = curr_sm
+                    st.session_state["last_updated"] = "sm"
+
                 if is_on_curve(Ps, a, b, p):
                     Rs_mul = scalar_mul(n_val, Ps, a, p)
                     xR_val = str(Rs_mul[0]) if Rs_mul else "\\infty"
@@ -147,23 +166,40 @@ def ecc_fp():
         with st.expander("Curve Visualization", expanded=True):
             if points_list:
                 fig, ax = plt.subplots(figsize=(6, 6))
-                px, py = zip(*points_list)
-                ax.scatter(px, py, facecolors='none', edgecolors='#3498db', s=50, linewidth=1.5)
+                px_pts, py_pts = zip(*points_list)
+                ax.scatter(px_pts, py_pts, facecolors='none', edgecolors='#3498db', s=50, linewidth=1.5)
 
-                if is_on_curve(P, a, b, p):
-                    ax.scatter(P[0], P[1], color='#f1c40f', s=100, zorder=5)
-                    ax.annotate('P', xy=(P[0], P[1]), xytext=(P[0]+0.3, P[1]+0.3),
-                                fontsize=12, fontweight='bold', color='#f1c40f')
+                last = st.session_state.get("last_updated")
 
-                if is_on_curve(Q, a, b, p):
-                    ax.scatter(Q[0], Q[1], color='#e74c3c', s=100, zorder=5)
-                    ax.annotate('Q', xy=(Q[0], Q[1]), xytext=(Q[0]+0.3, Q[1]+0.3),
-                                fontsize=12, fontweight='bold', color='#e74c3c')
+                # Show Point Addition points
+                if last == "pa":
+                    if is_on_curve(P, a, b, p):
+                        ax.scatter(P[0], P[1], color='#f1c40f', s=100, zorder=5)
+                        ax.annotate('P', xy=(P[0], P[1]), xytext=(P[0]+0.3, P[1]+0.3),
+                                    fontsize=12, fontweight='bold', color='#f1c40f')
 
-                if R_add:
-                    ax.scatter(R_add[0], R_add[1], color='#2ecc71', s=150, marker='X', zorder=6)
-                    ax.annotate('P+Q', xy=(R_add[0], R_add[1]), xytext=(R_add[0]+0.3, R_add[1]+0.3),
-                                fontsize=12, fontweight='bold', color='#2ecc71')
+                    if is_on_curve(Q, a, b, p):
+                        ax.scatter(Q[0], Q[1], color='#e74c3c', s=100, zorder=5)
+                        ax.annotate('Q', xy=(Q[0], Q[1]), xytext=(Q[0]+0.3, Q[1]+0.3),
+                                    fontsize=12, fontweight='bold', color='#e74c3c')
+
+                    if R_add:
+                        ax.scatter(R_add[0], R_add[1], color='#2ecc71', s=150, marker='X', zorder=6)
+                        ax.annotate('P+Q', xy=(R_add[0], R_add[1]), xytext=(R_add[0]+0.3, R_add[1]+0.3),
+                                    fontsize=12, fontweight='bold', color='#2ecc71')
+
+                # Show Scalar Multiplication points
+                elif last == "sm":
+                    if is_on_curve(Ps, a, b, p):
+                        ax.scatter(Ps[0], Ps[1], color='#3498db', s=100, zorder=5)
+                        ax.annotate('P', xy=(Ps[0], Ps[1]), xytext=(Ps[0]+0.3, Ps[1]+0.3),
+                                    fontsize=12, fontweight='bold', color='#3498db')
+
+                    if Rs_mul:
+                        ax.scatter(Rs_mul[0], Rs_mul[1], color='#9b59b6', s=150, marker='D', zorder=6)
+                        ax.annotate(f'{n_val}P', xy=(Rs_mul[0], Rs_mul[1]),
+                                    xytext=(Rs_mul[0]+0.3, Rs_mul[1]+0.3),
+                                    fontsize=12, fontweight='bold', color='#9b59b6')
 
                 ax.set_title(f"Points on Elliptic Curve over F_{p}", fontsize=12)
                 ax.xaxis.set_major_locator(MaxNLocator(nbins=5, integer=True))
