@@ -22,14 +22,14 @@ def run_ecc_overR():
     col_left, col_right = st.columns([2, 2])
     
     def add_points(x1, y1, x2, y2, a):
-        if x1 is None: return x2, y2
-        if x2 is None: return x1, y1
+        if x1 is None: return None, None, None
+        if x2 is None: return None, None, None
         try:
             if abs(x1 - x2) < 1e-9 and abs(y1 - y2) < 1e-9:
-                if abs(y1) < 1e-9: return None, None
+                if abs(y1) < 1e-9: return None, None, None
                 s = (3 * x1**2 + a) / (2 * y1)
             elif abs(x1 - x2) < 1e-9:
-                return None, None
+                return None, None, None
             else:
                 s = (y2 - y1) / (x2 - x1)
             xr = s**2 - x1 - x2
@@ -84,27 +84,32 @@ def run_ecc_overR():
                     fy = yin
             return fx, fy
 
-        show_add = False
         with st.expander("Point Addition", expanded=False):
             col_p, col_q = st.columns(2)
             with col_p: px_add, py_add = get_point_input("P", "add_p", "red", default_x=1.0)
             with col_q: qx_add, qy_add = get_point_input("Q", "add_q", "orange", default_x=0.0)
-            if st.button("Calculate P + Q", use_container_width=True):
-                show_add = True
+            
+            if px_add is not None and qx_add is not None:
                 res_add_x, res_add_y, add_slope = add_points(px_add, py_add, qx_add, qy_add, a)
                 if res_add_x is not None:
+                    st.latex(f"P + Q = ({res_add_x:.3f},\\ {res_add_y:.3f})")
                     st.session_state['add_result'] = (res_add_x, res_add_y, add_slope, px_add, py_add, qx_add, qy_add)
-                else: st.error("Point at Infinity")
+                else:
+                    st.info("Result: Point at Infinity")
+                    st.session_state.pop('add_result', None)
 
-        show_mult = False
         with st.expander("Scalar Multiplication", expanded=False):
             px_s, py_s = get_point_input("P", "scaler", "blue", default_x=1.0)
             n_val = st.number_input("Multiplier (n)", min_value=1, value=2)
-            if st.button(f"Calculate {n_val}P", use_container_width=True):
-                show_mult = True
+            
+            if px_s is not None:
                 rx, ry = scalar_mult(n_val, px_s, py_s, a)
                 if rx is not None:
+                    st.latex(f"{n_val}P = ({rx:.3f},\\ {ry:.3f})")
                     st.session_state['mult_result'] = (rx, ry, px_s, py_s, n_val)
+                else:
+                    st.info("Result: Point at Infinity")
+                    st.session_state.pop('mult_result', None)
 
     with col_right:
         with st.expander("Curve Visualization", expanded=False):
@@ -113,10 +118,11 @@ def run_ecc_overR():
             y_m, x_m = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
             ax.contour(x_m.ravel(), y_m.ravel(), y_m**2 - x_m**3 - a*x_m - b, [0], colors='#3498db')
 
-            if show_add and 'add_result' in st.session_state:
+            if 'add_result' in st.session_state:
                 rax, ray, rslo, rpx, rpy, rqx, rqy = st.session_state['add_result']
-                x_line = np.array([-plot_range, plot_range])
-                ax.plot(x_line, rslo*(x_line - rpx) + rpy, color='#9b59b6', linestyle='--', alpha=0.6)
+                if rslo is not None:
+                    x_line = np.array([-plot_range, plot_range])
+                    ax.plot(x_line, rslo*(x_line - rpx) + rpy, color='#9b59b6', linestyle='--', alpha=0.6)
                 ax.plot([rax, rax], [-ray, ray], color='grey', linestyle=':', alpha=0.5)
                 ax.scatter([rpx], [rpy], color='red', s=50, zorder=5)
                 ax.annotate('P', xy=(rpx, rpy), xytext=(rpx+0.15, rpy+0.15),
@@ -128,7 +134,7 @@ def run_ecc_overR():
                 ax.annotate('P+Q', xy=(rax, ray), xytext=(rax+0.15, ray+0.15),
                             fontsize=11, fontweight='bold', color='green')
 
-            if show_mult and 'mult_result' in st.session_state:
+            if 'mult_result' in st.session_state:
                 mrx, mry, mpx, mpy, mn = st.session_state['mult_result']
                 ax.scatter(mpx, mpy, color='blue', s=50, zorder=5)
                 ax.annotate('P', xy=(mpx, mpy), xytext=(mpx+0.15, mpy+0.15),
