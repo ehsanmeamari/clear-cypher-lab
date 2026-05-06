@@ -115,7 +115,7 @@ def run_ecc_overR():
                         inner_col, _ = st.columns([1, 1])
                         with inner_col:
                             st.markdown(f"<div class='small-label'>y{label}</div>", unsafe_allow_html=True)
-                            fy = st.selectbox(f"y{label}", y_options, key=f"sel_y_{suffix}", label_visibility="collapsed", format_func=lambda v: f"{v:.4f}")
+                            fy = st.selectbox(f"y{label}", y_options, key=f"sel_y_{suffix}", label_visibility="collapsed", format_func=lambda v: f"{v:.2f}")
                     fx = xin
                 elif rhs == 0:
                     with r2c2:
@@ -139,7 +139,7 @@ def run_ecc_overR():
                         inner_col, _ = st.columns([1, 1])
                         with inner_col:
                             st.markdown(f"<div class='small-label'>x{label}</div>", unsafe_allow_html=True)
-                            fx = st.selectbox(f"x{label}", real_roots, key=f"sel_{suffix}", label_visibility="collapsed", format_func=lambda v: f"{v:.4f}")
+                            fx = st.selectbox(f"x{label}", real_roots, key=f"sel_{suffix}", label_visibility="collapsed", format_func=lambda v: f"{v:.2f}")
                     fy = yin
 
             return fx, fy
