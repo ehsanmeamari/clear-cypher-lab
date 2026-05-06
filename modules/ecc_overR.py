@@ -178,11 +178,10 @@ def run_ecc_overR():
             if "sm_mode_p" not in st.session_state:
                 st.session_state["sm_mode_p"] = "x_to_y"
 
-            h1, h2, h3, h4 = st.columns(4)
+            h1, h2, h3, _ = st.columns(4)
             with h1: st.latex("x_P")
             with h2: st.latex("y_P")
             with h3: st.latex("n")
-            with h4: st.latex(r"n \cdot P")
 
             c1, c2, c3, c4 = st.columns(4)
 
@@ -227,12 +226,10 @@ def run_ecc_overR():
             if px_s is not None and py_s is not None:
                 rx, ry = scalar_mult(n_val, px_s, py_s, a)
                 if rx is not None:
-                    with c4:
-                        st.markdown(f"<div class='val-box'>({rx:.2f}, {ry:.2f})</div>", unsafe_allow_html=True)
+                    st.info(f"{n_val}P = ({rx:.2f}, {ry:.2f})")
                     st.session_state['mult_result'] = (rx, ry, px_s, py_s, n_val)
                 else:
-                    with c4:
-                        st.markdown("<div class='val-box'>∞</div>", unsafe_allow_html=True)
+                    st.info("Result: Point at Infinity")
                     st.session_state.pop('mult_result', None)
 
     with col_right:
