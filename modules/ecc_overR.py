@@ -67,22 +67,20 @@ def run_ecc_overR():
             n //= 2
         return rx, ry
 
-    # Curve Definition row
-    with st.expander("Curve Definition", expanded=False):
-        input_row = st.columns([1, 1, 4])
-        with input_row[0]: a = st.number_input("a", value=-1.0, step=0.1, key="ecc_r_a")
-        with input_row[1]: b = st.number_input("b", value=1.0, step=0.1, key="ecc_r_b")
-        discriminant = 4*(a**3) + 27*(b**2)
-        if discriminant != 0:
-            with input_row[2]:
-                st.markdown("<div style='padding-top: 25px;'>", unsafe_allow_html=True)
-                st.latex(f"y^2 = x^3 {'+' if a>=0 else ''}{a:.1f}x {'+' if b>=0 else ''}{b:.1f}")
-                st.markdown("</div>", unsafe_allow_html=True)
-
-    # Point Addition and Scalar Multiplication side by side
-    col_left, col_right = st.columns([1, 1])
+    col_left, col_right = st.columns([2, 2])
 
     with col_left:
+        with st.expander("Curve Definition", expanded=False):
+            input_row = st.columns([1, 1, 2])
+            with input_row[0]: a = st.number_input("a", value=-1.0, step=0.1, key="ecc_r_a")
+            with input_row[1]: b = st.number_input("b", value=1.0, step=0.1, key="ecc_r_b")
+            discriminant = 4*(a**3) + 27*(b**2)
+            if discriminant != 0:
+                with input_row[2]:
+                    st.markdown("<div style='padding-top: 25px;'>", unsafe_allow_html=True)
+                    st.latex(f"y^2 = x^3 {'+' if a>=0 else ''}{a:.1f}x {'+' if b>=0 else ''}{b:.1f}")
+                    st.markdown("</div>", unsafe_allow_html=True)
+
         with st.expander("Point Addition", expanded=False):
             if "pa_mode_p" not in st.session_state:
                 st.session_state["pa_mode_p"] = "x_to_y"
@@ -176,7 +174,6 @@ def run_ecc_overR():
                     st.info("Result: Point at Infinity")
                     st.session_state.pop('add_result', None)
 
-    with col_right:
         with st.expander("Scalar Multiplication", expanded=False):
             if "sm_mode_p" not in st.session_state:
                 st.session_state["sm_mode_p"] = "x_to_y"
@@ -235,36 +232,36 @@ def run_ecc_overR():
                     st.info("Result: Point at Infinity")
                     st.session_state.pop('mult_result', None)
 
-    # Visualization full width below
-    with st.expander("Curve Visualization", expanded=False):
-        plot_range = st.number_input("Plot Range", value=5, key="range")
-        fig, ax = plt.subplots(figsize=(6, 5), dpi=150)
-        y_m, x_m = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
-        ax.contour(x_m.ravel(), y_m.ravel(), y_m**2 - x_m**3 - a*x_m - b, [0], colors='#3498db')
+    with col_right:
+        with st.expander("Curve Visualization", expanded=False):
+            plot_range = st.number_input("Plot Range", value=5, key="range")
+            fig, ax = plt.subplots(figsize=(6, 5), dpi=150)
+            y_m, x_m = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
+            ax.contour(x_m.ravel(), y_m.ravel(), y_m**2 - x_m**3 - a*x_m - b, [0], colors='#3498db')
 
-        if 'add_result' in st.session_state:
-            rax, ray, rslo, rpx, rpy, rqx, rqy = st.session_state['add_result']
-            if rslo is not None:
-                x_line = np.array([-plot_range, plot_range])
-                ax.plot(x_line, rslo*(x_line - rpx) + rpy, color='#9b59b6', linestyle='--', alpha=0.6)
-            ax.plot([rax, rax], [-ray, ray], color='grey', linestyle=':', alpha=0.5)
-            ax.scatter([rpx], [rpy], color='red', s=50, zorder=5)
-            ax.annotate('P', xy=(rpx, rpy), xytext=(rpx+0.15, rpy+0.15), fontsize=11, fontweight='bold', color='red')
-            ax.scatter([rqx], [rqy], color='orange', s=50, zorder=5)
-            ax.annotate('Q', xy=(rqx, rqy), xytext=(rqx+0.15, rqy+0.15), fontsize=11, fontweight='bold', color='orange')
-            ax.scatter(rax, ray, color='green', s=100, marker='X', zorder=6)
-            ax.annotate('P+Q', xy=(rax, ray), xytext=(rax+0.15, ray+0.15), fontsize=11, fontweight='bold', color='green')
+            if 'add_result' in st.session_state:
+                rax, ray, rslo, rpx, rpy, rqx, rqy = st.session_state['add_result']
+                if rslo is not None:
+                    x_line = np.array([-plot_range, plot_range])
+                    ax.plot(x_line, rslo*(x_line - rpx) + rpy, color='#9b59b6', linestyle='--', alpha=0.6)
+                ax.plot([rax, rax], [-ray, ray], color='grey', linestyle=':', alpha=0.5)
+                ax.scatter([rpx], [rpy], color='red', s=50, zorder=5)
+                ax.annotate('P', xy=(rpx, rpy), xytext=(rpx+0.15, rpy+0.15), fontsize=11, fontweight='bold', color='red')
+                ax.scatter([rqx], [rqy], color='orange', s=50, zorder=5)
+                ax.annotate('Q', xy=(rqx, rqy), xytext=(rqx+0.15, rqy+0.15), fontsize=11, fontweight='bold', color='orange')
+                ax.scatter(rax, ray, color='green', s=100, marker='X', zorder=6)
+                ax.annotate('P+Q', xy=(rax, ray), xytext=(rax+0.15, ray+0.15), fontsize=11, fontweight='bold', color='green')
 
-        if 'mult_result' in st.session_state:
-            mrx, mry, mpx, mpy, mn = st.session_state['mult_result']
-            ax.scatter(mpx, mpy, color='blue', s=50, zorder=5)
-            ax.annotate('P', xy=(mpx, mpy), xytext=(mpx+0.15, mpy+0.15), fontsize=11, fontweight='bold', color='blue')
-            ax.scatter(mrx, mry, color='purple', s=100, marker='D', zorder=6)
-            ax.annotate(f'{mn}P', xy=(mrx, mry), xytext=(mrx+0.15, mry+0.15), fontsize=11, fontweight='bold', color='purple')
+            if 'mult_result' in st.session_state:
+                mrx, mry, mpx, mpy, mn = st.session_state['mult_result']
+                ax.scatter(mpx, mpy, color='blue', s=50, zorder=5)
+                ax.annotate('P', xy=(mpx, mpy), xytext=(mpx+0.15, mpy+0.15), fontsize=11, fontweight='bold', color='blue')
+                ax.scatter(mrx, mry, color='purple', s=100, marker='D', zorder=6)
+                ax.annotate(f'{mn}P', xy=(mrx, mry), xytext=(mrx+0.15, mry+0.15), fontsize=11, fontweight='bold', color='purple')
 
-        ax.set_xlim([-plot_range, plot_range])
-        ax.set_ylim([-plot_range, plot_range])
-        ax.grid(True, alpha=0.3)
-        ax.axhline(0, color='grey', alpha=0.2)
-        ax.axvline(0, color='grey', alpha=0.2)
-        st.pyplot(fig)
+            ax.set_xlim([-plot_range, plot_range])
+            ax.set_ylim([-plot_range, plot_range])
+            ax.grid(True, alpha=0.3)
+            ax.axhline(0, color='grey', alpha=0.2)
+            ax.axvline(0, color='grey', alpha=0.2)
+            st.pyplot(fig)
