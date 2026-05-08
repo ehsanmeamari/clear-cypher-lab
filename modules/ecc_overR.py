@@ -199,10 +199,11 @@ def run_ecc_overR():
                 res_add_x, res_add_y, add_slope = add_points(xp, yp, xq, yq, a)
                 if res_add_x is not None:
                     st.info(f"P + Q = ({res_add_x:.2f}, {res_add_y:.2f})")
-                    st.session_state['add_result'] = (res_add_x, res_add_y, add_slope, xp, yp, xq, yq)
+                    st.session_state['add_result'] = (res_add_x, res_add_y, add_slope, xp, yp, xq, yq, False)
                 else:
                     st.info("Result: Point at Infinity")
-                    st.session_state.pop('add_result', None)
+                    # Still store P and Q so we can draw them + vertical line
+                    st.session_state['add_result'] = (None, None, None, xp, yp, xq, yq, True)
 
         with st.expander("Scalar Multiplication", expanded=False):
             if "sm_mode_p" not in st.session_state:
@@ -279,17 +280,25 @@ def run_ecc_overR():
             ax.contour(x_m.ravel(), y_m.ravel(), y_m**2 - x_m**3 - a*x_m - b, [0], colors='#3498db')
 
             if 'add_result' in st.session_state and st.session_state.get("last_updated") == "pa":
-                rax, ray, rslo, rpx, rpy, rqx, rqy = st.session_state['add_result']
-                if rslo is not None:
-                    x_line = np.array([-plot_range, plot_range])
-                    ax.plot(x_line, rslo*(x_line - rpx) + rpy, color='#9b59b6', linestyle='--', alpha=0.6)
-                ax.plot([rax, rax], [-ray, ray], color='grey', linestyle=':', alpha=0.5)
-                ax.scatter([rpx], [rpy], color='red', s=50, zorder=5)
-                ax.annotate('P', xy=(rpx, rpy), xytext=(rpx+0.15, rpy+0.15), fontsize=11, fontweight='bold', color='red')
-                ax.scatter([rqx], [rqy], color='orange', s=50, zorder=5)
-                ax.annotate('Q', xy=(rqx, rqy), xytext=(rqx+0.15, rqy+0.15), fontsize=11, fontweight='bold', color='orange')
-                ax.scatter(rax, ray, color='green', s=100, marker='X', zorder=6)
-                ax.annotate('P+Q', xy=(rax, ray), xytext=(rax+0.15, ray+0.15), fontsize=11, fontweight='bold', color='green')
+                rax, ray, rslo, rpx, rpy, rqx, rqy, is_infinity = st.session_state['add_result']
+                if is_infinity:
+                    # P + Q = ∞ → draw P, Q and vertical line through them
+                    ax.axvline(x=rpx, color='#9b59b6', linestyle='--', alpha=0.6)
+                    ax.scatter([rpx], [rpy], color='red', s=50, zorder=5)
+                    ax.annotate('P', xy=(rpx, rpy), xytext=(rpx+0.15, rpy+0.15), fontsize=11, fontweight='bold', color='red')
+                    ax.scatter([rqx], [rqy], color='orange', s=50, zorder=5)
+                    ax.annotate('Q', xy=(rqx, rqy), xytext=(rqx+0.15, rqy+0.15), fontsize=11, fontweight='bold', color='orange')
+                else:
+                    if rslo is not None:
+                        x_line = np.array([-plot_range, plot_range])
+                        ax.plot(x_line, rslo*(x_line - rpx) + rpy, color='#9b59b6', linestyle='--', alpha=0.6)
+                    ax.plot([rax, rax], [-ray, ray], color='grey', linestyle=':', alpha=0.5)
+                    ax.scatter([rpx], [rpy], color='red', s=50, zorder=5)
+                    ax.annotate('P', xy=(rpx, rpy), xytext=(rpx+0.15, rpy+0.15), fontsize=11, fontweight='bold', color='red')
+                    ax.scatter([rqx], [rqy], color='orange', s=50, zorder=5)
+                    ax.annotate('Q', xy=(rqx, rqy), xytext=(rqx+0.15, rqy+0.15), fontsize=11, fontweight='bold', color='orange')
+                    ax.scatter(rax, ray, color='green', s=100, marker='X', zorder=6)
+                    ax.annotate('P+Q', xy=(rax, ray), xytext=(rax+0.15, ray+0.15), fontsize=11, fontweight='bold', color='green')
 
             if 'mult_result' in st.session_state and st.session_state.get("last_updated") == "sm":
                 mrx, mry, mpx, mpy, mn = st.session_state['mult_result']
