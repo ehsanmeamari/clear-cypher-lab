@@ -160,11 +160,16 @@ def ecc_fp2():
         N2, N1, t = count_points_fp2_weil(int(p), int(a), int(b))
 
         with st.expander(f"Elements on Curve ({N2} points — Weil Theorem)", expanded=True):
-            st.warning("For large p (e.g. p=101), finding all points takes time. Use small p for quick results.")
+            st.warning(
+                "For large p (e.g. p=101), finding all points takes time. "
+                "As an example, we list up to 100 points below and skip the rest."
+            )
             max_p_auto = st.number_input("Auto-compute if p ≤", value=20, step=1, min_value=2, max_value=50)
 
             points_fp2 = []
             computed = False
+
+            fixed_point = ((89 % p, 51 % p), (63 % p, 93 % p))
 
             if p <= max_p_auto:
                 for xa in range(p):
@@ -204,8 +209,19 @@ def ecc_fp2():
                     st.success(f"✓ Weil formula agrees: {N2}")
                 else:
                     st.error(f"⚠ Weil formula gives {N2} — mismatch (check irreducible poly settings)")
-                str_pts = ", ".join([f"({fmt(x)}, {fmt(y)})" for x,y in points_fp2])
-                st.markdown(f"<div class='math-points'>{{ O, {str_pts} }}</div>", unsafe_allow_html=True)
+
+                display_pts = list(points_fp2)
+                if fixed_point in display_pts:
+                    display_pts.remove(fixed_point)
+                    display_pts = [fixed_point] + display_pts
+                elif is_on_curve_fp2(*fixed_point):
+                    display_pts = [fixed_point] + display_pts
+
+                shown = display_pts[:100]
+                total_found = len(points_fp2)
+                str_pts = ", ".join([f"({fmt(x)}, {fmt(y)})" for x, y in shown])
+                suffix = f", ... ({total_found + 1 - 101} more points not shown)" if total_found >= 100 else ""
+                st.markdown(f"<div class='math-points'>{{ O, {str_pts}{suffix} }}</div>", unsafe_allow_html=True)
 
     with col2:
         with st.expander("Point Addition", expanded=True):
