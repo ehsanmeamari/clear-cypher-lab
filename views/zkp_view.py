@@ -42,14 +42,16 @@ def render_zkp_tab():
         elif zkp_module == "ECC":
             ecc_sub = st.radio(
                 label="ECC Sub", 
-                options=["Over R", "Over Fp"], 
+                options=["Over R", "Over Fp", "Over Fp²"], 
                 key="ecc_s", horizontal=True, label_visibility="collapsed"
             )
             st.divider()
             if ecc_sub == "Over R":
                 run_ecc_overR()
-            else: 
+            elif ecc_sub == "Over Fp":
                 ecc_fp()
+            else:
+                ecc_fp2()
         elif zkp_module == "Weil Pairing":
             pairing()
             
