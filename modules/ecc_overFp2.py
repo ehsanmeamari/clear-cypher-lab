@@ -143,7 +143,7 @@ def ecc_fp2():
         xa, xb = x
         if xb == 0: return str(xa)
         if xa == 0: return f"{xb}i"
-        return f"{xb}i+{xa}"
+        return f"{xa}+{xb}i"
 
     col1, col2 = st.columns([2, 2])
 
