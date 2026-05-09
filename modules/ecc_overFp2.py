@@ -135,61 +135,31 @@ def ecc_fp2():
             if xa == 0: return f"{xb}i"
             return f"{xb}i+{xa}"
 
-        # ── فرمول‌های شمارش نقاط (Weil) ──────────────────────────────────────
         def legendre(n, p):
-            """Legendre symbol (n/p)"""
             if n % p == 0:
                 return 0
-            return pow(int(n % p), (p - 1) // 2, p) % p  # returns 1 or p-1 (≡ -1)
+            return pow(int(n % p), (p - 1) // 2, p) % p
 
         def count_points_fp1(p, a, b):
-            """شمارش نقاط روی E(F_p) با نماد Legendre — O(p)"""
-            count = 1  # نقطه بی‌نهایت
+            count = 1
             for x in range(p):
                 rhs = (pow(x, 3, p) + a * x + b) % p
                 L = legendre(rhs, p)
-                if L == p - 1:   # معادل ‑1 mod p
+                if L == p - 1:
                     count += 0
                 else:
-                    count += 1 + L  # 0 → +1 نقطه، 1 → +2 نقطه
+                    count += 1 + L
             return count
 
         def count_points_fp2_weil(p, a, b):
-            """شمارش نقاط روی E(F_p²) با قضیه Weil — O(p)"""
             N1 = count_points_fp1(p, a, b)
-            t  = p + 1 - N1          # trace of Frobenius
+            t  = p + 1 - N1
             N2 = p**2 + 1 - (t**2 - 2 * p)
             return N2, N1, t
-        # ─────────────────────────────────────────────────────────────────────
 
-        with st.expander("Point Count — Weil Theorem", expanded=True):
-            st.markdown(
-                r"""
-                **قضیه Weil** تعداد نقاط روی $E(\mathbb{F}_{p^2})$ را از
-                $E(\mathbb{F}_p)$ مشتق می‌کند:
+        N2, N1, t = count_points_fp2_weil(int(p), int(a), int(b))
 
-                $$\#E(\mathbb{F}_p) = p + 1 - t \qquad (t =\text{trace of Frobenius})$$
-
-                $$\#E(\mathbb{F}_{p^2}) = p^2 + 1 - (t^2 - 2p)$$
-                """
-            )
-
-            N2, N1, t = count_points_fp2_weil(int(p), int(a), int(b))
-
-            col_a, col_b, col_c = st.columns(3)
-            col_a.metric(r"#E(𝔽ₚ)", N1)
-            col_b.metric("Trace  t", t)
-            col_c.metric(r"#E(𝔽ₚ²)", N2)
-
-            st.latex(
-                rf"\#E(\mathbb{{F}}_{{{p}}}) = {p} + 1 - ({t}) = {N1}"
-            )
-            st.latex(
-                rf"\#E(\mathbb{{F}}_{{{p}^2}}) = {p}^2 + 1 - ({t}^2 - 2\cdot{p})"
-                rf" = {p**2} + 1 - {t**2 - 2*p} = {N2}"
-            )
-
-        with st.expander("Elements on Curve", expanded=True):
+        with st.expander(f"Elements on Curve ({N2} points — Weil Theorem)", expanded=True):
             st.warning("For large p (e.g. p=101), finding all points takes time. Use small p for quick results.")
             max_p_auto = st.number_input("Auto-compute if p ≤", value=20, step=1, min_value=2, max_value=50)
 
@@ -230,7 +200,6 @@ def ecc_fp2():
             if computed and points_fp2:
                 brute_total = len(points_fp2) + 1
                 st.success(f"Total points (including O): {brute_total}")
-                # مقایسه با فرمول Weil
                 if brute_total == N2:
                     st.success(f"✓ Weil formula agrees: {N2}")
                 else:
