@@ -34,18 +34,17 @@ def ecc_fp2():
             margin-bottom: 4px;
             color: black;
         }
-        .weil-box {
-            background-color: #f0f7ff;
-            border-left: 4px solid #3b82f6;
-            border-radius: 6px;
-            padding: 12px 16px;
-            margin: 8px 0;
-            font-family: 'Crimson Text', 'Georgia', serif;
-        }
         </style>
     """, unsafe_allow_html=True)
 
-    # ── لیست hardcode شده ۱۰۰ نقطه برای p=101, a=1, b=9 ──────────────────
+    # ── parameters of the curve ─────────────────────────────────────────────
+    p = 101
+    a = 1
+    b = 9
+    A = 4    # i² = 4i + 99
+    B = 99
+
+    # ── hardcode list of 100 elements ──────────────────────────────────────
     HARDCODED_POINTS_STR = (
         "O, (51i+89, 93i+63), (0, 3), (0, 98), (1i, 88i+6), (1i, 13i+95), "
         "(5i, 64i+38), (5i, 37i+63), (6i, 91i+20), (6i, 10i+81), "
@@ -75,196 +74,96 @@ def ecc_fp2():
     )
     HARDCODED_TOTAL = 10115
     HARDCODED_REMAINING = 10014
-    HARDCODED_P = 101
-    # ─────────────────────────────────────────────────────────────────────────
+    # ─────────────────────────────────────────────────────────────────────
+
+    def fp2_mul(X, Y):
+        xa, xb = X; ya, yb = Y
+        real = (xa*ya + xb*yb*B) % p
+        imag = (xa*yb + xb*ya + xb*yb*A) % p
+        return (real, imag)
+
+    def fp2_add(X, Y):
+        return ((X[0]+Y[0]) % p, (X[1]+Y[1]) % p)
+
+    def fp2_neg(X):
+        return ((-X[0]) % p, (-X[1]) % p)
+
+    def fp2_sub(X, Y):
+        return fp2_add(X, fp2_neg(Y))
+
+    def fp2_inv(X):
+        xa, xb = X
+        det = (xa*xa + xa*xb*A - xb*xb*B) % p
+        det_inv = pow(int(det), p-2, p)
+        ya = ((xa + xb*A) * det_inv) % p
+        yb = ((-xb) * det_inv) % p
+        return (ya, yb)
+
+    def fp2_is_zero(X):
+        return X[0] % p == 0 and X[1] % p == 0
+
+    def is_on_curve_fp2(Px, Py):
+        y2 = fp2_mul(Py, Py)
+        x2 = fp2_mul(Px, Px)
+        x3 = fp2_mul(x2, Px)
+        ax = ((a * Px[0]) % p, (a * Px[1]) % p)
+        rhs = fp2_add(x3, ax)
+        rhs = fp2_add(rhs, (b % p, 0))
+        return y2 == rhs
+
+    def point_add_fp2(P, Q):
+        if P is None: return Q
+        if Q is None: return P
+        Px, Py = P; Qx, Qy = Q
+        if Px == Qx:
+            if Py == fp2_neg(Qy) or (fp2_is_zero(fp2_add(Py, Qy))):
+                return None
+            if Py == Qy:
+                num = fp2_add(fp2_mul((3,0), fp2_mul(Px,Px)), (a%p, 0))
+                den = fp2_mul((2,0), Py)
+                slope = fp2_mul(num, fp2_inv(den))
+            else:
+                return None
+        else:
+            num = fp2_sub(Qy, Py)
+            den = fp2_sub(Qx, Px)
+            slope = fp2_mul(num, fp2_inv(den))
+        x3 = fp2_sub(fp2_sub(fp2_mul(slope, slope), Px), Qx)
+        y3 = fp2_sub(fp2_mul(slope, fp2_sub(Px, x3)), Py)
+        return (x3, y3)
+
+    def scalar_mul_fp2(k, P):
+        res = None; addend = P; k = int(k)
+        while k > 0:
+            if k & 1: res = point_add_fp2(res, addend)
+            addend = point_add_fp2(addend, addend)
+            k >>= 1
+        return res
+
+    def fmt(x):
+        xa, xb = x
+        if xb == 0: return str(xa)
+        if xa == 0: return f"{xb}i"
+        return f"{xb}i+{xa}"
 
     col1, col2 = st.columns([2, 2])
 
     with col1:
         with st.expander("Curve Definition", expanded=True):
-            c1, c2, c3 = st.columns([1, 1, 1])
-            with c1: p = st.number_input("Prime (p)", value=101, step=1, min_value=2)
-            with c2: a = st.number_input("a", value=1, step=1)
-            with c3: b = st.number_input("b", value=9, step=1)
+            st.info("Curve Definition is not available now. The fixed curve is:")
+            st.latex(r"y^2 = x^3 + 1 \cdot x + 9 \quad \text{over } \mathbb{F}_{101^2}")
+            st.latex(r"i^2 = 4i + 99")
 
-            st.markdown("**Irreducible polynomial:** $x^2 + rx + s$ &nbsp;→&nbsp; $i^2 = Ai + B$")
-            c5, c6 = st.columns(2)
-            with c5: r_coef = st.number_input("r (coefficient of x)", value=97, step=1)
-            with c6: s_coef = st.number_input("s (constant term)", value=2, step=1)
-
-            A = int((-r_coef) % p)
-            B = int((-s_coef) % p)
-
-            st.latex(f"y^2 = x^3 + {a}x + {b} \\quad \\text{{over }} \\mathbb{{F}}_{{{p}^2}}")
-            st.latex(f"i^2 = {A}i + {B}")
-
-        def fp2_mul(X, Y):
-            xa, xb = X; ya, yb = Y
-            real = (xa*ya + xb*yb*B) % p
-            imag = (xa*yb + xb*ya + xb*yb*A) % p
-            return (real, imag)
-
-        def fp2_add(X, Y):
-            return ((X[0]+Y[0]) % p, (X[1]+Y[1]) % p)
-
-        def fp2_neg(X):
-            return ((-X[0]) % p, (-X[1]) % p)
-
-        def fp2_sub(X, Y):
-            return fp2_add(X, fp2_neg(Y))
-
-        def fp2_inv(X):
-            xa, xb = X
-            det = (xa*xa + xa*xb*A - xb*xb*B) % p
-            det_inv = pow(int(det), p-2, p)
-            ya = ((xa + xb*A) * det_inv) % p
-            yb = ((-xb) * det_inv) % p
-            return (ya, yb)
-
-        def fp2_is_zero(X):
-            return X[0] % p == 0 and X[1] % p == 0
-
-        def is_on_curve_fp2(Px, Py):
-            y2 = fp2_mul(Py, Py)
-            x2 = fp2_mul(Px, Px)
-            x3 = fp2_mul(x2, Px)
-            ax = ((a * Px[0]) % p, (a * Px[1]) % p)
-            rhs = fp2_add(x3, ax)
-            rhs = fp2_add(rhs, (b % p, 0))
-            return y2 == rhs
-
-        def point_add_fp2(P, Q):
-            if P is None: return Q
-            if Q is None: return P
-            Px, Py = P; Qx, Qy = Q
-            if Px == Qx:
-                if Py == fp2_neg(Qy) or (fp2_is_zero(fp2_add(Py, Qy))):
-                    return None
-                if Py == Qy:
-                    num = fp2_add(fp2_mul((3,0), fp2_mul(Px,Px)), (a%p, 0))
-                    den = fp2_mul((2,0), Py)
-                    slope = fp2_mul(num, fp2_inv(den))
-                else:
-                    return None
-            else:
-                num = fp2_sub(Qy, Py)
-                den = fp2_sub(Qx, Px)
-                slope = fp2_mul(num, fp2_inv(den))
-            x3 = fp2_sub(fp2_sub(fp2_mul(slope, slope), Px), Qx)
-            y3 = fp2_sub(fp2_mul(slope, fp2_sub(Px, x3)), Py)
-            return (x3, y3)
-
-        def scalar_mul_fp2(k, P):
-            res = None; addend = P; k = int(k)
-            while k > 0:
-                if k & 1: res = point_add_fp2(res, addend)
-                addend = point_add_fp2(addend, addend)
-                k >>= 1
-            return res
-
-        def fmt(x):
-            xa, xb = x
-            if xb == 0: return str(xa)
-            if xa == 0: return f"{xb}i"
-            return f"{xb}i+{xa}"
-
-        def legendre(n, p):
-            if n % p == 0:
-                return 0
-            return pow(int(n % p), (p - 1) // 2, p) % p
-
-        def count_points_fp1(p, a, b):
-            count = 1
-            for x in range(p):
-                rhs = (pow(x, 3, p) + a * x + b) % p
-                L = legendre(rhs, p)
-                if L == p - 1:
-                    count += 0
-                else:
-                    count += 1 + L
-            return count
-
-        def count_points_fp2_weil(p, a, b):
-            N1 = count_points_fp1(p, a, b)
-            t  = p + 1 - N1
-            N2 = p**2 + 1 - (t**2 - 2 * p)
-            return N2, N1, t
-
-        N2, N1, t = count_points_fp2_weil(int(p), int(a), int(b))
-
-        with st.expander(f"Elements on Curve ({N2} points — Weil Theorem)", expanded=True):
+        with st.expander(f"Elements on Curve ({HARDCODED_TOTAL} points — Weil Theorem)", expanded=True):
             st.warning(
                 "For large p (e.g. p=101), finding all points takes time. "
                 "As an example, we list up to 100 points below and skip the rest."
             )
-
-            # اگر پارامترها همان مقادیر پیش‌فرض هستند، لیست hardcode را نشان بده
-            if int(p) == HARDCODED_P and int(a) == 1 and int(b) == 9 and int(r_coef) == 97 and int(s_coef) == 2:
-                st.info("Showing precomputed list (no server computation needed).")
-                st.markdown(
-                    f"<div class='math-points'>{{ {HARDCODED_POINTS_STR}, "
-                    f"... ({HARDCODED_REMAINING} more points not shown) }}</div>",
-                    unsafe_allow_html=True
-                )
-            else:
-                max_p_auto = st.number_input("Auto-compute if p ≤", value=20, step=1, min_value=2, max_value=50)
-
-                points_fp2 = []
-                computed = False
-
-                fixed_point = ((89 % p, 51 % p), (63 % p, 93 % p))
-
-                if p <= max_p_auto:
-                    for xa in range(p):
-                        for xb in range(p):
-                            Px = (xa, xb)
-                            x2 = fp2_mul(Px, Px); x3 = fp2_mul(x2, Px)
-                            ax_ = ((a*xa)%p, (a*xb)%p)
-                            rhs = fp2_add(x3, ax_)
-                            rhs = fp2_add(rhs, (b%p, 0))
-                            for ya in range(p):
-                                for yb in range(p):
-                                    Py = (ya, yb)
-                                    if fp2_mul(Py, Py) == rhs:
-                                        points_fp2.append((Px, Py))
-                    computed = True
-                else:
-                    if st.button("Compute (may be slow)"):
-                        with st.spinner("Computing... please wait"):
-                            for xa in range(p):
-                                for xb in range(p):
-                                    Px = (xa, xb)
-                                    x2 = fp2_mul(Px, Px); x3 = fp2_mul(x2, Px)
-                                    ax_ = ((a*xa)%p, (a*xb)%p)
-                                    rhs = fp2_add(x3, ax_)
-                                    rhs = fp2_add(rhs, (b%p, 0))
-                                    for ya in range(p):
-                                        for yb in range(p):
-                                            Py = (ya, yb)
-                                            if fp2_mul(Py, Py) == rhs:
-                                                points_fp2.append((Px, Py))
-                        computed = True
-
-                if computed and points_fp2:
-                    brute_total = len(points_fp2) + 1
-                    st.success(f"Total points (including O): {brute_total}")
-                    if brute_total == N2:
-                        st.success(f"✓ Weil formula agrees: {N2}")
-                    else:
-                        st.error(f"⚠ Weil formula gives {N2} — mismatch (check irreducible poly settings)")
-
-                    display_pts = list(points_fp2)
-                    if fixed_point in display_pts:
-                        display_pts.remove(fixed_point)
-                        display_pts = [fixed_point] + display_pts
-                    elif is_on_curve_fp2(*fixed_point):
-                        display_pts = [fixed_point] + display_pts
-
-                    shown = display_pts[:100]
-                    total_found = len(points_fp2)
-                    str_pts = ", ".join([f"({fmt(x)}, {fmt(y)})" for x, y in shown])
-                    suffix = f", ... ({total_found + 1 - 101} more points not shown)" if total_found >= 100 else ""
-                    st.markdown(f"<div class='math-points'>{{ O, {str_pts}{suffix} }}</div>", unsafe_allow_html=True)
+            st.markdown(
+                f"<div class='math-points'>{{ {HARDCODED_POINTS_STR}, "
+                f"... ({HARDCODED_REMAINING} more points not shown) }}</div>",
+                unsafe_allow_html=True
+            )
 
     with col2:
         with st.expander("Point Addition", expanded=True):
