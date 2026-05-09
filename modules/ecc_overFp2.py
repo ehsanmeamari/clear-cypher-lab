@@ -45,6 +45,39 @@ def ecc_fp2():
         </style>
     """, unsafe_allow_html=True)
 
+    # ── لیست hardcode شده ۱۰۰ نقطه برای p=101, a=1, b=9 ──────────────────
+    HARDCODED_POINTS_STR = (
+        "O, (51i+89, 93i+63), (0, 3), (0, 98), (1i, 88i+6), (1i, 13i+95), "
+        "(5i, 64i+38), (5i, 37i+63), (6i, 91i+20), (6i, 10i+81), "
+        "(8i, 48i+4), (8i, 53i+97), (10i, 16i+46), (10i, 85i+55), "
+        "(11i, 75i+45), (11i, 26i+56), (12i, 8i+7), (12i, 93i+94), "
+        "(13i, 94i+2), (13i, 7i+99), (16i, 6i+21), (16i, 95i+80), "
+        "(18i, 57i+7), (18i, 44i+94), (19i, 55i+24), (19i, 46i+77), "
+        "(21i, 15i), (21i, 86i), (23i, 53i+10), (23i, 48i+91), "
+        "(24i, 59i+45), (24i, 42i+56), (25i, 90i+17), (25i, 11i+84), "
+        "(28i, 26i+24), (28i, 75i+77), (30i, 69i+50), (30i, 32i+51), "
+        "(31i, 11i+9), (31i, 90i+92), (32i, 9i+18), (32i, 92i+83), "
+        "(33i, 96i+3), (33i, 5i+98), (37i, 71i+22), (37i, 30i+79), "
+        "(38i, 15i+5), (38i, 86i+96), (40i, 88i+35), (40i, 13i+66), "
+        "(44i, 25i+27), (44i, 76i+74), (45i, 77i+13), (45i, 24i+88), "
+        "(49i, 22i+14), (49i, 79i+87), (50i, 61i+33), (50i, 40i+68), "
+        "(54i, 71i+31), (54i, 30i+70), (57i, 34i+15), (57i, 67i+86), "
+        "(58i, 57i+1), (58i, 44i+100), (59i, 16i+31), (59i, 85i+70), "
+        "(61i, 69i+13), (61i, 32i+88), (63i, 90i+33), (63i, 11i+68), "
+        "(69i, 80i+43), (69i, 21i+58), (70i, 74i+18), (70i, 27i+83), "
+        "(71i, 47i+34), (71i, 54i+67), (72i, 4i+18), (72i, 97i+83), "
+        "(74i, 81i+39), (74i, 20i+62), (75i, 14i+35), (75i, 87i+66), "
+        "(77i, 91i+2), (77i, 10i+99), (82i, 35i+8), (82i, 66i+93), "
+        "(83i, 3i+18), (83i, 98i+83), (84i, 27i+13), (84i, 74i+88), "
+        "(85i, 37i+8), (85i, 64i+93), (86i, 32i+26), (86i, 69i+75), "
+        "(90i, 78i+10), (90i, 23i+91), (92i, 5i+29), (92i, 96i+72), "
+        "(95i, 11), (95i, 90), (97i, 94i+35)"
+    )
+    HARDCODED_TOTAL = 10115
+    HARDCODED_REMAINING = 10014
+    HARDCODED_P = 101
+    # ─────────────────────────────────────────────────────────────────────────
+
     col1, col2 = st.columns([2, 2])
 
     with col1:
@@ -164,64 +197,74 @@ def ecc_fp2():
                 "For large p (e.g. p=101), finding all points takes time. "
                 "As an example, we list up to 100 points below and skip the rest."
             )
-            max_p_auto = st.number_input("Auto-compute if p ≤", value=20, step=1, min_value=2, max_value=50)
 
-            points_fp2 = []
-            computed = False
-
-            fixed_point = ((89 % p, 51 % p), (63 % p, 93 % p))
-
-            if p <= max_p_auto:
-                for xa in range(p):
-                    for xb in range(p):
-                        Px = (xa, xb)
-                        x2 = fp2_mul(Px, Px); x3 = fp2_mul(x2, Px)
-                        ax_ = ((a*xa)%p, (a*xb)%p)
-                        rhs = fp2_add(x3, ax_)
-                        rhs = fp2_add(rhs, (b%p, 0))
-                        for ya in range(p):
-                            for yb in range(p):
-                                Py = (ya, yb)
-                                if fp2_mul(Py, Py) == rhs:
-                                    points_fp2.append((Px, Py))
-                computed = True
+            # اگر پارامترها همان مقادیر پیش‌فرض هستند، لیست hardcode را نشان بده
+            if int(p) == HARDCODED_P and int(a) == 1 and int(b) == 9 and int(r_coef) == 97 and int(s_coef) == 2:
+                st.info("Showing precomputed list (no server computation needed).")
+                st.markdown(
+                    f"<div class='math-points'>{{ {HARDCODED_POINTS_STR}, "
+                    f"... ({HARDCODED_REMAINING} more points not shown) }}</div>",
+                    unsafe_allow_html=True
+                )
             else:
-                if st.button("Compute (may be slow)"):
-                    with st.spinner("Computing... please wait"):
-                        for xa in range(p):
-                            for xb in range(p):
-                                Px = (xa, xb)
-                                x2 = fp2_mul(Px, Px); x3 = fp2_mul(x2, Px)
-                                ax_ = ((a*xa)%p, (a*xb)%p)
-                                rhs = fp2_add(x3, ax_)
-                                rhs = fp2_add(rhs, (b%p, 0))
-                                for ya in range(p):
-                                    for yb in range(p):
-                                        Py = (ya, yb)
-                                        if fp2_mul(Py, Py) == rhs:
-                                            points_fp2.append((Px, Py))
+                max_p_auto = st.number_input("Auto-compute if p ≤", value=20, step=1, min_value=2, max_value=50)
+
+                points_fp2 = []
+                computed = False
+
+                fixed_point = ((89 % p, 51 % p), (63 % p, 93 % p))
+
+                if p <= max_p_auto:
+                    for xa in range(p):
+                        for xb in range(p):
+                            Px = (xa, xb)
+                            x2 = fp2_mul(Px, Px); x3 = fp2_mul(x2, Px)
+                            ax_ = ((a*xa)%p, (a*xb)%p)
+                            rhs = fp2_add(x3, ax_)
+                            rhs = fp2_add(rhs, (b%p, 0))
+                            for ya in range(p):
+                                for yb in range(p):
+                                    Py = (ya, yb)
+                                    if fp2_mul(Py, Py) == rhs:
+                                        points_fp2.append((Px, Py))
                     computed = True
-
-            if computed and points_fp2:
-                brute_total = len(points_fp2) + 1
-                st.success(f"Total points (including O): {brute_total}")
-                if brute_total == N2:
-                    st.success(f"✓ Weil formula agrees: {N2}")
                 else:
-                    st.error(f"⚠ Weil formula gives {N2} — mismatch (check irreducible poly settings)")
+                    if st.button("Compute (may be slow)"):
+                        with st.spinner("Computing... please wait"):
+                            for xa in range(p):
+                                for xb in range(p):
+                                    Px = (xa, xb)
+                                    x2 = fp2_mul(Px, Px); x3 = fp2_mul(x2, Px)
+                                    ax_ = ((a*xa)%p, (a*xb)%p)
+                                    rhs = fp2_add(x3, ax_)
+                                    rhs = fp2_add(rhs, (b%p, 0))
+                                    for ya in range(p):
+                                        for yb in range(p):
+                                            Py = (ya, yb)
+                                            if fp2_mul(Py, Py) == rhs:
+                                                points_fp2.append((Px, Py))
+                        computed = True
 
-                display_pts = list(points_fp2)
-                if fixed_point in display_pts:
-                    display_pts.remove(fixed_point)
-                    display_pts = [fixed_point] + display_pts
-                elif is_on_curve_fp2(*fixed_point):
-                    display_pts = [fixed_point] + display_pts
+                if computed and points_fp2:
+                    brute_total = len(points_fp2) + 1
+                    st.success(f"Total points (including O): {brute_total}")
+                    if brute_total == N2:
+                        st.success(f"✓ Weil formula agrees: {N2}")
+                    else:
+                        st.error(f"⚠ Weil formula gives {N2} — mismatch (check irreducible poly settings)")
 
-                shown = display_pts[:100]
-                total_found = len(points_fp2)
-                str_pts = ", ".join([f"({fmt(x)}, {fmt(y)})" for x, y in shown])
-                suffix = f", ... ({total_found + 1 - 101} more points not shown)" if total_found >= 100 else ""
-                st.markdown(f"<div class='math-points'>{{ O, {str_pts}{suffix} }}</div>", unsafe_allow_html=True)
+                    display_pts = list(points_fp2)
+                    if fixed_point in display_pts:
+                        display_pts.remove(fixed_point)
+                        display_pts = [fixed_point] + display_pts
+                    elif is_on_curve_fp2(*fixed_point):
+                        display_pts = [fixed_point] + display_pts
+
+                    shown = display_pts[:100]
+                    total_found = len(points_fp2)
+                    str_pts = ", ".join([f"({fmt(x)}, {fmt(y)})" for x, y in shown])
+                    suffix = f", ... ({total_found + 1 - 101} more points not shown)" if total_found >= 100 else ""
+                    st.markdown(f"<div class='math-points'>{{ O, {str_pts}{suffix} }}</div>", unsafe_allow_html=True)
 
     with col2:
         with st.expander("Point Addition", expanded=True):
