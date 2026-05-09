@@ -41,7 +41,7 @@ def ecc_fp2():
 
     with col1:
         with st.expander("Curve Definition", expanded=True):
-            c1, c2, c3, c4 = st.columns([1, 1, 1, 1])
+            c1, c2, c3 = st.columns([1, 1, 1])
             with c1: p = st.number_input("Prime (p)", value=101, step=1, min_value=2)
             with c2: a = st.number_input("a", value=1, step=1)
             with c3: b = st.number_input("b", value=9, step=1)
@@ -170,8 +170,7 @@ def ecc_fp2():
                 str_pts = ", ".join([f"({fmt(x)}, {fmt(y)})" for x,y in points_fp2])
                 st.markdown(f"<div class='math-points'>{{ O, {str_pts} }}</div>", unsafe_allow_html=True)
 
-        st.divider()
-
+    with col2:
         with st.expander("Point Addition", expanded=True):
             c1,c2,c3,c4,c5,c6,c7,c8 = st.columns(8)
             with c1: st.markdown("<div class='centered-label'>Re(x<sub>P</sub>)</div>", unsafe_allow_html=True)
