@@ -67,9 +67,9 @@ def ecc_fp():
     with col1:
         with st.expander("Curve Definition", expanded=False):
             c1, c2, c3, c4 = st.columns([1, 1, 1, 2.5])            
-            with c1: p = st.number_input("Prime (p)", value=17, step=1)
-            with c2: a = st.number_input("Parameter (a)", value=2, step=1)
-            with c3: b = st.number_input("Parameter (b)", value=13, step=1)
+            with c1: p = st.number_input("Prime (p)", value=101, step=1)
+            with c2: a = st.number_input("Parameter (a)", value=1, step=1)
+            with c3: b = st.number_input("Parameter (b)", value=9, step=1)
 
             discriminant = (4*(a**3) + 27*(b**2)) % p
             if discriminant != 0:
