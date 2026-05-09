@@ -41,7 +41,7 @@ def ecc_fp2():
     p = 101
     a = 1
     b = 9
-    A = 4    # i² = 4i + 99
+    A = 4
     B = 99
 
     # ── hardcode list of 100 elements ──────────────────────────────────────
@@ -74,7 +74,6 @@ def ecc_fp2():
     )
     HARDCODED_TOTAL = 10115
     HARDCODED_REMAINING = 10014
-    # ─────────────────────────────────────────────────────────────────────
 
     def fp2_mul(X, Y):
         xa, xb = X; ya, yb = Y
@@ -164,6 +163,29 @@ def ecc_fp2():
                 f"... ({HARDCODED_REMAINING} more points not shown) }}</div>",
                 unsafe_allow_html=True
             )
+
+        with st.expander("Check if a Point is on the Curve", expanded=True):
+            st.markdown("Enter the coordinates of a point to check if it belongs to the curve.")
+
+            c1, c2, c3, c4 = st.columns(4)
+            with c1: st.markdown("<div class='centered-label'>Re(x)</div>", unsafe_allow_html=True)
+            with c2: st.markdown("<div class='centered-label'>Im(x)</div>", unsafe_allow_html=True)
+            with c3: st.markdown("<div class='centered-label'>Re(y)</div>", unsafe_allow_html=True)
+            with c4: st.markdown("<div class='centered-label'>Im(y)</div>", unsafe_allow_html=True)
+
+            c1, c2, c3, c4 = st.columns(4)
+            with c1: chk_xa = st.number_input("Re(x)", value=89, key="chk_xa", label_visibility="collapsed")
+            with c2: chk_xb = st.number_input("Im(x)", value=51, key="chk_xb", label_visibility="collapsed")
+            with c3: chk_ya = st.number_input("Re(y)", value=63, key="chk_ya", label_visibility="collapsed")
+            with c4: chk_yb = st.number_input("Im(y)", value=93, key="chk_yb", label_visibility="collapsed")
+
+            Px_chk = (int(chk_xa) % p, int(chk_xb) % p)
+            Py_chk = (int(chk_ya) % p, int(chk_yb) % p)
+
+            if is_on_curve_fp2(Px_chk, Py_chk):
+                st.success(f"✓ The point ({fmt(Px_chk)}, {fmt(Py_chk)}) is on the curve E(𝔽_p²).")
+            else:
+                st.error(f"✗ The point ({fmt(Px_chk)}, {fmt(Py_chk)}) is NOT on the curve.")
 
     with col2:
         with st.expander("Point Addition", expanded=True):
