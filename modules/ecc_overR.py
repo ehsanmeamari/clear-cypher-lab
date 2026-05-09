@@ -89,8 +89,8 @@ def run_ecc_overR():
     with col_left:
         with st.expander("Curve Definition", expanded=False):
             input_row = st.columns([1, 1, 2])
-            with input_row[0]: a = st.number_input("a", value=-1.0, step=0.1, key="ecc_r_a")
-            with input_row[1]: b = st.number_input("b", value=1.0, step=0.1, key="ecc_r_b")
+            with input_row[0]: a = st.number_input("a", value=1.0, step=0.1, key="ecc_r_a")
+            with input_row[1]: b = st.number_input("b", value=9.0, step=0.1, key="ecc_r_b")
             discriminant = 4*(a**3) + 27*(b**2)
             if discriminant != 0:
                 with input_row[2]:
