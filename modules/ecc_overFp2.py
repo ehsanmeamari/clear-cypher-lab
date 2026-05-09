@@ -127,7 +127,7 @@ def ecc_fp2():
             if xa == 0: return f"{xb}i"
             return f"{xb}i+{xa}"
 
-        with st.expander("Find Points on Curve", expanded=True):
+        with st.expander("Elements on Curve", expanded=True):
             st.warning("For large p (e.g. p=101), finding all points takes time. Use small p for quick results.")
             max_p_auto = st.number_input("Auto-compute if p ≤", value=20, step=1, min_value=2, max_value=50)
 
