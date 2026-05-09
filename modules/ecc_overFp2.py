@@ -92,9 +92,13 @@ def ecc_fp2():
 
     def fp2_inv(X):
         xa, xb = X
-        det = (xa*xa + xa*xb*A - xb*xb*B) % p
+        # برای i² = Ai + B، معکوس x = xa + xb·i:
+        # det = xa² - xa·xb·A - xb²·B
+        # ya  = (xa - xb·A) / det
+        # yb  = -xb / det
+        det = (xa*xa - xa*xb*A - xb*xb*B) % p
         det_inv = pow(int(det), p-2, p)
-        ya = ((xa + xb*A) * det_inv) % p
+        ya = ((xa - xb*A) * det_inv) % p
         yb = ((-xb) * det_inv) % p
         return (ya, yb)
 
