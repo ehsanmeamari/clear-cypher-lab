@@ -163,17 +163,14 @@ def pairing():
 
         st.divider()
         n_val = st.number_input("Torsion Order (n)", value=119, key="torsion_n")
-        method = st.radio("Calculation Method:", ["Weil Pairing", "Tate Pairing"], horizontal=True)
+        method = st.radio("Calculation Method:", horizontal=True)
 
-        if method == "Weil Pairing":
-            if not is_on_curve(P, a, b, p) or not is_on_curve(Q, a, b, p):
-                st.error("Validation Error: Input points do not lie on the curve E(Fp^2).")
-            else:
-                result = weil_pairing(P, Q, n_val, a, b, p)
-                st.success(f"Final Pairing Result: {result}")
-                st.latex(r"e_{Weil}(P, Q) = (-1)^n \cdot \frac{f_P(Q)}{f_Q(P)}")
+        if not is_on_curve(P, a, b, p) or not is_on_curve(Q, a, b, p):
+            st.error("Validation Error: Input points do not lie on the curve E(Fp^2).")
         else:
-            st.info("Tate Pairing module is currently being optimized for high-performance blockchain verification.")
+            result = weil_pairing(P, Q, n_val, a, b, p)
+            st.success(f"Final Pairing Result: {result}")
+            st.latex(r"e_{Weil}(P, Q) = (-1)^n \cdot \frac{f_P(Q)}{f_Q(P)}")
 
 if __name__ == "__main__":
     pairing()
