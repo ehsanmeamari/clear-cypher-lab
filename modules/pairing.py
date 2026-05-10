@@ -286,7 +286,7 @@ def pairing():
         with c5: st.markdown("<div class='centered-label'>Re(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
         with c6: st.markdown("<div class='centered-label'>Im(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
 
-        c1, c2, gap, c3, c4, c5, c6 = st.columns([1, 1, 0.3, 1, 1, 1, 1])
+        c1, c2, gap, c3, c4, c5, c6, c7 = st.columns([1, 1, 0.3, 1, 1, 1, 1, 1.5])
 
         with c1: xP_r = st.number_input("xP", value=19, key="pair_xpr", label_visibility="collapsed")
         with c2: yP_r = st.number_input("yP", value=25, key="pair_ypr", label_visibility="collapsed")
@@ -303,22 +303,22 @@ def pairing():
         q_on = is_on_curve(Q, a, b)
 
         if not p_on or not q_on:
-            if not p_on:
-                st.error("Validation Error: Point P does not lie on the curve $E(\\mathbb{{F}}_{{101}})$.")
-            if not q_on:
-                st.error("Validation Error: Point Q does not lie on the curve $E(\\mathbb{{F}}_{{101^2}})$.")
+            with c7:
+                if not p_on:
+                    st.error("P not on curve.")
+                if not q_on:
+                    st.error("Q not on curve.")
         else:
             try:
                 result = weil_pairing(P, Q, int(n_val), a, b)
-                st.latex(
-                    rf"e\!\left(({int(xP_r)},\, {int(yP_r)}),\; "
-                    rf"({int(xQ_r)}+{int(xQ_i)}i,\; {int(yQ_r)}+{int(yQ_i)}i)\right) "
-                    rf"= {result.a} + {result.b}i"
-                )
+                with c7:
+                    st.latex(rf"= {result.a} + {result.b}i")
             except ValueError as e:
-                st.warning(f"Computation Error: {e}")
+                with c7:
+                    st.warning(f"Error: {e}")
             except ZeroDivisionError:
-                st.warning("Computation Error: Division by zero in Miller Loop.")
+                with c7:
+                    st.warning("Division by zero.")
 
 if __name__ == "__main__":
     pairing()
