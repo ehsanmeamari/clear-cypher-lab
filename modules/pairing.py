@@ -213,7 +213,7 @@ def pairing():
 
     with st.expander("Pairing Computation (Torsion Order 119)", expanded=True):
         st.latex(r"E: y^2 \equiv x^3 + x + 9 \pmod{101}")
-        st.latex(r"Torsion Order = 119")
+        st.latex(r"\text{Torsion Order} = 119")
         
         c1, c2, gap, c3, c4, c5, c6 = st.columns([1, 1, 0.3, 1, 1, 1, 1])
 
