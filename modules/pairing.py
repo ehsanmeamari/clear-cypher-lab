@@ -254,8 +254,7 @@ def pairing():
 
     with col1:
         with st.expander("Curve Definition", expanded=False):
-            st.latex(r"E: y^2 \equiv x^3 + x + 9 \pmod{101}")
-            st.latex(r"i^2 = 4i + 99 \quad \text{(irreducible polynomial over } \mathbb{F}_{101}\text{)}")
+            st.latex(r"E: y^2 \equiv x^3 + x + 9 \pmod{101}, \quad i^2 = 4i + 99 \quad \text{(irreducible polynomial over } \mathbb{F}_{101}\text{)}")
 
         str_points = ", ".join([f"({pt[0]},{pt[1]})" for pt in fp1_points])
         with st.expander(f"Points on Curve E(F₁₀₁) ({len(fp1_points)+1} points)", expanded=False):
