@@ -1,9 +1,7 @@
 import streamlit as st
 
 p = 101
-ONE = None  # placeholder, will be set after class definition
 
-# --- 1. MATHEMATICAL FOUNDATION: QUADRATIC FIELD ELEMENTS ---
 class QuadraticFp:
     def __init__(self, a, b, p):
         self.p = p
@@ -68,13 +66,10 @@ ONE_EL = QuadraticFp(1, 0, p)
 TWO    = QuadraticFp(2, 0, p)
 THREE  = QuadraticFp(3, 0, p)
 
-# --- 2. ELLIPTIC CURVE ARITHMETIC ---
 def is_on_curve(P, a, b):
     if P is None: return True
     x, y = P
-    lhs = y * y
-    rhs = x * x * x + a * x + b
-    return lhs == rhs
+    return (y * y) == (x * x * x + a * x + b)
 
 def point_neg(P):
     if P is None: return None
@@ -114,7 +109,6 @@ def scalar_mul(n, P, a):
         n >>= 1
     return result
 
-# --- 3. LINE FUNCTION ---
 def line(T, R, Q, a):
     if Q is None:
         raise ValueError("Q must not be infinity.")
@@ -139,24 +133,20 @@ def line(T, R, Q, a):
             l = numerator * denominator.inverse()
             return Q[1] - T[1] - l * (Q[0] - T[0])
 
-# --- 4. MILLER LOOP ---
 def miller(P, Q, n, a):
     if Q is None:
         raise ValueError("Q must not be infinity.")
     if n == 0:
         raise ValueError("n must be nonzero.")
-
     n_is_negative = False
     if n < 0:
         n = -n
         n_is_negative = True
-
     t = ONE_EL
     V = P
     bitt_n = bin(n)[2:]
     nbin = [int(bitt_n[-i]) for i in range(1, n.bit_length() + 1)]
     i = len(nbin) - 2
-
     while i > -1:
         S = point_double(V, a)
         ell = line(V, V, Q, a)
@@ -170,14 +160,11 @@ def miller(P, Q, n, a):
             t = t * ell * vee.inverse()
             V = S
         i -= 1
-
     if n_is_negative:
         vee = line(V, point_neg(V), Q, a)
         t = (t * vee).inverse()
-
     return t
 
-# --- 5. WEIL PAIRING ---
 def weil_pairing(P, Q, n, a, b):
     if not is_on_curve(Q, a, b):
         raise ValueError("Q is not on the curve.")
@@ -193,7 +180,6 @@ def weil_pairing(P, Q, n, a, b):
     except ZeroDivisionError:
         return ONE_EL
 
-# --- 6. STREAMLIT UI ---
 def pairing():
     st.markdown("""
         <style>
@@ -231,27 +217,27 @@ def pairing():
         st.info("This module simulates Weil Pairing over extension fields for Zero-Knowledge Proof systems.")
 
     with st.expander("Pairing Computation (Torsion Order 119)", expanded=True):
-        col1, col2 = st.columns(2)
 
-        with col1:
-            st.subheader("Point P — E(F₁₀₁)")
-            st.markdown("<div class='centered-label'>x<sub>P</sub></div>", unsafe_allow_html=True)
-            xP_r = st.number_input("xP", value=19, key="pair_xpr", label_visibility="collapsed")
-            st.markdown("<div class='centered-label'>y<sub>P</sub></div>", unsafe_allow_html=True)
-            yP_r = st.number_input("yP", value=25, key="pair_ypr", label_visibility="collapsed")
-            P = (QuadraticFp(int(xP_r), 0, p), QuadraticFp(int(yP_r), 0, p))
+        c1, c2, gap, c3, c4, c5, c6 = st.columns([1, 1, 0.3, 1, 1, 1, 1])
 
-        with col2:
-            st.subheader("Point Q — E(F₁₀₁²)")
-            st.markdown("<div class='centered-label'>Re(x<sub>Q</sub>)</div>", unsafe_allow_html=True)
-            xQ_r = st.number_input("xQ Real", value=89, key="pair_xqr", label_visibility="collapsed")
-            st.markdown("<div class='centered-label'>Im(x<sub>Q</sub>)</div>", unsafe_allow_html=True)
-            xQ_i = st.number_input("xQ Imag", value=51, key="pair_xqi", label_visibility="collapsed")
-            st.markdown("<div class='centered-label'>Re(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
-            yQ_r = st.number_input("yQ Real", value=63, key="pair_yqr", label_visibility="collapsed")
-            st.markdown("<div class='centered-label'>Im(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
-            yQ_i = st.number_input("yQ Imag", value=93, key="pair_yqi", label_visibility="collapsed")
-            Q = (QuadraticFp(int(xQ_r), int(xQ_i), p), QuadraticFp(int(yQ_r), int(yQ_i), p))
+        with c1: st.markdown("<div class='centered-label'>x<sub>P</sub></div>", unsafe_allow_html=True)
+        with c2: st.markdown("<div class='centered-label'>y<sub>P</sub></div>", unsafe_allow_html=True)
+        with c3: st.markdown("<div class='centered-label'>Re(x<sub>Q</sub>)</div>", unsafe_allow_html=True)
+        with c4: st.markdown("<div class='centered-label'>Im(x<sub>Q</sub>)</div>", unsafe_allow_html=True)
+        with c5: st.markdown("<div class='centered-label'>Re(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
+        with c6: st.markdown("<div class='centered-label'>Im(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
+
+        c1, c2, gap, c3, c4, c5, c6 = st.columns([1, 1, 0.3, 1, 1, 1, 1])
+
+        with c1: xP_r = st.number_input("xP", value=19, key="pair_xpr", label_visibility="collapsed")
+        with c2: yP_r = st.number_input("yP", value=25, key="pair_ypr", label_visibility="collapsed")
+        with c3: xQ_r = st.number_input("xQ Real", value=89, key="pair_xqr", label_visibility="collapsed")
+        with c4: xQ_i = st.number_input("xQ Imag", value=51, key="pair_xqi", label_visibility="collapsed")
+        with c5: yQ_r = st.number_input("yQ Real", value=63, key="pair_yqr", label_visibility="collapsed")
+        with c6: yQ_i = st.number_input("yQ Imag", value=93, key="pair_yqi", label_visibility="collapsed")
+
+        P = (QuadraticFp(int(xP_r), 0, p), QuadraticFp(int(yP_r), 0, p))
+        Q = (QuadraticFp(int(xQ_r), int(xQ_i), p), QuadraticFp(int(yQ_r), int(yQ_i), p))
 
         n_val = 119
         p_on = is_on_curve(P, a, b)
