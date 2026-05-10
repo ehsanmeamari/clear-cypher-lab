@@ -224,9 +224,11 @@ def ecc_fp2():
             Py_chk = (int(chk_ya) % p, int(chk_yb) % p)
 
             if is_on_curve_fp2(Px_chk, Py_chk):
-                st.success(f"✓ The point ({fmt(Px_chk)}, {fmt(Py_chk)}) is on the curve E(𝔽_p²).")
+                st.success(f"✓ The point ({fmt(Px_chk)}, {fmt(Py_chk)}) is on the curve $E(\mathbb{F}_{101^2})$.")
             else:
-                st.error(f"✗ The point ({fmt(Px_chk)}, {fmt(Py_chk)}) is NOT on the curve.")
+                st.error(f"✗ The point ({fmt(Px_chk)}, {fmt(Py_chk)}) is NOT on the curve $E(\mathbb{F}_{101^2})$.")
+
+        st.latex(r"\mathbb{F}_{101^2}")
                 
         with st.expander(f"Elements on Curve ({HARDCODED_TOTAL} points — Weil Theorem)", expanded=False):
             st.markdown(
