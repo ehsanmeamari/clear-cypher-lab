@@ -251,7 +251,11 @@ def pairing():
         else:
             try:
                 result = weil_pairing(P, Q, int(n_val), a, b)
-                st.success(f"Final Pairing Result: **{result}**")
+                st.latex(
+                    rf"e\!\left(({int(xP_r)},\, {int(yP_r)}),\; "
+                    rf"({int(xQ_r)}+{int(xQ_i)}i,\; {int(yQ_r)}+{int(yQ_i)}i)\right) "
+                    rf"= {result.a} + {result.b}i"
+                )
             except ValueError as e:
                 st.warning(f"Computation Error: {e}")
             except ZeroDivisionError:
