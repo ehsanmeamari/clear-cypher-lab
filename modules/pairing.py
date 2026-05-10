@@ -277,7 +277,7 @@ def pairing():
 
     with st.expander("Pairing Computation (Torsion Order = 119)", expanded=True):
 
-        c1, c2, gap, c3, c4, c5, c6 = st.columns([1, 1, 0.3, 1, 1, 1, 1])
+        c1, c2, gap, c3, c4, c5, c6, c7 = st.columns([1, 1, 0.3, 1, 1, 1, 1, 1.5])
 
         with c1: st.markdown("<div class='centered-label'>x<sub>P</sub></div>", unsafe_allow_html=True)
         with c2: st.markdown("<div class='centered-label'>y<sub>P</sub></div>", unsafe_allow_html=True)
@@ -285,6 +285,7 @@ def pairing():
         with c4: st.markdown("<div class='centered-label'>Im(x<sub>Q</sub>)</div>", unsafe_allow_html=True)
         with c5: st.markdown("<div class='centered-label'>Re(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
         with c6: st.markdown("<div class='centered-label'>Im(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
+        with c7: st.empty()
 
         c1, c2, gap, c3, c4, c5, c6, c7 = st.columns([1, 1, 0.3, 1, 1, 1, 1, 1.5])
 
