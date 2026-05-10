@@ -206,17 +206,6 @@ def ecc_fp2():
                 st.warning("P is NOT on the curve!")
 
     with col2:
-        with st.expander(f"Elements on Curve ({HARDCODED_TOTAL} points — Weil Theorem)", expanded=False):
-            st.markdown(
-                f"<div class='math-points'>{{ {HARDCODED_POINTS_STR}, "
-                f"... ({HARDCODED_REMAINING} more points not shown) }}</div>",
-                unsafe_allow_html=True
-            )
-            st.warning(
-                "For large p (e.g. p=101), finding all points takes time. "
-                "As an example, we listed up to 100 points below and skip the rest."
-            )
-
         with st.expander("Check if a Point is on the Curve", expanded=False):
             st.markdown("Enter the coordinates of a point to check if it belongs to the curve.")
 
@@ -239,3 +228,14 @@ def ecc_fp2():
                 st.success(f"✓ The point ({fmt(Px_chk)}, {fmt(Py_chk)}) is on the curve E(𝔽_p²).")
             else:
                 st.error(f"✗ The point ({fmt(Px_chk)}, {fmt(Py_chk)}) is NOT on the curve.")
+                
+        with st.expander(f"Elements on Curve ({HARDCODED_TOTAL} points — Weil Theorem)", expanded=False):
+            st.markdown(
+                f"<div class='math-points'>{{ {HARDCODED_POINTS_STR}, "
+                f"... ({HARDCODED_REMAINING} more points not shown) }}</div>",
+                unsafe_allow_html=True
+            )
+            st.warning(
+                "For large p (e.g. p=101), finding all points takes time. "
+                "As an example, we listed up to 100 points below and skip the rest."
+            )
