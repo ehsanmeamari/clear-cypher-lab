@@ -221,14 +221,12 @@ def pairing():
     a = QuadraticFp(a_int, 0, p)
     b = QuadraticFp(b_int, 0, p)
 
-    # --- لیست نقاط E(F101) ---
     fp1_points = []
     for x in range(p):
         for y in range(p):
             if (y*y - (x*x*x + a_int*x + b_int)) % p == 0:
                 fp1_points.append((x, y))
 
-    # --- لیست نقاط E(F101^2) ---
     HARDCODED_POINTS_STR = (
         "O, (0, 3), (0, 98), (1, 27+37i), (1, 74+64i), (2, 25), (2, 76), "
         "(3, 49+26i), (3, 52+75i), (4, 28), (4, 73), (5, 51+25i), (5, 50+76i), "
@@ -251,6 +249,10 @@ def pairing():
     )
     HARDCODED_TOTAL = 10115
     HARDCODED_REMAINING = 10014
+
+    with st.expander("Curve Definition", expanded=False):
+        st.latex(r"E: y^2 \equiv x^3 + x + 9 \pmod{101}")
+        st.latex(r"i^2 = 4i + 99 \quad \text{(irreducible polynomial over } \mathbb{F}_{101}\text{)}")
 
     col1, col2 = st.columns(2)
 
@@ -275,7 +277,6 @@ def pairing():
             )
 
     with st.expander("Pairing Computation (Torsion Order 119)", expanded=True):
-        st.latex(r"E: y^2 \equiv x^3 + x + 9 \pmod{101}")
         st.latex(r"\text{Torsion Order} = 119")
 
         c1, c2, gap, c3, c4, c5, c6 = st.columns([1, 1, 0.3, 1, 1, 1, 1])
