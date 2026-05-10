@@ -8,8 +8,8 @@ class QuadraticFp:
     """
     def __init__(self, a, b, p):
         self.p = p
-        self.a = a % p  # Real part
-        self.b = b % p  # Imaginary/i coefficient
+        self.a = a % p
+        self.b = b % p
 
     def __repr__(self):
         if self.a == 0 and self.b == 0: return "0"
@@ -117,8 +117,6 @@ def weil_pairing(P, Q, n, a, b, p):
 
 # --- 4. STREAMLIT UI MODULE ---
 def pairing():
-    """ Renders the Pairing Simulation Lab with Cream Styling """
-    
     st.markdown("""
         <style>
         div[data-testid="stExpander"] details summary {
@@ -146,8 +144,7 @@ def pairing():
         st.latex(f"E: y^2 \\equiv x^3 + x + 9 \\pmod{{101}}")
         st.info("This module simulates Weil Pairing over extension fields for Zero-Knowledge Proof systems.")
 
-    # Main Computation Expander
-    with st.expander("Pairing Computation", expanded=False):
+    with st.expander("Pairing Computation", expanded=True):
         col1, col2 = st.columns(2)
         with col1:
             st.subheader("Point P (Base Domain)")
@@ -163,14 +160,16 @@ def pairing():
 
         st.divider()
         n_val = st.number_input("Torsion Order (n)", value=119, key="torsion_n")
-        method = st.radio("Calculation Method:", horizontal=True)
 
         if not is_on_curve(P, a, b, p) or not is_on_curve(Q, a, b, p):
-            st.error("Validation Error: Input points do not lie on the curve E(Fp^2).")
+            st.error("Validation Error: Input points do not lie on the curve $E(\mathbb{F}_{p^2})$.")
         else:
-            result = weil_pairing(P, Q, n_val, a, b, p)
-            st.success(f"Final Pairing Result: {result}")
-            st.latex(r"e_{Weil}(P, Q) = (-1)^n \cdot \frac{f_P(Q)}{f_Q(P)}")
+            try:
+                result = weil_pairing(P, Q, n_val, a, b, p)
+                st.success(f"Final Pairing Result: **{result}**")
+                st.latex(r"e_{Weil}(P, Q) = (-1)^n \cdot \frac{f_P(Q)}{f_Q(P)}")
+            except ZeroDivisionError:
+                st.warning("Computation Error: Potential linearly dependent points or division by zero in Miller Loop.")
 
 if __name__ == "__main__":
     pairing()
