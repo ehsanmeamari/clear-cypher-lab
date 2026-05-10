@@ -207,14 +207,14 @@ def ecc_fp2():
 
     with col2:
         with st.expander(f"Elements on Curve ({HARDCODED_TOTAL} points — Weil Theorem)", expanded=False):
-            st.warning(
-                "For large p (e.g. p=101), finding all points takes time. "
-                "As an example, we list up to 100 points below and skip the rest."
-            )
             st.markdown(
                 f"<div class='math-points'>{{ {HARDCODED_POINTS_STR}, "
                 f"... ({HARDCODED_REMAINING} more points not shown) }}</div>",
                 unsafe_allow_html=True
+            )
+            st.warning(
+                "For large p (e.g. p=101), finding all points takes time. "
+                "As an example, we listed up to 100 points below and skip the rest."
             )
 
         with st.expander("Check if a Point is on the Curve", expanded=False):
