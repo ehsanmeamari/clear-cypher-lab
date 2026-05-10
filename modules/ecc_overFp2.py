@@ -43,6 +43,29 @@ def ecc_fp2():
     A = 4
     B = 99
 
+    HARDCODED_POINTS_STR = (
+        "O, (0, 3), (0, 98), (1, 27+37i), (1, 74+64i), (2, 25), (2, 76), "
+        "(3, 49+26i), (3, 52+75i), (4, 28), (4, 73), (5, 51+25i), (5, 50+76i), "
+        "(6, 19+41i), (6, 82+60i), (7, 37), (7, 64), (8, 23), (8, 78), "
+        "(9, 79+11i), (9, 22+90i), (10, 3), (10, 98), (11, 51+25i), (11, 50+76i), "
+        "(12, 93+4i), (12, 8+97i), (13, 87+7i), (13, 14+94i), (14, 79+11i), "
+        "(14, 22+90i), (15, 43+29i), (15, 58+72i), (16, 9), (16, 92), "
+        "(17, 9+46i), (17, 92+55i), (18, 1), (18, 100), (19, 25), (19, 76), "
+        "(20, 91+5i), (20, 10+96i), (21, 10), (21, 91), (22, 59+21i), (22, 42+80i), "
+        "(23, 33), (23, 68), (24, 11), (24, 90), (25, 2), (25, 99), (26, 21), "
+        "(26, 80), (27, 23), (27, 78), (28, 89+6i), (28, 12+95i), (29, 77+12i), "
+        "(29, 24+89i), (30, 89+6i), (30, 12+95i), (31, 6), (31, 95), (32, 40), "
+        "(32, 61), (33, 15), (33, 86), (34, 19), (34, 82), (35, 14), (35, 87), "
+        "(36, 49+26i), (36, 52+75i), (37, 87+7i), (37, 14+94i), (38, 50), "
+        "(38, 51), (39, 22), (39, 79), (40, 63+19i), (40, 38+82i), (41, 73+14i), "
+        "(41, 28+87i), (42, 45), (42, 56), (43, 89+6i), (43, 12+95i), "
+        "(44, 17+42i), (44, 84+59i), (45, 28), (45, 73), (46, 85+8i), "
+        "(46, 16+93i), (47, 1+50i), (47, 100+51i), (48, 16), (48, 85), "
+        "(49, 65+18i), (49, 36+83i)"
+    )
+    HARDCODED_TOTAL = 10115
+    HARDCODED_REMAINING = 10014
+
     def fp2_mul(X, Y):
         xa, xb = X; ya, yb = Y
         real = (xa*ya + xb*yb*B) % p
@@ -78,93 +101,6 @@ def ecc_fp2():
         rhs = fp2_add(rhs, (b % p, 0))
         return y2 == rhs
 
-    def fmt(x):
-        xa, xb = x
-        if xb == 0: return str(xa)
-        if xa == 0: return f"{xb}i"
-        return f"{xa}+{xb}i"
-
-    # ── تولید خودکار لیست نقاط ──────────────────────────────────────────
-    @st.cache_data
-    def compute_points(limit=100):
-        pts = []
-        for xb in range(p):
-            for xa in range(p):
-                Px = (xa, xb)
-                # rhs = x³ + ax + b
-                x2 = fp2_mul(Px, Px)
-                x3 = fp2_mul(x2, Px)
-                ax_ = ((a * xa) % p, (a * xb) % p)
-                rhs = fp2_add(x3, ax_)
-                rhs = fp2_add(rhs, (b % p, 0))
-                # پیدا کردن y بطوری که y²=rhs
-                for yb in range(p):
-                    for ya in range(p):
-                        Py = (ya, yb)
-                        if fp2_mul(Py, Py) == rhs:
-                            pts.append((Px, Py))
-                            if len(pts) >= limit:
-                                return pts
-        return pts
-
-    # استفاده از لیست hardcode شده verify‌شده
-    def get_verified_points_str(limit=100):
-        pts = []
-        count = 0
-        for xb in range(p):
-            for xa in range(p):
-                Px = (xa, xb)
-                x2 = fp2_mul(Px, Px)
-                x3 = fp2_mul(x2, Px)
-                ax_ = ((a * xa) % p, (a * xb) % p)
-                rhs = fp2_add(x3, ax_)
-                rhs = fp2_add(rhs, (b % p, 0))
-                for yb in range(p):
-                    for ya in range(p):
-                        if fp2_mul((ya,yb),(ya,yb)) == rhs:
-                            pts.append(f"({fmt(Px)}, {fmt((ya,yb))})")
-                            count += 1
-                            if count >= limit:
-                                return pts
-        return pts
-
-    HARDCODED_TOTAL = 10115
-    HARDCODED_REMAINING = 10014
-
-    # لیست verify‌شده با تابع is_on_curve_fp2
-    raw_points = [
-        ((0,0),(3,0)),((0,0),(98,0)),
-        ((89,51),(63,93)),((88,1),(6,1)),((88,1),(95,13)),
-        ((64,5),(38,5)),((64,5),(63,37)),((91,6),(20,6)),((91,6),(81,10)),
-        ((48,8),(4,8)),((48,8),(97,53)),((16,10),(46,10)),((16,10),(55,85)),
-        ((75,11),(45,11)),((75,11),(56,26)),((8,12),(7,12)),((8,12),(94,93)),
-        ((94,13),(2,13)),((94,13),(99,7)),((6,16),(21,16)),((6,16),(80,95)),
-        ((57,18),(7,18)),((57,18),(94,44)),((55,19),(24,19)),((55,19),(77,46)),
-        ((15,21),(0,21)),((15,21),(0,86)),((53,23),(10,23)),((53,23),(91,48)),
-        ((59,24),(45,24)),((59,24),(56,42)),((90,25),(17,25)),((90,25),(84,11)),
-        ((26,28),(24,28)),((26,28),(77,75)),((69,30),(50,30)),((69,30),(51,32)),
-        ((11,31),(9,31)),((11,31),(92,90)),((9,32),(18,32)),((9,32),(83,92)),
-        ((96,33),(3,33)),((96,33),(98,5)),((71,37),(22,37)),((71,37),(79,30)),
-        ((15,38),(5,38)),((15,38),(96,86)),((88,40),(35,40)),((88,40),(66,13)),
-        ((25,44),(27,44)),((25,44),(74,76)),((77,45),(13,45)),((77,45),(88,24)),
-        ((22,49),(14,49)),((22,49),(87,79)),((61,50),(33,50)),((61,50),(68,40)),
-        ((71,54),(31,54)),((71,54),(70,30)),((34,57),(15,57)),((34,57),(86,67)),
-        ((57,58),(1,58)),((57,58),(100,44)),((16,59),(31,59)),((16,59),(70,85)),
-        ((69,61),(13,61)),((69,61),(88,32)),((90,63),(33,63)),((90,63),(68,11)),
-        ((80,69),(43,69)),((80,69),(58,21)),((74,70),(18,70)),((74,70),(83,27)),
-        ((47,71),(34,71)),((47,71),(67,54)),((4,72),(18,72)),((4,72),(83,97)),
-        ((81,74),(39,74)),((81,74),(62,20)),((14,75),(35,75)),((14,75),(66,87)),
-        ((91,77),(2,77)),((91,77),(99,10)),((35,82),(8,82)),((35,82),(93,66)),
-        ((3,83),(18,83)),((3,83),(83,98)),((27,84),(13,84)),((27,84),(88,74)),
-        ((37,85),(8,85)),((37,85),(93,64)),((32,86),(26,86)),((32,86),(75,69)),
-        ((78,90),(10,90)),((78,90),(91,23)),((5,92),(29,92)),((5,92),(72,96)),
-        ((11,95),(0,95)),((11,95),(0,90)),
-    ]
-
-    verified = [pt for pt in raw_points if is_on_curve_fp2(pt[0], pt[1])]
-    pts_str_list = ["O"] + [f"({fmt(px)}, {fmt(py)})" for px,py in verified]
-    HARDCODED_POINTS_STR = ", ".join(pts_str_list)
-
     def point_add_fp2(P, Q):
         if P is None: return Q
         if Q is None: return P
@@ -193,6 +129,12 @@ def ecc_fp2():
             addend = point_add_fp2(addend, addend)
             k >>= 1
         return res
+
+    def fmt(x):
+        xa, xb = x
+        if xb == 0: return str(xa)
+        if xa == 0: return f"{xb}i"
+        return f"{xa}+{xb}i"
 
     col1, col2 = st.columns([2, 2])
 
@@ -223,10 +165,10 @@ def ecc_fp2():
             with c4: st.markdown("<div class='centered-label'>Im(y)</div>", unsafe_allow_html=True)
 
             c1, c2, c3, c4 = st.columns(4)
-            with c1: chk_xa = st.number_input("Re(x)", value=89, key="chk_xa", label_visibility="collapsed")
-            with c2: chk_xb = st.number_input("Im(x)", value=51, key="chk_xb", label_visibility="collapsed")
-            with c3: chk_ya = st.number_input("Re(y)", value=63, key="chk_ya", label_visibility="collapsed")
-            with c4: chk_yb = st.number_input("Im(y)", value=93, key="chk_yb", label_visibility="collapsed")
+            with c1: chk_xa = st.number_input("Re(x)", value=0, key="chk_xa", label_visibility="collapsed")
+            with c2: chk_xb = st.number_input("Im(x)", value=0, key="chk_xb", label_visibility="collapsed")
+            with c3: chk_ya = st.number_input("Re(y)", value=3, key="chk_ya", label_visibility="collapsed")
+            with c4: chk_yb = st.number_input("Im(y)", value=0, key="chk_yb", label_visibility="collapsed")
 
             Px_chk = (int(chk_xa) % p, int(chk_xb) % p)
             Py_chk = (int(chk_ya) % p, int(chk_yb) % p)
@@ -249,14 +191,14 @@ def ecc_fp2():
             with c8: st.markdown("<div class='centered-label'>Im(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
 
             c1,c2,c3,c4,c5,c6,c7,c8 = st.columns(8)
-            with c1: xPa = st.number_input("xPa", value=89, key="xPa", label_visibility="collapsed")
-            with c2: xPb = st.number_input("xPb", value=51, key="xPb", label_visibility="collapsed")
-            with c3: yPa = st.number_input("yPa", value=63, key="yPa", label_visibility="collapsed")
-            with c4: yPb = st.number_input("yPb", value=93, key="yPb", label_visibility="collapsed")
-            with c5: xQa = st.number_input("xQa", value=89, key="xQa", label_visibility="collapsed")
-            with c6: xQb = st.number_input("xQb", value=51, key="xQb", label_visibility="collapsed")
-            with c7: yQa = st.number_input("yQa", value=63, key="yQa", label_visibility="collapsed")
-            with c8: yQb = st.number_input("yQb", value=93, key="yQb", label_visibility="collapsed")
+            with c1: xPa = st.number_input("xPa", value=0, key="xPa", label_visibility="collapsed")
+            with c2: xPb = st.number_input("xPb", value=0, key="xPb", label_visibility="collapsed")
+            with c3: yPa = st.number_input("yPa", value=3, key="yPa", label_visibility="collapsed")
+            with c4: yPb = st.number_input("yPb", value=0, key="yPb", label_visibility="collapsed")
+            with c5: xQa = st.number_input("xQa", value=0, key="xQa", label_visibility="collapsed")
+            with c6: xQb = st.number_input("xQb", value=0, key="xQb", label_visibility="collapsed")
+            with c7: yQa = st.number_input("yQa", value=3, key="yQa", label_visibility="collapsed")
+            with c8: yQb = st.number_input("yQb", value=0, key="yQb", label_visibility="collapsed")
 
             PA = ((int(xPa)%p, int(xPb)%p), (int(yPa)%p, int(yPb)%p))
             QA = ((int(xQa)%p, int(xQb)%p), (int(yQa)%p, int(yQb)%p))
@@ -284,10 +226,10 @@ def ecc_fp2():
 
             c1,c2,c3,c4,c5 = st.columns(5)
             with c1: n_val = st.number_input("n", value=2, min_value=1, key="n_sm", label_visibility="collapsed")
-            with c2: xSa = st.number_input("xSa", value=89, key="xSa", label_visibility="collapsed")
-            with c3: xSb = st.number_input("xSb", value=51, key="xSb", label_visibility="collapsed")
-            with c4: ySa = st.number_input("ySa", value=63, key="ySa", label_visibility="collapsed")
-            with c5: ySb = st.number_input("ySb", value=93, key="ySb", label_visibility="collapsed")
+            with c2: xSa = st.number_input("xSa", value=0, key="xSa", label_visibility="collapsed")
+            with c3: xSb = st.number_input("xSb", value=0, key="xSb", label_visibility="collapsed")
+            with c4: ySa = st.number_input("ySa", value=3, key="ySa", label_visibility="collapsed")
+            with c5: ySb = st.number_input("ySb", value=0, key="ySb", label_visibility="collapsed")
 
             PS = ((int(xSa)%p, int(xSb)%p), (int(ySa)%p, int(ySb)%p))
             if is_on_curve_fp2(*PS):
