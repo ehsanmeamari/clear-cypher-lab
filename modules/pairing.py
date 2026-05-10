@@ -167,7 +167,6 @@ def pairing():
             try:
                 result = weil_pairing(P, Q, n_val, a, b, p)
                 st.success(f"Final Pairing Result: **{result}**")
-                st.latex(r"e_{Weil}(P, Q) = (-1)^n \cdot \frac{f_P(Q)}{f_Q(P)}")
             except ZeroDivisionError:
                 st.warning("Computation Error: Potential linearly dependent points or division by zero in Miller Loop.")
 
