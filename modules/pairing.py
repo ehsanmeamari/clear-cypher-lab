@@ -152,29 +152,25 @@ def pairing():
     with st.expander("Pairing Computation", expanded=True):
         col1, col2 = st.columns(2)
 
-        with col1:
-            st.subheader("Point P (Base Domain)")
-            st.markdown("<div class='centered-label'>Re(x<sub>P</sub>)</div>", unsafe_allow_html=True)
-            xP_r = st.number_input("xP Real", value=25, key="pair_xpr", label_visibility="collapsed")
-            st.markdown("<div class='centered-label'>Im(x<sub>P</sub>)</div>", unsafe_allow_html=True)
-            xP_i = st.number_input("xP Imag", value=0, key="pair_xpi", label_visibility="collapsed")
-            st.markdown("<div class='centered-label'>Re(y<sub>P</sub>)</div>", unsafe_allow_html=True)
-            yP_r = st.number_input("yP Real", value=2, key="pair_ypr", label_visibility="collapsed")
-            st.markdown("<div class='centered-label'>Im(y<sub>P</sub>)</div>", unsafe_allow_html=True)
-            yP_i = st.number_input("yP Imag", value=0, key="pair_ypi", label_visibility="collapsed")
-            P = (QuadraticFp(xP_r, xP_i, p), QuadraticFp(yP_r, yP_i, p))
-
-        with col2:
-            st.subheader("Point Q (Twist Domain)")
-            st.markdown("<div class='centered-label'>Re(x<sub>Q</sub>)</div>", unsafe_allow_html=True)
-            xQ_r = st.number_input("xQ Real", value=92, key="pair_xqr", label_visibility="collapsed")
-            st.markdown("<div class='centered-label'>Im(x<sub>Q</sub>)</div>", unsafe_allow_html=True)
-            xQ_i = st.number_input("xQ Imag", value=53, key="pair_xqi", label_visibility="collapsed")
-            st.markdown("<div class='centered-label'>Re(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
-            yQ_r = st.number_input("yQ Real", value=6, key="pair_yqr", label_visibility="collapsed")
-            st.markdown("<div class='centered-label'>Im(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
-            yQ_i = st.number_input("yQ Imag", value=7, key="pair_yqi", label_visibility="collapsed")
-            Q = (QuadraticFp(xQ_r, xQ_i, p), QuadraticFp(yQ_r, yQ_i, p))
+    with col1:
+        st.subheader("Point P (Base Domain)")
+        st.markdown("<div class='centered-label'>x<sub>P</sub></div>", unsafe_allow_html=True)
+        xP_r = st.number_input("xP", value=25, key="pair_xpr", label_visibility="collapsed")
+        st.markdown("<div class='centered-label'>y<sub>P</sub></div>", unsafe_allow_html=True)
+        yP_r = st.number_input("yP", value=2, key="pair_ypr", label_visibility="collapsed")
+        P = (QuadraticFp(xP_r, 0, p), QuadraticFp(yP_r, 0, p))
+    
+    with col2:
+        st.subheader("Point Q (Twist Domain)")
+        st.markdown("<div class='centered-label'>Re(x<sub>Q</sub>)</div>", unsafe_allow_html=True)
+        xQ_r = st.number_input("xQ Real", value=92, key="pair_xqr", label_visibility="collapsed")
+        st.markdown("<div class='centered-label'>Im(x<sub>Q</sub>)</div>", unsafe_allow_html=True)
+        xQ_i = st.number_input("xQ Imag", value=53, key="pair_xqi", label_visibility="collapsed")
+        st.markdown("<div class='centered-label'>Re(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
+        yQ_r = st.number_input("yQ Real", value=6, key="pair_yqr", label_visibility="collapsed")
+        st.markdown("<div class='centered-label'>Im(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
+        yQ_i = st.number_input("yQ Imag", value=7, key="pair_yqi", label_visibility="collapsed")
+        Q = (QuadraticFp(xQ_r, xQ_i, p), QuadraticFp(yQ_r, yQ_i, p))
 
         st.divider()
         n_val = st.number_input("Torsion Order (n)", value=119, key="torsion_n")
