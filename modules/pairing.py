@@ -312,7 +312,12 @@ def pairing():
             try:
                 result = weil_pairing(P, Q, int(n_val), a, b)
                 with c7:
-                    st.latex(rf"= {result.a} + {result.b}i")
+                    st.latex(
+                        rf"e\!\left(({int(xP_r)},\,{int(yP_r)}),\;"
+                        rf"({int(xQ_r)}+{int(xQ_i)}i,\;"
+                        rf"{int(yQ_r)}+{int(yQ_i)}i)\right)"
+                        rf"= {result.a} + {result.b}i"
+                    )
             except ValueError as e:
                 with c7:
                     st.warning(f"Error: {e}")
