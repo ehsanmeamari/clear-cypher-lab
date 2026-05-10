@@ -253,6 +253,7 @@ def pairing():
             yQ_i = st.number_input("yQ Imag", value=93, key="pair_yqi", label_visibility="collapsed")
             Q = (QuadraticFp(int(xQ_r), int(xQ_i), p), QuadraticFp(int(yQ_r), int(yQ_i), p))
 
+        n_val = 119
         p_on = is_on_curve(P, a, b)
         q_on = is_on_curve(Q, a, b)
 
