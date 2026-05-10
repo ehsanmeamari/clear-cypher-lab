@@ -193,6 +193,7 @@ def pairing():
             background-color: transparent !important;
             border: 1px solid #e6e6e6;
             border-radius: 8px;
+            margin-bottom: 10px;
         }
         .centered-label {
             text-align: center;
@@ -203,18 +204,80 @@ def pairing():
             margin-bottom: 4px;
             color: black;
         }
+        .math-points {
+            font-family: 'Crimson Text', 'Georgia', serif;
+            font-size: 15px;
+            line-height: 2;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            padding: 8px 4px 16px 4px;
+            text-align: left;
+        }
         </style>
     """, unsafe_allow_html=True)
 
-    a = QuadraticFp(1, 0, p)
-    b = QuadraticFp(9, 0, p)
+    a_int = 1
+    b_int = 9
+    a = QuadraticFp(a_int, 0, p)
+    b = QuadraticFp(b_int, 0, p)
 
-    st.markdown("---")
+    # --- لیست نقاط E(F101) ---
+    fp1_points = []
+    for x in range(p):
+        for y in range(p):
+            if (y*y - (x*x*x + a_int*x + b_int)) % p == 0:
+                fp1_points.append((x, y))
+
+    # --- لیست نقاط E(F101^2) ---
+    HARDCODED_POINTS_STR = (
+        "O, (0, 3), (0, 98), (1, 27+37i), (1, 74+64i), (2, 25), (2, 76), "
+        "(3, 49+26i), (3, 52+75i), (4, 28), (4, 73), (5, 51+25i), (5, 50+76i), "
+        "(6, 19+41i), (6, 82+60i), (7, 37), (7, 64), (8, 23), (8, 78), "
+        "(9, 79+11i), (9, 22+90i), (10, 3), (10, 98), (11, 51+25i), (11, 50+76i), "
+        "(12, 93+4i), (12, 8+97i), (13, 87+7i), (13, 14+94i), (14, 79+11i), "
+        "(14, 22+90i), (15, 43+29i), (15, 58+72i), (16, 9), (16, 92), "
+        "(17, 9+46i), (17, 92+55i), (18, 1), (18, 100), (19, 25), (19, 76), "
+        "(20, 91+5i), (20, 10+96i), (21, 10), (21, 91), (22, 59+21i), (22, 42+80i), "
+        "(23, 33), (23, 68), (24, 11), (24, 90), (25, 2), (25, 99), (26, 21), "
+        "(26, 80), (27, 23), (27, 78), (28, 89+6i), (28, 12+95i), (29, 77+12i), "
+        "(29, 24+89i), (30, 89+6i), (30, 12+95i), (31, 6), (31, 95), (32, 40), "
+        "(32, 61), (33, 15), (33, 86), (34, 19), (34, 82), (35, 14), (35, 87), "
+        "(36, 49+26i), (36, 52+75i), (37, 87+7i), (37, 14+94i), (38, 50), "
+        "(38, 51), (39, 22), (39, 79), (40, 63+19i), (40, 38+82i), (41, 73+14i), "
+        "(41, 28+87i), (42, 45), (42, 56), (43, 89+6i), (43, 12+95i), "
+        "(44, 17+42i), (44, 84+59i), (45, 28), (45, 73), (46, 85+8i), "
+        "(46, 16+93i), (47, 1+50i), (47, 100+51i), (48, 16), (48, 85), "
+        "(49, 65+18i), (49, 36+83i)"
+    )
+    HARDCODED_TOTAL = 10115
+    HARDCODED_REMAINING = 10014
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        str_points = ", ".join([f"({pt[0]},{pt[1]})" for pt in fp1_points])
+        with st.expander(f"Points on Curve E(F₁₀₁) ({len(fp1_points)+1} points)", expanded=False):
+            st.markdown(
+                f"<div class='math-points'>{{ 𝒪, {str_points} }}</div>",
+                unsafe_allow_html=True
+            )
+
+    with col2:
+        with st.expander(f"Elements on Curve E(F₁₀₁²) ({HARDCODED_TOTAL} points — Weil Theorem)", expanded=False):
+            st.markdown(
+                f"<div class='math-points'>{{ {HARDCODED_POINTS_STR}, "
+                f"... ({HARDCODED_REMAINING} more points not shown) }}</div>",
+                unsafe_allow_html=True
+            )
+            st.warning(
+                "For large p (e.g. p=101), finding all points takes time. "
+                "As an example, we listed up to 100 points below and skip the rest."
+            )
 
     with st.expander("Pairing Computation (Torsion Order 119)", expanded=True):
         st.latex(r"E: y^2 \equiv x^3 + x + 9 \pmod{101}")
         st.latex(r"\text{Torsion Order} = 119")
-        
+
         c1, c2, gap, c3, c4, c5, c6 = st.columns([1, 1, 0.3, 1, 1, 1, 1])
 
         with c1: st.markdown("<div class='centered-label'>x<sub>P</sub></div>", unsafe_allow_html=True)
