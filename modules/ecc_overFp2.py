@@ -144,41 +144,6 @@ def ecc_fp2():
             st.latex(r"y^2 = x^3 + 1 \cdot x + 9 \quad \text{over } \mathbb{F}_{101^2}")
             st.latex(r"i^2 = 4i + 99")
 
-        with st.expander(f"Elements on Curve ({HARDCODED_TOTAL} points — Weil Theorem)", expanded=True):
-            st.warning(
-                "For large p (e.g. p=101), finding all points takes time. "
-                "As an example, we list up to 100 points below and skip the rest."
-            )
-            st.markdown(
-                f"<div class='math-points'>{{ {HARDCODED_POINTS_STR}, "
-                f"... ({HARDCODED_REMAINING} more points not shown) }}</div>",
-                unsafe_allow_html=True
-            )
-
-        with st.expander("Check if a Point is on the Curve", expanded=True):
-            st.markdown("Enter the coordinates of a point to check if it belongs to the curve.")
-
-            c1, c2, c3, c4 = st.columns(4)
-            with c1: st.markdown("<div class='centered-label'>Re(x)</div>", unsafe_allow_html=True)
-            with c2: st.markdown("<div class='centered-label'>Im(x)</div>", unsafe_allow_html=True)
-            with c3: st.markdown("<div class='centered-label'>Re(y)</div>", unsafe_allow_html=True)
-            with c4: st.markdown("<div class='centered-label'>Im(y)</div>", unsafe_allow_html=True)
-
-            c1, c2, c3, c4 = st.columns(4)
-            with c1: chk_xa = st.number_input("Re(x)", value=0, key="chk_xa", label_visibility="collapsed")
-            with c2: chk_xb = st.number_input("Im(x)", value=0, key="chk_xb", label_visibility="collapsed")
-            with c3: chk_ya = st.number_input("Re(y)", value=3, key="chk_ya", label_visibility="collapsed")
-            with c4: chk_yb = st.number_input("Im(y)", value=0, key="chk_yb", label_visibility="collapsed")
-
-            Px_chk = (int(chk_xa) % p, int(chk_xb) % p)
-            Py_chk = (int(chk_ya) % p, int(chk_yb) % p)
-
-            if is_on_curve_fp2(Px_chk, Py_chk):
-                st.success(f"✓ The point ({fmt(Px_chk)}, {fmt(Py_chk)}) is on the curve E(𝔽_p²).")
-            else:
-                st.error(f"✗ The point ({fmt(Px_chk)}, {fmt(Py_chk)}) is NOT on the curve.")
-
-    with col2:
         with st.expander("Point Addition", expanded=True):
             c1,c2,c3,c4,c5,c6,c7,c8 = st.columns(8)
             with c1: st.markdown("<div class='centered-label'>Re(x<sub>P</sub>)</div>", unsafe_allow_html=True)
@@ -240,3 +205,38 @@ def ecc_fp2():
                     st.latex(f"{n_val}P = \\mathcal{{O}}")
             else:
                 st.warning("P is NOT on the curve!")
+
+    with col2:
+        with st.expander(f"Elements on Curve ({HARDCODED_TOTAL} points — Weil Theorem)", expanded=True):
+            st.warning(
+                "For large p (e.g. p=101), finding all points takes time. "
+                "As an example, we list up to 100 points below and skip the rest."
+            )
+            st.markdown(
+                f"<div class='math-points'>{{ {HARDCODED_POINTS_STR}, "
+                f"... ({HARDCODED_REMAINING} more points not shown) }}</div>",
+                unsafe_allow_html=True
+            )
+
+        with st.expander("Check if a Point is on the Curve", expanded=True):
+            st.markdown("Enter the coordinates of a point to check if it belongs to the curve.")
+
+            c1, c2, c3, c4 = st.columns(4)
+            with c1: st.markdown("<div class='centered-label'>Re(x)</div>", unsafe_allow_html=True)
+            with c2: st.markdown("<div class='centered-label'>Im(x)</div>", unsafe_allow_html=True)
+            with c3: st.markdown("<div class='centered-label'>Re(y)</div>", unsafe_allow_html=True)
+            with c4: st.markdown("<div class='centered-label'>Im(y)</div>", unsafe_allow_html=True)
+
+            c1, c2, c3, c4 = st.columns(4)
+            with c1: chk_xa = st.number_input("Re(x)", value=0, key="chk_xa", label_visibility="collapsed")
+            with c2: chk_xb = st.number_input("Im(x)", value=0, key="chk_xb", label_visibility="collapsed")
+            with c3: chk_ya = st.number_input("Re(y)", value=3, key="chk_ya", label_visibility="collapsed")
+            with c4: chk_yb = st.number_input("Im(y)", value=0, key="chk_yb", label_visibility="collapsed")
+
+            Px_chk = (int(chk_xa) % p, int(chk_xb) % p)
+            Py_chk = (int(chk_ya) % p, int(chk_yb) % p)
+
+            if is_on_curve_fp2(Px_chk, Py_chk):
+                st.success(f"✓ The point ({fmt(Px_chk)}, {fmt(Py_chk)}) is on the curve E(𝔽_p²).")
+            else:
+                st.error(f"✗ The point ({fmt(Px_chk)}, {fmt(Py_chk)}) is NOT on the curve.")
