@@ -275,9 +275,7 @@ def pairing():
                 "As an example, we listed up to 100 points below and skip the rest."
             )
 
-    with st.expander("Pairing Computation (Torsion Order 119)", expanded=True):
-        st.latex(r"\text{Torsion Order} = 119")
-
+    with st.expander("Pairing Computation (Torsion Order = 119)", expanded=True):
         c1, c2, gap, c3, c4, c5, c6 = st.columns([1, 1, 0.3, 1, 1, 1, 1])
 
         with c1: st.markdown("<div class='centered-label'>x<sub>P</sub></div>", unsafe_allow_html=True)
