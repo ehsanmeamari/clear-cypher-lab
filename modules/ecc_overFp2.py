@@ -139,12 +139,12 @@ def ecc_fp2():
     col1, col2 = st.columns([2, 2])
 
     with col1:
-        with st.expander("Curve Definition", expanded=True):
+        with st.expander("Curve Definition", expanded=False):
             st.info("Curve Definition is not available now. The fixed curve is:")
             st.latex(r"y^2 = x^3 + 1 \cdot x + 9 \quad \text{over } \mathbb{F}_{101^2}")
             st.latex(r"i^2 = 4i + 99")
 
-        with st.expander("Point Addition", expanded=True):
+        with st.expander("Point Addition", expanded=False):
             c1,c2,c3,c4,c5,c6,c7,c8 = st.columns(8)
             with c1: st.markdown("<div class='centered-label'>Re(x<sub>P</sub>)</div>", unsafe_allow_html=True)
             with c2: st.markdown("<div class='centered-label'>Im(x<sub>P</sub>)</div>", unsafe_allow_html=True)
@@ -181,7 +181,7 @@ def ecc_fp2():
                 if not p_on: st.warning("P is NOT on the curve!")
                 if not q_on: st.warning("Q is NOT on the curve!")
 
-        with st.expander("Scalar Multiplication", expanded=True):
+        with st.expander("Scalar Multiplication", expanded=False):
             c1,c2,c3,c4,c5 = st.columns(5)
             with c1: st.markdown("<div class='centered-label'>n</div>", unsafe_allow_html=True)
             with c2: st.markdown("<div class='centered-label'>Re(x<sub>P</sub>)</div>", unsafe_allow_html=True)
@@ -207,7 +207,7 @@ def ecc_fp2():
                 st.warning("P is NOT on the curve!")
 
     with col2:
-        with st.expander(f"Elements on Curve ({HARDCODED_TOTAL} points — Weil Theorem)", expanded=True):
+        with st.expander(f"Elements on Curve ({HARDCODED_TOTAL} points — Weil Theorem)", expanded=False):
             st.warning(
                 "For large p (e.g. p=101), finding all points takes time. "
                 "As an example, we list up to 100 points below and skip the rest."
@@ -218,7 +218,7 @@ def ecc_fp2():
                 unsafe_allow_html=True
             )
 
-        with st.expander("Check if a Point is on the Curve", expanded=True):
+        with st.expander("Check if a Point is on the Curve", expanded=False):
             st.markdown("Enter the coordinates of a point to check if it belongs to the curve.")
 
             c1, c2, c3, c4 = st.columns(4)
