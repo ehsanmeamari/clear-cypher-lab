@@ -275,7 +275,9 @@ def pairing():
                 "As an example, we listed up to 100 points below and skip the rest."
             )
 
-    with st.expander("Pairing Computation (Torsion Order = 119)", expanded=True):
+    with st.expander("Pairing Computation (Torsion Order 119)", expanded=True):
+        st.latex(r"\text{Torsion Order} = 119")
+
         c1, c2, gap, c3, c4, c5, c6 = st.columns([1, 1, 0.3, 1, 1, 1, 1])
 
         with c1: st.markdown("<div class='centered-label'>x<sub>P</sub></div>", unsafe_allow_html=True)
@@ -309,9 +311,11 @@ def pairing():
         else:
             try:
                 result = weil_pairing(P, Q, int(n_val), a, b)
-                c1, c2, gap, c3, c4, c5, c6, res_col = st.columns([1, 1, 0.3, 1, 1, 1, 1, 2])
-                with res_col:
-                    st.success(f"e(P, Q) = {result.a} + {result.b}i")
+                st.latex(
+                    rf"e\!\left(({int(xP_r)},\, {int(yP_r)}),\; "
+                    rf"({int(xQ_r)}+{int(xQ_i)}i,\; {int(yQ_r)}+{int(yQ_i)}i)\right) "
+                    rf"= {result.a} + {result.b}i"
+                )
             except ValueError as e:
                 st.warning(f"Computation Error: {e}")
             except ZeroDivisionError:
