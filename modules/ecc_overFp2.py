@@ -27,7 +27,7 @@ def ecc_fp2():
         }
         .centered-label {
             text-align: center;
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 500;
             font-family: 'Crimson Text', 'Georgia', serif;
             font-style: italic;
@@ -145,7 +145,7 @@ def ecc_fp2():
             st.latex(r"i^2 = 4i + 99")
 
         with st.expander("Point Addition", expanded=False):
-            c1,c2,c3,c4,c5,c6,c7,c8 = st.columns(8)
+            c1,c2,c3,c4,gap,c5,c6,c7,c8 = st.columns([1,1,1,1,0.4,1,1,1,1])
             with c1: st.markdown("<div class='centered-label'>Re(x<sub>P</sub>)</div>", unsafe_allow_html=True)
             with c2: st.markdown("<div class='centered-label'>Im(x<sub>P</sub>)</div>", unsafe_allow_html=True)
             with c3: st.markdown("<div class='centered-label'>Re(y<sub>P</sub>)</div>", unsafe_allow_html=True)
@@ -155,7 +155,7 @@ def ecc_fp2():
             with c7: st.markdown("<div class='centered-label'>Re(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
             with c8: st.markdown("<div class='centered-label'>Im(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
 
-            c1,c2,c3,c4,c5,c6,c7,c8 = st.columns(8)
+            c1,c2,c3,c4,gap,c5,c6,c7,c8 = st.columns([1,1,1,1,0.4,1,1,1,1])
             with c1: xPa = st.number_input("xPa", value=0, key="xPa", label_visibility="collapsed")
             with c2: xPb = st.number_input("xPb", value=0, key="xPb", label_visibility="collapsed")
             with c3: yPa = st.number_input("yPa", value=3, key="yPa", label_visibility="collapsed")
