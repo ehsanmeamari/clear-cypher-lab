@@ -207,8 +207,7 @@ def ecc_fp2():
 
     with col2:
         with st.expander("Check if a Point is on the Curve", expanded=False):
-            st.markdown("Enter the coordinates of a point to check if it belongs to the curve.")
-
+            
             c1, c2, c3, c4 = st.columns(4)
             with c1: st.markdown("<div class='centered-label'>Re(x)</div>", unsafe_allow_html=True)
             with c2: st.markdown("<div class='centered-label'>Im(x)</div>", unsafe_allow_html=True)
