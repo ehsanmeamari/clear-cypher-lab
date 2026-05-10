@@ -230,7 +230,7 @@ def pairing():
         st.latex(r"E: y^2 \equiv x^3 + x + 9 \pmod{101}")
         st.info("This module simulates Weil Pairing over extension fields for Zero-Knowledge Proof systems.")
 
-    with st.expander("Pairing Computation", expanded=True):
+    with st.expander("Pairing Computation (Torsion Order 119)", expanded=True):
         col1, col2 = st.columns(2)
 
         with col1:
@@ -254,7 +254,6 @@ def pairing():
             Q = (QuadraticFp(int(xQ_r), int(xQ_i), p), QuadraticFp(int(yQ_r), int(yQ_i), p))
 
         st.divider()
-        n_val = st.number_input("Torsion Order (n)", value=119, key="torsion_n")
 
         p_on = is_on_curve(P, a, b)
         q_on = is_on_curve(Q, a, b)
