@@ -141,8 +141,7 @@ def ecc_fp2():
     with col1:
         with st.expander("Curve Definition", expanded=False):
             st.info("Curve Definition is not available now. The fixed curve is:")
-            st.latex(r"y^2 = x^3 + 1 \cdot x + 9 \quad \text{over } \mathbb{F}_{101^2}")
-            st.latex(r"i^2 = 4i + 99")
+            st.latex(r"y^2 = x^3 + 1 \cdot x + 9 \quad \text{over } \mathbb{F}_{101^2} \qquad i^2 = 4i + 99")
 
         with st.expander("Point Addition", expanded=False):
             c1,c2,c3,c4,gap,c5,c6,c7,c8 = st.columns([1,1,1,1,0.4,1,1,1,1])
