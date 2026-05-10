@@ -211,13 +211,9 @@ def pairing():
 
     st.markdown("---")
 
-    with st.expander("Protocol Overview", expanded=False):
-        st.write("Current Curve Configuration (ZKP Demonstration):")
-        st.latex(r"E: y^2 \equiv x^3 + x + 9 \pmod{101}")
-        st.info("This module simulates Weil Pairing over extension fields for Zero-Knowledge Proof systems.")
-
     with st.expander("Pairing Computation (Torsion Order 119)", expanded=True):
-
+        st.latex(r"E: y^2 \equiv x^3 + x + 9 \pmod{101}")
+        
         c1, c2, gap, c3, c4, c5, c6 = st.columns([1, 1, 0.3, 1, 1, 1, 1])
 
         with c1: st.markdown("<div class='centered-label'>x<sub>P</sub></div>", unsafe_allow_html=True)
