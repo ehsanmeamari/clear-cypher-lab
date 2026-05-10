@@ -2,10 +2,6 @@ import streamlit as st
 
 # --- 1. MATHEMATICAL FOUNDATION: QUADRATIC FIELD ELEMENTS ---
 class QuadraticFp:
-    """
-    Represents elements in the extension field Fp^2 defined by:
-    a + b*i where i^2 = 4i + 99 (Specific to this curve implementation)
-    """
     def __init__(self, a, b, p):
         self.p = p
         self.a = a % p
@@ -44,7 +40,7 @@ class QuadraticFp:
     def inverse(self):
         p, a, b = self.p, self.a, self.b
         conj = QuadraticFp(a + 4 * b, -b, p)
-        norm = (self * conj).a 
+        norm = (self * conj).a
         if norm == 0: raise ZeroDivisionError("Element not invertible")
         norm_inv = pow(norm, p - 2, p)
         return QuadraticFp(conj.a * norm_inv, conj.b * norm_inv, p)
@@ -130,39 +126,67 @@ def pairing():
             border: 1px solid #e6e6e6;
             border-radius: 8px;
         }
+        .centered-label {
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'Crimson Text', 'Georgia', serif;
+            font-style: italic;
+            margin-bottom: 4px;
+            color: black;
+        }
         </style>
     """, unsafe_allow_html=True)
 
     p = 101
     a = QuadraticFp(1, 0, p)
     b = QuadraticFp(9, 0, p)
-    
+
     st.markdown("---")
-    
+
     with st.expander("Protocol Overview", expanded=False):
         st.write("Current Curve Configuration (ZKP Demonstration):")
-        st.latex(f"E: y^2 \\equiv x^3 + x + 9 \\pmod{{101}}")
+        st.latex(r"E: y^2 \equiv x^3 + x + 9 \pmod{101}")
         st.info("This module simulates Weil Pairing over extension fields for Zero-Knowledge Proof systems.")
 
     with st.expander("Pairing Computation", expanded=True):
         col1, col2 = st.columns(2)
+
         with col1:
             st.subheader("Point P (Base Domain)")
-            xP_r = st.number_input("xP (Real Part)", value=25, key="pair_xpr")
-            yP_r = st.number_input("yP (Real Part)", value=2, key="pair_ypr")
-            P = (QuadraticFp(xP_r, 0, p), QuadraticFp(yP_r, 0, p))
-            
+            st.markdown("<div class='centered-label'>Re(x<sub>P</sub>)</div>", unsafe_allow_html=True)
+            xP_r = st.number_input("xP Real", value=25, key="pair_xpr", label_visibility="collapsed")
+            st.markdown("<div class='centered-label'>Im(x<sub>P</sub>)</div>", unsafe_allow_html=True)
+            xP_i = st.number_input("xP Imag", value=0, key="pair_xpi", label_visibility="collapsed")
+            st.markdown("<div class='centered-label'>Re(y<sub>P</sub>)</div>", unsafe_allow_html=True)
+            yP_r = st.number_input("yP Real", value=2, key="pair_ypr", label_visibility="collapsed")
+            st.markdown("<div class='centered-label'>Im(y<sub>P</sub>)</div>", unsafe_allow_html=True)
+            yP_i = st.number_input("yP Imag", value=0, key="pair_ypi", label_visibility="collapsed")
+            P = (QuadraticFp(xP_r, xP_i, p), QuadraticFp(yP_r, yP_i, p))
+
         with col2:
             st.subheader("Point Q (Twist Domain)")
-            xQ_r = st.number_input("xQ (Real Part)", value=92, key="pair_xqr")
-            xQ_i = st.number_input("xQ (Imaginary Part)", value=53, key="pair_xqi")
-            Q = (QuadraticFp(xQ_r, xQ_i, p), QuadraticFp(6, 7, p))
+            st.markdown("<div class='centered-label'>Re(x<sub>Q</sub>)</div>", unsafe_allow_html=True)
+            xQ_r = st.number_input("xQ Real", value=92, key="pair_xqr", label_visibility="collapsed")
+            st.markdown("<div class='centered-label'>Im(x<sub>Q</sub>)</div>", unsafe_allow_html=True)
+            xQ_i = st.number_input("xQ Imag", value=53, key="pair_xqi", label_visibility="collapsed")
+            st.markdown("<div class='centered-label'>Re(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
+            yQ_r = st.number_input("yQ Real", value=6, key="pair_yqr", label_visibility="collapsed")
+            st.markdown("<div class='centered-label'>Im(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
+            yQ_i = st.number_input("yQ Imag", value=7, key="pair_yqi", label_visibility="collapsed")
+            Q = (QuadraticFp(xQ_r, xQ_i, p), QuadraticFp(yQ_r, yQ_i, p))
 
         st.divider()
         n_val = st.number_input("Torsion Order (n)", value=119, key="torsion_n")
 
-        if not is_on_curve(P, a, b, p) or not is_on_curve(Q, a, b, p):
-            st.error("Validation Error: Input points do not lie on the curve $E(\mathbb{F}_{p^2})$.")
+        p_on = is_on_curve(P, a, b, p)
+        q_on = is_on_curve(Q, a, b, p)
+
+        if not p_on or not q_on:
+            if not p_on:
+                st.error("Validation Error: Point P does not lie on the curve $E(\\mathbb{{F}}_{{p^2}})$.")
+            if not q_on:
+                st.error("Validation Error: Point Q does not lie on the curve $E(\\mathbb{{F}}_{{p^2}})$.")
         else:
             try:
                 result = weil_pairing(P, Q, n_val, a, b, p)
