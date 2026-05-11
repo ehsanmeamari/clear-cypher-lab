@@ -313,15 +313,21 @@ def pairing():
             try:
                 result = weil_pairing(P, Q, int(n_val), a, b)
                 with c7:
-                    st.latex(
-                        rf"e\!\left(({int(xP_r)},\,{int(yP_r)}),\;"
-                        rf"({int(xQ_r)}+{int(xQ_i)}i,\;"
-                        rf"{int(yQ_r)}+{int(yQ_i)}i)\right)"
-                        rf"= {result.a} + {result.b}i"
+                    st.markdown(
+                        f"<div style='background-color:#d4edda; border-radius:8px; padding:8px 12px; text-align:center;'>"
+                        f"$$e\\!\\left(({int(xP_r)},\\,{int(yP_r)}),\\;"
+                        f"({int(xQ_r)}+{int(xQ_i)}i,\\;"
+                        f"{int(yQ_r)}+{int(yQ_i)}i)\\right)"
+                        f"= {result.a} + {result.b}i$$"
+                        f"</div>",
+                        unsafe_allow_html=True
                     )
             except ValueError as e:
                 with c7:
-                    st.warning(f"Error: {e}")
+                    if "n-torsion" in str(e):
+                        st.warning("Point is on the curve but not of order 119. Please choose an n-torsion point.")
+                    else:
+                        st.warning(f"Error: {e}")
             except ZeroDivisionError:
                 with c7:
                     st.warning("Division by zero.")
