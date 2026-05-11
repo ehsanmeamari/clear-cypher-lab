@@ -166,10 +166,10 @@ def miller(P, Q, n, a):
     return t
 
 def weil_pairing(P, Q, n, a, b):
+    if not is_on_curve(P, a, b):
+        raise ValueError("P is not on the curve.")
     if not is_on_curve(Q, a, b):
         raise ValueError("Q is not on the curve.")
-    if scalar_mul(n, P, a) is not None or scalar_mul(n, Q, a) is not None:
-        raise ValueError("Points must both be n-torsion.")
     if P == Q or P is None or Q is None:
         return ONE_EL
     try:
@@ -277,7 +277,7 @@ def pairing():
 
     with st.expander("Pairing Computation (Torsion Order = 119)", expanded=True):
 
-        c1, c2, gap, c3, c4, c5, c6, gap, c7 = st.columns([1, 1, 0.3, 1, 1, 1, 1, 0.3, 4])
+        c1, c2, gap, c3, c4, c5, c6, gap2, c7 = st.columns([1, 1, 0.3, 1, 1, 1, 1, 0.3, 4])
 
         with c1: st.markdown("<div class='centered-label'>x<sub>P</sub></div>", unsafe_allow_html=True)
         with c2: st.markdown("<div class='centered-label'>y<sub>P</sub></div>", unsafe_allow_html=True)
@@ -287,7 +287,7 @@ def pairing():
         with c6: st.markdown("<div class='centered-label'>Im(y<sub>Q</sub>)</div>", unsafe_allow_html=True)
         with c7: st.empty()
 
-        c1, c2, gap, c3, c4, c5, c6, gap, c7 = st.columns([1, 1, 0.3, 1, 1, 1, 1, 0.3, 4])
+        c1, c2, gap, c3, c4, c5, c6, gap2, c7 = st.columns([1, 1, 0.3, 1, 1, 1, 1, 0.3, 4])
 
         with c1: xP_r = st.number_input("xP", value=19, key="pair_xpr", label_visibility="collapsed")
         with c2: yP_r = st.number_input("yP", value=25, key="pair_ypr", label_visibility="collapsed")
@@ -313,15 +313,6 @@ def pairing():
             try:
                 result = weil_pairing(P, Q, int(n_val), a, b)
                 with c7:
-                    st.markdown("""
-                        <style>
-                        div[data-testid="stExpander"] .stLatex {
-                            background-color: #d4edda;
-                            border-radius: 8px;
-                            padding: 4px 8px;
-                        }
-                        </style>
-                    """, unsafe_allow_html=True)
                     st.latex(
                         rf"e\!\left(({int(xP_r)},\,{int(yP_r)}),\;"
                         rf"({int(xQ_r)}+{int(xQ_i)}i,\;"
@@ -330,10 +321,7 @@ def pairing():
                     )
             except ValueError as e:
                 with c7:
-                    if "n-torsion" in str(e):
-                        st.warning("Point is on the curve but not of order 119. Please choose an n-torsion point.")
-                    else:
-                        st.warning(f"Error: {e}")
+                    st.warning(f"Error: {e}")
             except ZeroDivisionError:
                 with c7:
                     st.warning("Division by zero.")
