@@ -40,19 +40,16 @@ def run_ecc_overR():
     col_left, col_right = st.columns([2, 2])
     
     def add_points(x1, y1, x2, y2, a):
-        # Handle point at infinity (identity element)
         if x1 is None:
             return x2, y2, None
         if x2 is None:
             return x1, y1, None
         try:
             if abs(x1 - x2) < 1e-9 and abs(y1 - y2) < 1e-9:
-                # Point doubling
                 if abs(y1) < 1e-9:
-                    return None, None, None  # 2P = infinity when y = 0
+                    return None, None, None
                 s = (3 * x1**2 + a) / (2 * y1)
             elif abs(x1 - x2) < 1e-9:
-                # P + (-P) = infinity
                 return None, None, None
             else:
                 s = (y2 - y1) / (x2 - x1)
@@ -63,22 +60,16 @@ def run_ecc_overR():
             return None, None, None
 
     def scalar_mult(n, px, py, a):
-        """
-        Double-and-add algorithm for scalar multiplication on ECC.
-        None represents the point at infinity (identity element).
-        """
-        qx, qy = px, py   # current doubling point
-        rx, ry = None, None  # accumulator, starts at infinity
+        qx, qy = px, py
+        rx, ry = None, None
         n = int(n)
         while n > 0:
             if n % 2 == 1:
                 if rx is None:
-                    # R = O + Q = Q
                     rx, ry = qx, qy
                 else:
                     res = add_points(rx, ry, qx, qy, a)
                     rx, ry = res[0], res[1]
-            # Double Q
             if qx is None:
                 break
             res_double = add_points(qx, qy, qx, qy, a)
@@ -98,11 +89,14 @@ def run_ecc_overR():
                     st.latex(f"y^2 = x^3 {'+' if a>=0 else ''}{a:.1f}x {'+' if b>=0 else ''}{b:.1f}")
                     st.markdown("</div>", unsafe_allow_html=True)
 
-        # Track which section was last updated
         if "last_updated" not in st.session_state:
             st.session_state["last_updated"] = None
 
-        with st.expander("Point Addition", expanded=False):
+        pa_expanded = st.session_state.get("pa_expanded", False)
+
+        with st.expander("Point Addition", expanded=pa_expanded) as pa_exp:
+            st.session_state["pa_expanded"] = True
+
             if "pa_mode_p" not in st.session_state:
                 st.session_state["pa_mode_p"] = "x_to_y"
             if "pa_mode_q" not in st.session_state:
@@ -114,7 +108,6 @@ def run_ecc_overR():
             with h3: st.latex("x_Q")
             with h4: st.latex("y_Q")
 
-            # Save previous PA values for change detection
             prev_pa = st.session_state.get("prev_pa_vals", None)
 
             c1, c2, c3, c4 = st.columns(4)
@@ -190,7 +183,6 @@ def run_ecc_overR():
                     st.rerun()
 
             if xp is not None and xq is not None and yp is not None and yq is not None:
-                # Detect if PA inputs changed → mark as last updated
                 curr_pa = (xp, yp, xq, yq)
                 if prev_pa != curr_pa:
                     st.session_state["prev_pa_vals"] = curr_pa
@@ -202,8 +194,11 @@ def run_ecc_overR():
                     st.session_state['add_result'] = (res_add_x, res_add_y, add_slope, xp, yp, xq, yq, False)
                 else:
                     st.info("Result: Point at Infinity")
-                    # Still store P and Q so we can draw them + vertical line
                     st.session_state['add_result'] = (None, None, None, xp, yp, xq, yq, True)
+
+        if not pa_expanded:
+            st.session_state.pop('add_result', None)
+            st.session_state["last_updated"] = None
 
         with st.expander("Scalar Multiplication", expanded=False):
             if "sm_mode_p" not in st.session_state:
@@ -214,7 +209,6 @@ def run_ecc_overR():
             with h2: st.latex("y_P")
             with h3: st.latex("n")
 
-            # Save previous SM values for change detection
             prev_sm = st.session_state.get("prev_sm_vals", None)
 
             c1, c2, c3, c4 = st.columns(4)
@@ -258,7 +252,6 @@ def run_ecc_overR():
                 n_val = st.number_input("n_val", min_value=1, value=2, key="scalar_n", label_visibility="collapsed")
 
             if px_s is not None and py_s is not None:
-                # Detect if SM inputs changed → mark as last updated
                 curr_sm = (px_s, py_s, n_val)
                 if prev_sm != curr_sm:
                     st.session_state["prev_sm_vals"] = curr_sm
@@ -279,10 +272,12 @@ def run_ecc_overR():
             y_m, x_m = np.ogrid[-plot_range:plot_range:500j, -plot_range:plot_range:500j]
             ax.contour(x_m.ravel(), y_m.ravel(), y_m**2 - x_m**3 - a*x_m - b, [0], colors='#3498db')
 
-            if 'add_result' in st.session_state and st.session_state.get("last_updated") == "pa":
+            show_pa = st.session_state.get("pa_expanded", False) and st.session_state.get("last_updated") == "pa"
+            show_sm = st.session_state.get("last_updated") == "sm"
+
+            if show_pa and 'add_result' in st.session_state:
                 rax, ray, rslo, rpx, rpy, rqx, rqy, is_infinity = st.session_state['add_result']
                 if is_infinity:
-                    # P + Q = ∞ → draw P, Q and vertical line through them
                     ax.axvline(x=rpx, color='#9b59b6', linestyle='--', alpha=0.6)
                     ax.scatter([rpx], [rpy], color='red', s=50, zorder=5)
                     ax.annotate('P', xy=(rpx, rpy), xytext=(rpx+0.15, rpy+0.15), fontsize=11, fontweight='bold', color='red')
@@ -300,7 +295,7 @@ def run_ecc_overR():
                     ax.scatter(rax, ray, color='green', s=100, marker='X', zorder=6)
                     ax.annotate('P+Q', xy=(rax, ray), xytext=(rax+0.15, ray+0.15), fontsize=11, fontweight='bold', color='green')
 
-            if 'mult_result' in st.session_state and st.session_state.get("last_updated") == "sm":
+            if show_sm and 'mult_result' in st.session_state:
                 mrx, mry, mpx, mpy, mn = st.session_state['mult_result']
                 ax.scatter(mpx, mpy, color='blue', s=50, zorder=5)
                 ax.annotate('P', xy=(mpx, mpy), xytext=(mpx+0.15, mpy+0.15), fontsize=11, fontweight='bold', color='blue')
