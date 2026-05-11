@@ -6,6 +6,16 @@ import math
 def run_ecc_overR():    
     st.markdown("""
         <style>
+        div[data-testid="stExpander"] details summary {
+            background-color: #FDF5E6;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        div[data-testid="stExpander"] {
+            border: 1px solid #e6e6e6;
+            border-radius: 5px;
+            background-color: transparent;
+        }
         button[data-testid="stNumberInputStepDown"],
         button[data-testid="stNumberInputStepUp"] {
             display: none !important;
@@ -18,21 +28,6 @@ def run_ecc_overR():
             color: black;
             margin-top: 4px;
             text-align: left;
-        }
-        .small-label {
-            font-size: 14px;
-            color: #444;
-            margin-bottom: 2px;
-        }
-        div[data-testid="stExpander"] details summary {
-            background-color: #FDF5E6;
-            border-radius: 5px;
-            padding: 10px;
-        }
-        div[data-testid="stExpander"] {
-            border: 1px solid #e6e6e6;
-            border-radius: 5px;
-            background-color: transparent;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -92,13 +87,25 @@ def run_ecc_overR():
         if "last_updated" not in st.session_state:
             st.session_state["last_updated"] = None
 
-        show_pa = st.checkbox("Point Addition", value=False, key="show_pa_cb")
-        if not show_pa:
+        section = st.segmented_control(
+            "Section",
+            options=["Point Addition", "Scalar Multiplication"],
+            default=None,
+            key="section_select",
+            label_visibility="collapsed"
+        )
+
+        if section != "Point Addition":
             st.session_state.pop('add_result', None)
             if st.session_state.get("last_updated") == "pa":
                 st.session_state["last_updated"] = None
 
-        if show_pa:
+        if section != "Scalar Multiplication":
+            st.session_state.pop('mult_result', None)
+            if st.session_state.get("last_updated") == "sm":
+                st.session_state["last_updated"] = None
+
+        if section == "Point Addition":
             with st.expander("", expanded=True):
                 if "pa_mode_p" not in st.session_state:
                     st.session_state["pa_mode_p"] = "x_to_y"
@@ -189,7 +196,6 @@ def run_ecc_overR():
                     if prev_pa != curr_pa:
                         st.session_state["prev_pa_vals"] = curr_pa
                         st.session_state["last_updated"] = "pa"
-
                     res_add_x, res_add_y, add_slope = add_points(xp, yp, xq, yq, a)
                     if res_add_x is not None:
                         st.info(f"P + Q = ({res_add_x:.2f}, {res_add_y:.2f})")
@@ -198,13 +204,7 @@ def run_ecc_overR():
                         st.info("Result: Point at Infinity")
                         st.session_state['add_result'] = (None, None, None, xp, yp, xq, yq, True)
 
-        show_sm = st.checkbox("Scalar Multiplication", value=False, key="show_sm_cb")
-        if not show_sm:
-            st.session_state.pop('mult_result', None)
-            if st.session_state.get("last_updated") == "sm":
-                st.session_state["last_updated"] = None
-
-        if show_sm:
+        if section == "Scalar Multiplication":
             with st.expander("", expanded=True):
                 if "sm_mode_p" not in st.session_state:
                     st.session_state["sm_mode_p"] = "x_to_y"
@@ -260,7 +260,6 @@ def run_ecc_overR():
                     if prev_sm != curr_sm:
                         st.session_state["prev_sm_vals"] = curr_sm
                         st.session_state["last_updated"] = "sm"
-
                     rx, ry = scalar_mult(n_val, px_s, py_s, a)
                     if rx is not None:
                         st.info(f"{n_val}P = ({rx:.2f}, {ry:.2f})")
