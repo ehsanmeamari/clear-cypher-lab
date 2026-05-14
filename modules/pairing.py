@@ -275,7 +275,7 @@ def pairing():
                 "As an example, we listed up to 100 points below and skip the rest."
             )
 
-    with st.expander("Pairing Computation (Torsion Order = 119)", expanded=True):
+    with st.expander("Pairing Computation (Order = 119)", expanded=True):
 
         c1, c2, gap, c3, c4, c5, c6, gap2, c7 = st.columns([1, 1, 0.3, 1, 1, 1, 1, 0.3, 4])
 
