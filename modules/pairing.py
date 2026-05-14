@@ -302,12 +302,12 @@ def pairing():
 
         c1, c2, gap, c3, c4, c5, c6, gap2, c7 = st.columns([1, 1, 0.3, 1, 1, 1, 1, 0.3, 4])
 
-        with c1: xP_r = st.number_input("xP", value=19, key="pair_xpr", label_visibility="collapsed")
-        with c2: yP_r = st.number_input("yP", value=25, key="pair_ypr", label_visibility="collapsed")
-        with c3: xQ_r = st.number_input("xQ Real", value=89, key="pair_xqr", label_visibility="collapsed")
-        with c4: xQ_i = st.number_input("xQ Imag", value=51, key="pair_xqi", label_visibility="collapsed")
-        with c5: yQ_r = st.number_input("yQ Real", value=63, key="pair_yqr", label_visibility="collapsed")
-        with c6: yQ_i = st.number_input("yQ Imag", value=93, key="pair_yqi", label_visibility="collapsed")
+        with c1: xP_r = st.number_input("xP", value=75, key="pair_xpr", label_visibility="collapsed")
+        with c2: yP_r = st.number_input("yP", value=84, key="pair_ypr", label_visibility="collapsed")
+        with c3: xQ_r = st.number_input("xQ Real", value=92, key="pair_xqr", label_visibility="collapsed")
+        with c4: xQ_i = st.number_input("xQ Imag", value=53, key="pair_xqi", label_visibility="collapsed")
+        with c5: yQ_r = st.number_input("yQ Real", value=6, key="pair_yqr", label_visibility="collapsed")
+        with c6: yQ_i = st.number_input("yQ Imag", value=7, key="pair_yqi", label_visibility="collapsed")
 
         P = (QuadraticFp(int(xP_r), 0, p), QuadraticFp(int(yP_r), 0, p))
         Q = (QuadraticFp(int(xQ_r), int(xQ_i), p), QuadraticFp(int(yQ_r), int(yQ_i), p))
