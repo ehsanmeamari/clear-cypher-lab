@@ -110,7 +110,7 @@ def scalar_mul(n, P, a):
         n >>= 1
     return result
 
-def point_order(P, a, max_order=10000):
+def point_order(P, a, max_order=20000):
     if P is None: return 1
     current = P
     for k in range(1, max_order + 1):
@@ -333,12 +333,17 @@ def pairing():
                     n_val = lcm(ord_P, ord_Q)
                     result = weil_pairing(P, Q, n_val, a, b)
                     with c7:
+                        st.markdown(
+                            f"<div style='font-family:Georgia,serif; font-size:13px; color:#555; margin-bottom:4px;'>"
+                            f"ord(P) = {ord_P} &nbsp;|&nbsp; ord(Q) = {ord_Q} &nbsp;|&nbsp; torsion = lcm({ord_P}, {ord_Q}) = {n_val}"
+                            f"</div>",
+                            unsafe_allow_html=True
+                        )
                         st.latex(
                             rf"e\!\left(({int(xP_r)},\,{int(yP_r)}),\;"
                             rf"({int(xQ_r)}+{int(xQ_i)}i,\;"
                             rf"{int(yQ_r)}+{int(yQ_i)}i)\right)"
                             rf"= {result.a} + {result.b}i"
-                            rf"\quad (n={n_val})"
                         )
             except ValueError as e:
                 with c7:
