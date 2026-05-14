@@ -1,4 +1,5 @@
 import streamlit as st
+from math import gcd
 
 p = 101
 
@@ -108,6 +109,18 @@ def scalar_mul(n, P, a):
         addend = point_double(addend, a)
         n >>= 1
     return result
+
+def point_order(P, a, max_order=10000):
+    if P is None: return 1
+    current = P
+    for k in range(1, max_order + 1):
+        if current is None:
+            return k
+        current = point_add(current, P, a)
+    return None
+
+def lcm(a, b):
+    return a * b // gcd(a, b)
 
 def line(T, R, Q, a):
     if Q is None:
@@ -275,7 +288,7 @@ def pairing():
                 "As an example, we listed up to 100 points below and skip the rest."
             )
 
-    with st.expander("Pairing Computation (Order = 119)", expanded=True):
+    with st.expander("Pairing Computation", expanded=True):
 
         c1, c2, gap, c3, c4, c5, c6, gap2, c7 = st.columns([1, 1, 0.3, 1, 1, 1, 1, 0.3, 4])
 
@@ -299,7 +312,6 @@ def pairing():
         P = (QuadraticFp(int(xP_r), 0, p), QuadraticFp(int(yP_r), 0, p))
         Q = (QuadraticFp(int(xQ_r), int(xQ_i), p), QuadraticFp(int(yQ_r), int(yQ_i), p))
 
-        n_val = 119
         p_on = is_on_curve(P, a, b)
         q_on = is_on_curve(Q, a, b)
 
@@ -311,14 +323,23 @@ def pairing():
                     st.error("Q not on curve.")
         else:
             try:
-                result = weil_pairing(P, Q, int(n_val), a, b)
-                with c7:
-                    st.latex(
-                        rf"e\!\left(({int(xP_r)},\,{int(yP_r)}),\;"
-                        rf"({int(xQ_r)}+{int(xQ_i)}i,\;"
-                        rf"{int(yQ_r)}+{int(yQ_i)}i)\right)"
-                        rf"= {result.a} + {result.b}i"
-                    )
+                ord_P = point_order(P, a)
+                ord_Q = point_order(Q, a)
+
+                if ord_P is None or ord_Q is None:
+                    with c7:
+                        st.error("Could not determine order of points.")
+                else:
+                    n_val = lcm(ord_P, ord_Q)
+                    result = weil_pairing(P, Q, n_val, a, b)
+                    with c7:
+                        st.latex(
+                            rf"e\!\left(({int(xP_r)},\,{int(yP_r)}),\;"
+                            rf"({int(xQ_r)}+{int(xQ_i)}i,\;"
+                            rf"{int(yQ_r)}+{int(yQ_i)}i)\right)"
+                            rf"= {result.a} + {result.b}i"
+                            rf"\quad (n={n_val})"
+                        )
             except ValueError as e:
                 with c7:
                     st.warning(f"Error: {e}")
