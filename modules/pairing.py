@@ -302,8 +302,8 @@ def pairing():
 
         c1, c2, gap, c3, c4, c5, c6, gap2, c7 = st.columns([1, 1, 0.3, 1, 1, 1, 1, 0.3, 4])
 
-        with c1: xP_r = st.number_input("xP", value=75, key="pair_xpr", label_visibility="collapsed")
-        with c2: yP_r = st.number_input("yP", value=84, key="pair_ypr", label_visibility="collapsed")
+        with c1: xP_r = st.number_input("xP", value=4, key="pair_xpr", label_visibility="collapsed")
+        with c2: yP_r = st.number_input("yP", value=73, key="pair_ypr", label_visibility="collapsed")
         with c3: xQ_r = st.number_input("xQ Real", value=92, key="pair_xqr", label_visibility="collapsed")
         with c4: xQ_i = st.number_input("xQ Imag", value=53, key="pair_xqi", label_visibility="collapsed")
         with c5: yQ_r = st.number_input("yQ Real", value=6, key="pair_yqr", label_visibility="collapsed")
