@@ -44,7 +44,6 @@ def lagrange_mod_p_calc(x_coords, y_coords, p):
 
 def lagrange_real_ui():
     """ UI for Lagrange Interpolation over Real Numbers """
-    st.subheader("📈 Lagrange Interpolation over $\mathbb{R}$")
     x_coords, y_coords = [], []
     col1, col2 = st.columns([7, 5])
 
@@ -73,7 +72,6 @@ def lagrange_real_ui():
 
 def lagrange_fp_ui():
     """ UI for Lagrange Interpolation over Finite Fields (Fp) """
-    st.subheader("🔢 Lagrange Interpolation over $\mathbb{F}_p$")
     x_coords, y_coords = [], []
     col1, col2 = st.columns([7, 5])
 
