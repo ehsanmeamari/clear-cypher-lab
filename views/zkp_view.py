@@ -59,12 +59,12 @@ def render_zkp_tab():
             # Selection for Real vs Finite Field mode
             lagrange_mode = st.radio(
                 label="Select Calculation Mode",
-                options=["Real Numbers", "Finite Field (Fp)"],
+                options=["Over R", "Over Fp"],
                 key="lag_mode", horizontal=True
             )
             st.divider()
             
-            if lagrange_mode == "Real Numbers":
+            if lagrange_mode == "Over R":
                 lagrange_real_ui()
             else:
                 lagrange_fp_ui()
