@@ -51,7 +51,7 @@ def lagrange_real_ui():
         else:
             poly = lagrange_real_calc(x_coords, y_coords)
             with st.expander("Resulting Polynomial f(x)", expanded=True):
-                st.latex(f"f(x) = {latex(poly)}")
+                st.latex(f"f(x) = {latex(poly.evalf(3))}")
 
     with col2:
         with st.expander("📊 Visualization", expanded=True):
