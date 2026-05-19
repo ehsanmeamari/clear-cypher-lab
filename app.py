@@ -1,5 +1,5 @@
 import streamlit as st
-from modules.styles import apply_styles
+from modules.zkp.styles import apply_styles
 from views.header_view import render_header_view
 from views.cryptography_view import render_cryptography_tab
 from views.blockchain_view import render_blockchain_tab
