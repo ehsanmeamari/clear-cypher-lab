@@ -1,5 +1,6 @@
 import streamlit as st
 from modules.cryptography.aes import aes_ui
+from modules.cryptography.rsa import run_rsa_tool  # ← اضافه کن
 
 def render_cryptography_tab():
     # --- CSS Styling ---
@@ -26,6 +27,6 @@ def render_cryptography_tab():
     if section == "AES":
         aes_ui()
     elif section == "RSA":
-        st.info("RSA module coming soon...")
+        run_rsa_tool()  # ← عوض کن
     elif section == "ECC":
         st.info("ECC module coming soon...")
