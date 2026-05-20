@@ -4,7 +4,6 @@ from Crypto.Util.Padding import pad, unpad
 import base64
 
 def aes_ui():
-    st.subheader("AES Encryption / Decryption")
     col1, col2 = st.columns(2)
     with col1:
         mode = st.selectbox("Key Size", ["AES-128 (16 bytes)", "AES-192 (24 bytes)", "AES-256 (32 bytes)"])
