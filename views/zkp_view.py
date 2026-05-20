@@ -2,10 +2,11 @@ import streamlit as st
 from modules.zkp.modular_math import run_modular_math
 from modules.zkp.extension_math import extension_math
 from modules.zkp.ecc_overR import run_ecc_overR
-from modules.zkp.ecc_overP import ecc_fp
+from modules.zkp.ecc_overFp import ecc_fp
 from modules.zkp.ecc_overFp2 import ecc_fp2
 from modules.zkp.pairing import pairing
 from modules.zkp.lagrange import lagrange_real_ui, lagrange_fp_ui
+from modules.zkp.groth16 import run_groth16
 
 def render_zkp_tab():
     # --- CSS Styling ---
@@ -21,27 +22,27 @@ def render_zkp_tab():
 
     # --- Protocol Selection ---
     zkp_protocol = st.radio(
-        label="Protocol", options=["Groth16", "Plonk", "Spartan", "Nova"], 
+        label="Protocol", options=["Groth16", "Plonk", "Spartan", "Nova"],
         key="zkp_p", horizontal=True, label_visibility="collapsed"
     )
     st.divider()
 
     if zkp_protocol == "Groth16":
         zkp_module = st.radio(
-            label="Module", 
-            options=["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation"], 
+            label="Module",
+            options=["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation", "Groth16"],
             key="g16_m", horizontal=True, label_visibility="collapsed"
         )
         st.divider()
-         
+
         if zkp_module == "Modular Arithmetic":
             run_modular_math()
         elif zkp_module == "Extension Field":
             extension_math()
         elif zkp_module == "ECC":
             ecc_sub = st.radio(
-                label="ECC Sub", 
-                options=["Over R", "Over Fp", "Over Fp²"], 
+                label="ECC Sub",
+                options=["Over R", "Over Fp", "Over Fp²"],
                 key="ecc_s", horizontal=True, label_visibility="collapsed"
             )
             st.divider()
@@ -53,17 +54,16 @@ def render_zkp_tab():
                 ecc_fp2()
         elif zkp_module == "Weil Pairing":
             pairing()
-            
         elif zkp_module == "Lagrange Interpolation":
-            # Selection for Real vs Finite Field mode
             lagrange_mode = st.radio(
                 label="Select Calculation Mode",
                 options=["Over R", "Over Fp"],
                 key="lag_mode", horizontal=True
             )
             st.divider()
-            
             if lagrange_mode == "Over R":
                 lagrange_real_ui()
             else:
                 lagrange_fp_ui()
+        elif zkp_module == "Groth16":
+            run_groth16()
