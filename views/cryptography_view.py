@@ -16,7 +16,7 @@ def render_cryptography_tab():
     # --- Algorithm Selection ---
     section = st.radio(
         label="Section",
-        options=["AES"],
+        options=["AES", "RSA", "ECC"],
         key="crypto_section",
         horizontal=True,
         label_visibility="collapsed"
@@ -25,3 +25,7 @@ def render_cryptography_tab():
 
     if section == "AES":
         aes_ui()
+    elif section == "RSA":
+        st.info("RSA module coming soon...")
+    elif section == "ECC":
+        st.info("ECC module coming soon...")
