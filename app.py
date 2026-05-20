@@ -14,7 +14,7 @@ st.set_page_config(
 
 # Umami Analytics
 st.markdown("""
-    <script defer src="http://107.172.139.190:3000/script.js" 
+    <script defer src="https://analytics.clearcypherlab.com/script.js" 
     data-website-id="1f6c16b1-f990-4972-85d9-a691bd71badd"></script>
 """, unsafe_allow_html=True)
 
