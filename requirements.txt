@@ -98,3 +98,5 @@ watchdog==6.0.0
 wheel==0.42.0
 xkit==0.0.0
 zope.interface==6.1
+py-ecc
+galois
