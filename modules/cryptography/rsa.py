@@ -22,9 +22,6 @@ def mod_inverse(e, phi):
     return None
 
 def run_rsa_tool():
-    st.subheader("🗝️ RSA Encryption Interactive Lab")
-    st.info("RSA security relies on the difficulty of factoring the product of two large prime numbers.")
-
     # --- Step 1: Pick Primes ---
     col1, col2 = st.columns(2)
 
