@@ -5,38 +5,35 @@ from views.cryptography_view import render_cryptography_tab
 from views.blockchain_view import render_blockchain_tab
 from views.zkp_view import render_zkp_tab
 
-# تنظیمات اولیه صفحه
+# Initial page configuration
 st.set_page_config(
     page_title="Clear Cypher Lab", 
     page_icon="logo.png", 
     layout="wide"
 )
 
-# حذف تهاجمی هدر و پدینگ‌های اضافه
+# Aggressively remove default header and extra padding
 st.markdown("""
     <style>
-        /* حذف نوار بالایی استریم‌لیت */
+        /* Hide Streamlit's top header bar */
         header[data-testid="stHeader"] {
             display: none !important;
         }
-
-        /* حذف پدینگ بدنه اصلی و کشیدن محتوا به سقف */
+        /* Remove main body padding and pull content to the top */
         .main .block-container {
             padding-top: 0rem !important;
             padding-bottom: 0rem !important;
-            margin-top: -45px !important; /* جبران فضای خالی سیستم */
+            margin-top: -45px !important; /* Compensate for system whitespace */
         }
-
-        /* حذف فاصله خودکار بین ویجت‌ها برای فشرده‌سازی */
+        /* Remove automatic gap between widgets for compact layout */
         [data-testid="stVerticalBlock"] > div {
             gap: 0.1rem !important;
         }
-
-        /* مخفی کردن منوی تنظیمات و فوتر */
+        /* Hide settings menu and footer */
         #MainMenu {visibility: hidden;}
         footer {visibility: hidden;}
         
-        /* تنظیم ارتفاع تب‌ها برای ظرافت بیشتر */
+        /* Adjust tab height for a cleaner look */
         button[data-baseweb="tab"] {
             height: 40px !important;
             padding-top: 0px !important;
@@ -45,13 +42,13 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# اعمال استایل‌های اختصاصی پدینگ کناره‌ها
+# Apply custom side padding styles
 apply_styles()
 
-# نمایش هدر سایت
+# Render site header
 render_header_view()
 
-# ایجاد تب‌های اصلی ناوبری
+# Create main navigation tabs
 tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
 
 with tab1: 
