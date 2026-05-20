@@ -2,7 +2,7 @@ import streamlit as st
 from modules.zkp.modular_math import run_modular_math
 from modules.zkp.extension_math import extension_math
 from modules.zkp.ecc_overR import run_ecc_overR
-from modules.zkp.ecc_overFp import ecc_fp
+from modules.zkp.ecc_overP import ecc_fp
 from modules.zkp.ecc_overFp2 import ecc_fp2
 from modules.zkp.pairing import pairing
 from modules.zkp.lagrange import lagrange_real_ui, lagrange_fp_ui
