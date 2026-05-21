@@ -30,7 +30,6 @@ def run_groth16():
     st.markdown("### Step 1: Circuit Inputs & Witness Vector")
     col_input, col_witness = st.columns([1, 2])
 
-
     with col_input:
         st.markdown("**Inputs**")
         c1, c2, c3 = st.columns(3)
@@ -53,20 +52,20 @@ def run_groth16():
     W = FP([1, y, x1, x2, x3, v1, v2, v3])
 
     with col_witness:
-            st.markdown("**Witness Vector W = [1, y, x₁, x₂, x₃, v₁, v₂, v₃]**")
-            w_labels = ["1 (const)", "y", "x₁", "x₂", "x₃", "v₁ = x₁²", "v₂ = x₁·x₂", "v₃ = x₂·v₂"]
-            w_values = list(map(int, W))
-            cols = st.columns(8)
-            for col, label, val in zip(cols, w_labels, w_values):
-                with col:
-                    st.metric(label=label, value=str(val))
-            st.caption(f"y = x₂·x₃ + x₁² + x₁·x₂ + x₂·(x₁·x₂) + 3 = {int(y)}")
+        st.markdown("**Witness Vector W = [1, y, x₁, x₂, x₃, v₁, v₂, v₃]**")
+        w_labels = ["1 (const)", "y", "x₁", "x₂", "x₃", "v₁ = x₁²", "v₂ = x₁·x₂", "v₃ = x₂·v₂"]
+        w_values = list(map(int, W))
+        cols = st.columns(8)
+        for col, label, val in zip(cols, w_labels, w_values):
+            with col:
+                st.metric(label=label, value=str(val))
+        st.caption(f"y = x₂·x₃ + x₁² + x₁·x₂ + x₂·(x₁·x₂) + 3 = {int(y)}")
 
     st.divider()
 
     # ── Step 2: R1CS ─────────────────────────────────────────────────────────
     st.markdown("### Step 2: Naïve protocol")
-    
+
     xL = FP([[0,0,1,0,0,0,0,0],
              [0,0,1,0,0,0,0,0],
              [0,0,0,1,0,0,0,0],
@@ -81,6 +80,18 @@ def run_groth16():
              [0,0,0,0,0,0,1,0],
              [0,0,0,0,0,0,0,1],
              [FP(p-3),1,0,0,0,FP(p-1),FP(p-1),FP(p-1)]])
+
+    with st.expander("Show Matrices: xL, xR, xO"):
+        mc1, mc2, mc3 = st.columns(3)
+        with mc1:
+            st.markdown("**xL**")
+            st.code("\n".join(str(list(map(int, row))) for row in xL))
+        with mc2:
+            st.markdown("**xR**")
+            st.code("\n".join(str(list(map(int, row))) for row in xR))
+        with mc3:
+            st.markdown("**xO**")
+            st.code("\n".join(str(list(map(int, row))) for row in xO))
 
     xLWT = np.dot(xL, W)
     xRWT = np.dot(xR, W)
