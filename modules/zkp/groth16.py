@@ -96,7 +96,7 @@ def run_groth16():
     xOWT = np.dot(xO, W)
     xLWTxRWT = np.multiply(xLWT, xRWT)
 
-    with st.expander("Step 2: Naïve Protocol", expanded=True):
+    with st.expander("Naïve Protocol", expanded=True):
         mc1, mc2, mc3 = st.columns(3)
         with mc1:
             st.markdown("**xL**")
