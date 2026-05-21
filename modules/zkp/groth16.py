@@ -163,7 +163,7 @@ def run_groth16():
         st.success("✅ L(x)·R(x) − O(x) = H(x)·T(x)  (remainder = 0)")
 
     # ── Step 4 ───────────────────────────────────────────────────────────────
-    with st.expander("Verification Test - Version 1", expanded=True):
+    with st.expander("Protocol Version 1", expanded=True):
         with st.expander("Trusted Setup (SRS Generation)", expanded=True):
             tau_val = st.slider("Toxic waste τ", min_value=2, max_value=100, value=20)
             tau = FP(tau_val)
