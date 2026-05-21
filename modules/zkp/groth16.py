@@ -4,6 +4,12 @@ import numpy as np
 from py_ecc.optimized_bn128 import multiply, G1, G2, add, pairing, neg, normalize
 
 
+@st.cache_resource
+def get_field():
+    p = 21888242871839275222246405745257275088548364400416034343698204186575808495617
+    return galois.GF(p), p
+
+
 def compute_commit(poly, trusted_points):
     coeff = poly.coefficients()[::-1]
     assert len(coeff) == len(trusted_points), "Polynomial degree mismatch!"
@@ -15,8 +21,7 @@ def compute_commit(poly, trusted_points):
 
 
 def run_groth16():
-    p = 21888242871839275222246405745257275088548364400416034343698204186575808495617
-    FP = galois.GF(p)
+    FP, p = get_field()
 
     # ── Step 1: Inputs ───────────────────────────────────────────────────────
     st.markdown("### Step 1: Circuit Inputs")
@@ -39,9 +44,15 @@ def run_groth16():
 
     W = FP([1, y, x1, x2, x3, v1, v2, v3])
 
-    st.markdown("**Witness Vector W = [1, y, x₁, x₂, x₃, v₁, v₂, v₃]**")
-    st.code(f"W = {list(map(int, W))}")
-    st.caption(f"y = x₂·x₃ + x₁² + x₁·x₂ + x₂·(x₁·x₂) + 3 = {int(y)} (mod {p})")
+    st.markdown("### Witness Vector")
+    st.markdown("**W = [1, y, x₁, x₂, x₃, v₁, v₂, v₃]**")
+    w_labels = ["1 (const)", "y", "x₁", "x₂", "x₃", "v₁ = x₁²", "v₂ = x₁·x₂", "v₃ = x₂·v₂"]
+    w_values = list(map(int, W))
+    col_w = st.columns(8)
+    for i, (col, label, val) in enumerate(zip(col_w, w_labels, w_values)):
+        with col:
+            st.metric(label=label, value=str(val))
+    st.caption(f"y = x₂·x₃ + x₁² + x₁·x₂ + x₂·(x₁·x₂) + 3 = {int(y)}")
     st.divider()
 
     # ── Step 2: R1CS ─────────────────────────────────────────────────────────
@@ -183,8 +194,8 @@ def run_groth16():
         rhs = pairing(G2, Com_O_G1_H_TG1)
 
     st.code(
-        f"pairing(Com_R_G2, Com_L_G1)      = {lhs}\n"
-        f"pairing(G2, Com_O_G1 + Com_H_TG1) = {rhs}"
+        f"pairing(Com_R_G2, Com_L_G1)        = {lhs}\n"
+        f"pairing(G2, Com_O_G1 + Com_H_TG1)  = {rhs}"
     )
 
     if lhs == rhs:
