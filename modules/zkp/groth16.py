@@ -35,11 +35,11 @@ def run_groth16():
         st.markdown("**Inputs**")
         c1, c2, c3 = st.columns(3)
         with c1:
-            x1_val = st.number_input("x₁", min_value=0, max_value=100, value=1)
+            x1_val = st.number_input("x₁", value=1)
         with c2:
-            x2_val = st.number_input("x₂", min_value=0, max_value=100, value=2)
+            x2_val = st.number_input("x₂", value=2)
         with c3:
-            x3_val = st.number_input("x₃", min_value=0, max_value=100, value=2)
+            x3_val = st.number_input("x₃", value=2)
 
     x1 = FP(x1_val % p)
     x2 = FP(x2_val % p)
