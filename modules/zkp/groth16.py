@@ -163,59 +163,58 @@ def run_groth16():
         st.success("✅ L(x)·R(x) − O(x) = H(x)·T(x)  (remainder = 0)")
 
     # ── Step 4 ───────────────────────────────────────────────────────────────
-    with st.expander("Step 4: Trusted Setup (SRS Generation)", expanded=True):
-        tau_val = st.slider("Toxic waste τ", min_value=2, max_value=100, value=20)
-        tau = FP(tau_val)
+    with st.expander("Verification Test - Version 1", expanded=True):
+        with st.expander("Trusted Setup (SRS Generation)", expanded=True):
+            tau_val = st.slider("Toxic waste τ", min_value=2, max_value=100, value=20)
+            tau = FP(tau_val)
+    
+            with st.spinner("Computing SRS on BN128 curve..."):
+                Tx_tau  = Tx(tau)
+                Lx_tau  = Lx(tau)
+                Rx_tau  = Rx(tau)
+                Ox_tau  = Ox(tau)
+                Hx_tau  = Hx(tau)
+                HTx_tau = Hx_tau * Tx_tau
+    
+                SRS_G1      = [multiply(G1, int(tau**i)) for i in range(Tx.degree)]
+                SRS_G2      = [multiply(G2, int(tau**i)) for i in range(Tx.degree)]
+                SRS_Ttau_G1 = [multiply(G1, int(tau**i * Tx_tau)) for i in range(Tx.degree - 1)]
+    
+                # Printing the SRS values
+                st.markdown("**SRS_G1**")
+                st.code("\n".join(str(normalize(pt)) for pt in SRS_G1))
+                st.markdown("**SRS_G2**")
+                st.code("\n".join(str(normalize(pt)) for pt in SRS_G2))
+                st.markdown("**SRS_Ttau_G1**")
+                st.code("\n".join(str(normalize(pt)) for pt in SRS_Ttau_G1))
 
-        with st.spinner("Computing SRS on BN128 curve..."):
-            Tx_tau  = Tx(tau)
-            Lx_tau  = Lx(tau)
-            Rx_tau  = Rx(tau)
-            Ox_tau  = Ox(tau)
-            Hx_tau  = Hx(tau)
-            HTx_tau = Hx_tau * Tx_tau
+        with st.expander("Proof Generation", expanded=True):
+            with st.spinner("Computing commitments..."):
+                Com_L_G1       = compute_commit(Lx, SRS_G1, FP)
+                Com_R_G2       = compute_commit(Rx, SRS_G2, FP)
+                Com_O_G1       = compute_commit(Ox, SRS_G1, FP)
+                Com_H_TG1      = compute_commit(Hx, SRS_Ttau_G1, FP)
+                Com_O_G1_H_TG1 = add(Com_O_G1, Com_H_TG1)
+    
+            st.code(
+                f"Com_L_G1       = {normalize(Com_L_G1)}\n"
+                f"Com_R_G2       = {normalize(Com_R_G2)}\n"
+                f"Com_O_G1       = {normalize(Com_O_G1)}\n"
+                f"Com_H_TG1      = {normalize(Com_H_TG1)}\n"
+                f"Com_O_G1_H_TG1 = {normalize(Com_O_G1_H_TG1)}"
+            )
 
-            SRS_G1      = [multiply(G1, int(tau**i)) for i in range(Tx.degree)]
-            SRS_G2      = [multiply(G2, int(tau**i)) for i in range(Tx.degree)]
-            SRS_Ttau_G1 = [multiply(G1, int(tau**i * Tx_tau)) for i in range(Tx.degree - 1)]
-
-            # Printing the SRS values
-            st.markdown("**SRS_G1**")
-            st.code("\n".join(str(normalize(pt)) for pt in SRS_G1))
-            st.markdown("**SRS_G2**")
-            st.code("\n".join(str(normalize(pt)) for pt in SRS_G2))
-            st.markdown("**SRS_Ttau_G1**")
-            st.code("\n".join(str(normalize(pt)) for pt in SRS_Ttau_G1))
-
-    # ── Step 5 ───────────────────────────────────────────────────────────────
-    with st.expander("Step 5: Proof Generation", expanded=True):
-        with st.spinner("Computing commitments..."):
-            Com_L_G1       = compute_commit(Lx, SRS_G1, FP)
-            Com_R_G2       = compute_commit(Rx, SRS_G2, FP)
-            Com_O_G1       = compute_commit(Ox, SRS_G1, FP)
-            Com_H_TG1      = compute_commit(Hx, SRS_Ttau_G1, FP)
-            Com_O_G1_H_TG1 = add(Com_O_G1, Com_H_TG1)
-
-        st.code(
-            f"Com_L_G1       = {normalize(Com_L_G1)}\n"
-            f"Com_R_G2       = {normalize(Com_R_G2)}\n"
-            f"Com_O_G1       = {normalize(Com_O_G1)}\n"
-            f"Com_H_TG1      = {normalize(Com_H_TG1)}\n"
-            f"Com_O_G1_H_TG1 = {normalize(Com_O_G1_H_TG1)}"
-        )
-
-    # ── Step 6 ───────────────────────────────────────────────────────────────
-    with st.expander("Step 6: Proof Verification", expanded=True):
-        with st.spinner("Computing pairing..."):
-            lhs = pairing(Com_R_G2, Com_L_G1)
-            rhs = pairing(G2, Com_O_G1_H_TG1)
-
-        st.code(
-            f"pairing(Com_R_G2, Com_L_G1)        = {lhs}\n"
-            f"pairing(G2, Com_O_G1 + Com_H_TG1)  = {rhs}"
-        )
-
-        if lhs == rhs:
-            st.success("✅ Pairing check passed!  e(Com_L, Com_R) = e(G2, Com_O + Com_H·T)")
-        else:
-            st.error("❌ Pairing check failed.")
+        with st.expander("Step 6: Proof Verification", expanded=True):
+            with st.spinner("Computing pairing..."):
+                lhs = pairing(Com_R_G2, Com_L_G1)
+                rhs = pairing(G2, Com_O_G1_H_TG1)
+    
+            st.code(
+                f"pairing(Com_R_G2, Com_L_G1)        = {lhs}\n"
+                f"pairing(G2, Com_O_G1 + Com_H_TG1)  = {rhs}"
+            )
+    
+            if lhs == rhs:
+                st.success("✅ Pairing check passed!  e(Com_L, Com_R) = e(G2, Com_O + Com_H·T)")
+            else:
+                st.error("❌ Pairing check failed.")
