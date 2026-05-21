@@ -65,7 +65,7 @@ def run_groth16():
     st.divider()
 
     # ── Step 2: R1CS ─────────────────────────────────────────────────────────
-    st.markdown("### Step 2: R1CS Verification")
+    st.markdown("###Naïve protocol")
 
     xL = FP([[0,0,1,0,0,0,0,0],
              [0,0,1,0,0,0,0,0],
