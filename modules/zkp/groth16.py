@@ -23,11 +23,48 @@ def compute_commit(poly, trusted_points, FP):
     return evaluation
 
 
+def step_box(title, content_fn):
+    st.markdown(f"""
+        <div style="
+            border: 1px solid #d0d0d0;
+            border-radius: 8px;
+            padding: 16px 20px 4px 20px;
+            margin-bottom: 16px;
+            position: relative;
+        ">
+        <span style="
+            position: absolute;
+            top: -12px;
+            left: 16px;
+            background: var(--background-color, white);
+            padding: 0 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #555;
+        ">{title}</span>
+    """, unsafe_allow_html=True)
+    result = content_fn()
+    st.markdown("</div>", unsafe_allow_html=True)
+    return result
+
+
 def run_groth16():
     FP, p = get_field()
 
-    # ── Step 1: Inputs + Witness Vector ─────────────────────────────────────
-    st.markdown("### Step 1: Circuit Inputs & Witness Vector")
+    st.markdown("""
+        <style>
+        div[data-testid="stVerticalBlock"] > div { gap: 0rem; }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # ── Step 1 ───────────────────────────────────────────────────────────────
+    st.markdown("""
+        <div style="border:1px solid #d0d0d0; border-radius:8px; padding:16px 20px 8px 20px; margin-bottom:16px; position:relative;">
+        <span style="position:absolute; top:-12px; left:16px; background:white; padding:0 8px; font-weight:600; font-size:0.95rem; color:#555;">
+            Step 1: Circuit Inputs & Witness Vector
+        </span>
+    """, unsafe_allow_html=True)
+
     col_input, col_witness = st.columns([1, 2])
 
     with col_input:
@@ -48,8 +85,7 @@ def run_groth16():
     v2 = x1 * x2
     v3 = x2 * v2
     y  = x2 * x3 + v1 + v2 + v3 + FP(3)
-
-    W = FP([1, y, x1, x2, x3, v1, v2, v3])
+    W  = FP([1, y, x1, x2, x3, v1, v2, v3])
 
     with col_witness:
         st.markdown("**Witness Vector W = [1, y, x₁, x₂, x₃, v₁, v₂, v₃]**")
@@ -61,11 +97,9 @@ def run_groth16():
                 st.metric(label=label, value=str(val))
         st.caption(f"y = x₂·x₃ + x₁² + x₁·x₂ + x₂·(x₁·x₂) + 3 = {int(y)}")
 
-    st.divider()
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── Step 2: R1CS ─────────────────────────────────────────────────────────
-    st.markdown("### Step 2: Naïve protocol")
-
+    # ── Step 2 ───────────────────────────────────────────────────────────────
     xL = FP([[0,0,1,0,0,0,0,0],
              [0,0,1,0,0,0,0,0],
              [0,0,0,1,0,0,0,0],
@@ -81,6 +115,18 @@ def run_groth16():
              [0,0,0,0,0,0,0,1],
              [FP(p-3),1,0,0,0,FP(p-1),FP(p-1),FP(p-1)]])
 
+    xLWT = np.dot(xL, W)
+    xRWT = np.dot(xR, W)
+    xOWT = np.dot(xO, W)
+    xLWTxRWT = np.multiply(xLWT, xRWT)
+
+    st.markdown("""
+        <div style="border:1px solid #d0d0d0; border-radius:8px; padding:16px 20px 8px 20px; margin-bottom:16px; position:relative;">
+        <span style="position:absolute; top:-12px; left:16px; background:white; padding:0 8px; font-weight:600; font-size:0.95rem; color:#555;">
+            Step 2: Naïve Protocol
+        </span>
+    """, unsafe_allow_html=True)
+
     with st.expander("Show Matrices: xL, xR, xO"):
         mc1, mc2, mc3 = st.columns(3)
         with mc1:
@@ -92,11 +138,6 @@ def run_groth16():
         with mc3:
             st.markdown("**xO**")
             st.code("\n".join(str(list(map(int, row))) for row in xO))
-
-    xLWT = np.dot(xL, W)
-    xRWT = np.dot(xR, W)
-    xOWT = np.dot(xO, W)
-    xLWTxRWT = np.multiply(xLWT, xRWT)
 
     col_l, col_r, col_o = st.columns(3)
     with col_l:
@@ -111,12 +152,18 @@ def run_groth16():
 
     if not np.all(xLWTxRWT == xOWT):
         st.error("❌ R1CS verification failed.")
+        st.markdown("</div>", unsafe_allow_html=True)
         return
     st.success("✅ (xL·W) ∘ (xR·W) = xO·W — R1CS passed!")
-    st.divider()
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── Step 3: QAP ──────────────────────────────────────────────────────────
-    st.markdown("### Step 3: QAP — Lagrange Interpolation")
+    # ── Step 3 ───────────────────────────────────────────────────────────────
+    st.markdown("""
+        <div style="border:1px solid #d0d0d0; border-radius:8px; padding:16px 20px 8px 20px; margin-bottom:16px; position:relative;">
+        <span style="position:absolute; top:-12px; left:16px; background:white; padding:0 8px; font-weight:600; font-size:0.95rem; color:#555;">
+            Step 3: QAP — Lagrange Interpolation
+        </span>
+    """, unsafe_allow_html=True)
 
     with st.spinner("Computing polynomials..."):
         poly_m = []
@@ -136,7 +183,6 @@ def run_groth16():
             poly_m.append(FP(poly_list))
 
     L_polys, R_polys, O_polys = poly_m
-
     Lx = galois.Poly((W @ L_polys)[::-1])
     Rx = galois.Poly((W @ R_polys)[::-1])
     Ox = galois.Poly((W @ O_polys)[::-1])
@@ -152,12 +198,19 @@ def run_groth16():
 
     if rem != 0:
         st.error(f"❌ Remainder is not zero: {rem}")
+        st.markdown("</div>", unsafe_allow_html=True)
         return
     st.success("✅ L(x)·R(x) − O(x) = H(x)·T(x)  (remainder = 0)")
-    st.divider()
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── Step 4: Setup ────────────────────────────────────────────────────────
-    st.markdown("### Step 4: Trusted Setup (SRS Generation)")
+    # ── Step 4 ───────────────────────────────────────────────────────────────
+    st.markdown("""
+        <div style="border:1px solid #d0d0d0; border-radius:8px; padding:16px 20px 8px 20px; margin-bottom:16px; position:relative;">
+        <span style="position:absolute; top:-12px; left:16px; background:white; padding:0 8px; font-weight:600; font-size:0.95rem; color:#555;">
+            Step 4: Trusted Setup (SRS Generation)
+        </span>
+    """, unsafe_allow_html=True)
+
     tau_val = st.slider("Toxic waste τ", min_value=2, max_value=100, value=20)
     tau = FP(tau_val)
 
@@ -175,6 +228,7 @@ def run_groth16():
 
     if Lx_tau * Rx_tau != Ox_tau + HTx_tau:
         st.error("❌ Tau check failed.")
+        st.markdown("</div>", unsafe_allow_html=True)
         return
     st.success(f"✅ L(τ)·R(τ) = O(τ) + H(τ)·T(τ)  (τ = {tau_val})")
 
@@ -185,10 +239,16 @@ def run_groth16():
         st.code("\n".join(str(normalize(pt)) for pt in SRS_G2))
         st.markdown("**SRS_Ttau_G1**")
         st.code("\n".join(str(normalize(pt)) for pt in SRS_Ttau_G1))
-    st.divider()
 
-    # ── Step 5: Proof ────────────────────────────────────────────────────────
-    st.markdown("### Step 5: Proof Generation")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # ── Step 5 ───────────────────────────────────────────────────────────────
+    st.markdown("""
+        <div style="border:1px solid #d0d0d0; border-radius:8px; padding:16px 20px 8px 20px; margin-bottom:16px; position:relative;">
+        <span style="position:absolute; top:-12px; left:16px; background:white; padding:0 8px; font-weight:600; font-size:0.95rem; color:#555;">
+            Step 5: Proof Generation
+        </span>
+    """, unsafe_allow_html=True)
 
     with st.spinner("Computing commitments..."):
         Com_L_G1       = compute_commit(Lx, SRS_G1, FP)
@@ -204,10 +264,15 @@ def run_groth16():
         f"Com_H_TG1      = {normalize(Com_H_TG1)}\n"
         f"Com_O_G1_H_TG1 = {normalize(Com_O_G1_H_TG1)}"
     )
-    st.divider()
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── Step 6: Verify ───────────────────────────────────────────────────────
-    st.markdown("### Step 6: Proof Verification")
+    # ── Step 6 ───────────────────────────────────────────────────────────────
+    st.markdown("""
+        <div style="border:1px solid #d0d0d0; border-radius:8px; padding:16px 20px 8px 20px; margin-bottom:16px; position:relative;">
+        <span style="position:absolute; top:-12px; left:16px; background:white; padding:0 8px; font-weight:600; font-size:0.95rem; color:#555;">
+            Step 6: Proof Verification
+        </span>
+    """, unsafe_allow_html=True)
 
     with st.spinner("Computing pairing..."):
         lhs = pairing(Com_R_G2, Com_L_G1)
@@ -222,3 +287,5 @@ def run_groth16():
         st.success("✅ Pairing check passed!  e(Com_L, Com_R) = e(G2, Com_O + Com_H·T)")
     else:
         st.error("❌ Pairing check failed.")
+
+    st.markdown("</div>", unsafe_allow_html=True)
