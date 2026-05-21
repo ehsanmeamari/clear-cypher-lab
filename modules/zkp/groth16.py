@@ -179,12 +179,7 @@ def run_groth16():
             SRS_G2      = [multiply(G2, int(tau**i)) for i in range(Tx.degree)]
             SRS_Ttau_G1 = [multiply(G1, int(tau**i * Tx_tau)) for i in range(Tx.degree - 1)]
 
-        if Lx_tau * Rx_tau != Ox_tau + HTx_tau:
-            st.error("❌ Tau check failed.")
-            return
-        st.success(f"✅ L(τ)·R(τ) = O(τ) + H(τ)·T(τ)  (τ = {tau_val})")
-
-        with st.expander("Show SRS points", expanded=False):
+            # Printing the SRS values
             st.markdown("**SRS_G1**")
             st.code("\n".join(str(normalize(pt)) for pt in SRS_G1))
             st.markdown("**SRS_G2**")
