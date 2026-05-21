@@ -28,7 +28,7 @@ def run_groth16():
 
     # ── Step 1: Inputs + Witness Vector ─────────────────────────────────────
     st.markdown("### Step 1: Circuit Inputs & Witness Vector")
-    col_input, col_witness = st.columns(2)
+    col_input, col_witness = st.columns([1, 2])
 
 
     with col_input:
