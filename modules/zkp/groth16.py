@@ -1,7 +1,7 @@
 import streamlit as st
 import galois
 import numpy as np
-from py_ecc.optimized_bn128 import multiply, G1, G2, add, pairing, neg, normalize
+from py_ecc.optimized_bn128 import multiply, G1, G2, add, pairing, neg, normalize, eq
 
 
 @st.cache_resource
@@ -165,9 +165,9 @@ def run_groth16():
     # ── Step 4 ───────────────────────────────────────────────────────────────
     with st.expander("Protocol Version 1", expanded=True):
         with st.expander("Trusted Setup (SRS Generation)", expanded=True):
-            tau_val = st.slider("Toxic waste τ", min_value=2, max_value=100, value=20)
+            tau_val = st.slider("Toxic waste τ", min_value=2, max_value=100, value=20, key="tau_v1")
             tau = FP(tau_val)
-    
+
             with st.spinner("Computing SRS on BN128 curve..."):
                 Tx_tau  = Tx(tau)
                 Lx_tau  = Lx(tau)
@@ -175,18 +175,17 @@ def run_groth16():
                 Ox_tau  = Ox(tau)
                 Hx_tau  = Hx(tau)
                 HTx_tau = Hx_tau * Tx_tau
-    
+
                 SRS_G1      = [multiply(G1, int(tau**i)) for i in range(Tx.degree)]
                 SRS_G2      = [multiply(G2, int(tau**i)) for i in range(Tx.degree)]
                 SRS_Ttau_G1 = [multiply(G1, int(tau**i * Tx_tau)) for i in range(Tx.degree - 1)]
-    
-                # Printing the SRS values
-                st.markdown("**SRS_G1**")
-                st.code("\n".join(str(normalize(pt)) for pt in SRS_G1))
-                st.markdown("**SRS_G2**")
-                st.code("\n".join(str(normalize(pt)) for pt in SRS_G2))
-                st.markdown("**SRS_Ttau_G1**")
-                st.code("\n".join(str(normalize(pt)) for pt in SRS_Ttau_G1))
+
+            st.markdown("**SRS_G1**")
+            st.code("\n".join(str(normalize(pt)) for pt in SRS_G1))
+            st.markdown("**SRS_G2**")
+            st.code("\n".join(str(normalize(pt)) for pt in SRS_G2))
+            st.markdown("**SRS_Ttau_G1**")
+            st.code("\n".join(str(normalize(pt)) for pt in SRS_Ttau_G1))
 
         with st.expander("Proof Generation", expanded=True):
             with st.spinner("Computing commitments..."):
@@ -195,7 +194,7 @@ def run_groth16():
                 Com_O_G1       = compute_commit(Ox, SRS_G1, FP)
                 Com_H_TG1      = compute_commit(Hx, SRS_Ttau_G1, FP)
                 Com_O_G1_H_TG1 = add(Com_O_G1, Com_H_TG1)
-    
+
             st.code(
                 f"Com_L_G1       = {normalize(Com_L_G1)}\n"
                 f"Com_R_G2       = {normalize(Com_R_G2)}\n"
@@ -204,17 +203,107 @@ def run_groth16():
                 f"Com_O_G1_H_TG1 = {normalize(Com_O_G1_H_TG1)}"
             )
 
-        with st.expander("Step 6: Proof Verification", expanded=True):
+        with st.expander("Proof Verification", expanded=True):
             with st.spinner("Computing pairing..."):
                 lhs = pairing(Com_R_G2, Com_L_G1)
                 rhs = pairing(G2, Com_O_G1_H_TG1)
-    
+
             st.code(
                 f"pairing(Com_R_G2, Com_L_G1)        = {lhs}\n"
                 f"pairing(G2, Com_O_G1 + Com_H_TG1)  = {rhs}"
             )
-    
+
             if lhs == rhs:
                 st.success("✅ Pairing check passed!  e(Com_L, Com_R) = e(G2, Com_O + Com_H·T)")
+            else:
+                st.error("❌ Pairing check failed.")
+
+    # ── Step 5 ───────────────────────────────────────────────────────────────
+    with st.expander("Protocol Version 2", expanded=True):
+
+        with st.expander("Trusted Setup (SRS Generation)", expanded=True):
+            ca, cb, cc = st.columns(3)
+            with ca:
+                tau_val2 = st.slider("Toxic waste τ", min_value=2, max_value=100, value=20, key="tau_v2")
+            with cb:
+                alpha_val = st.slider("α", min_value=1, max_value=100, value=2, key="alpha_v2")
+            with cc:
+                beta_val = st.slider("β", min_value=1, max_value=100, value=3, key="beta_v2")
+
+            tau2   = FP(tau_val2)
+            alpha  = FP(alpha_val)
+            beta   = FP(beta_val)
+
+            st.code(f"τ = {tau_val2}\nα = {alpha_val}\nβ = {beta_val}")
+
+            with st.spinner("Computing psi and SRS..."):
+                beta_L  = beta * L_polys
+                alpha_R = alpha * R_polys
+                psi     = beta_L + alpha_R + O_polys
+
+                def to_poly(mtx):
+                    return [galois.Poly(mtx[i][::-1]) for i in range(mtx.shape[0])]
+
+                def evaluate_poly_list(poly_list, x):
+                    return [poly(x) for poly in poly_list]
+
+                psi_p    = to_poly(psi)
+                psi_eval = evaluate_poly_list(psi_p, tau2)
+
+                alphaG1 = multiply(G1, int(alpha))
+                betaG2  = multiply(G2, int(beta))
+                psi_G1  = [multiply(G1, int(k)) for k in psi_eval]
+
+                Tx_tau2     = Tx(tau2)
+                SRS_G1_v2   = [multiply(G1, int(tau2**i)) for i in range(Tx.degree)]
+                SRS_G2_v2   = [multiply(G2, int(tau2**i)) for i in range(Tx.degree)]
+                SRS_Ttau_G1_v2 = [multiply(G1, int(tau2**i * Tx_tau2)) for i in range(Tx.degree - 1)]
+
+            st.markdown("**ψ = βL + αR + O**")
+            st.code("\n".join(f"ψ_{i} = {p_}" for i, p_ in enumerate(psi_p)))
+
+            st.markdown("**ψ evaluations at τ**")
+            st.code(str([int(k) for k in psi_eval]))
+
+            st.markdown("**[α]G1, [β]G2, ψ_G1**")
+            st.code(
+                f"[α]G1   = {normalize(alphaG1)}\n"
+                f"[β]G2   = {normalize(betaG2)}\n"
+                f"psi_G1  = {[normalize(pt) for pt in psi_G1]}"
+            )
+
+        with st.expander("Proof Generation", expanded=True):
+            with st.spinner("Computing commitments v2..."):
+                Com_L_G1_v2   = compute_commit(Lx, SRS_G1_v2, FP)
+                Com_R_G2_v2   = compute_commit(Rx, SRS_G2_v2, FP)
+                Com_H_TG1_v2  = compute_commit(Hx, SRS_Ttau_G1_v2, FP)
+
+                Com_Lalpha_G1    = add(Com_L_G1_v2, alphaG1)
+                Com_Rbeta_G2     = add(Com_R_G2_v2, betaG2)
+
+                psi_G1_terms     = [multiply(pt, int(w)) for pt, w in zip(psi_G1, W)]
+                sum_psi_G1       = psi_G1_terms[0]
+                for i in range(1, len(psi_G1_terms)):
+                    sum_psi_G1   = add(sum_psi_G1, psi_G1_terms[i])
+                Com_sum_psi_H_TG1 = add(Com_H_TG1_v2, sum_psi_G1)
+
+            st.code(
+                f"Com_Lalpha_G1         = {normalize(Com_Lalpha_G1)}\n"
+                f"Com_Rbeta_G2          = {normalize(Com_Rbeta_G2)}\n"
+                f"Com_sum_psi + H·T·G1  = {normalize(Com_sum_psi_H_TG1)}"
+            )
+
+        with st.expander("Proof Verification", expanded=True):
+            with st.spinner("Computing pairing v2..."):
+                lhs_v2 = pairing(Com_Rbeta_G2, Com_Lalpha_G1)
+                rhs_v2 = pairing(betaG2, alphaG1) * pairing(G2, Com_sum_psi_H_TG1)
+
+            st.code(
+                f"pairing(Com_Rbeta_G2, Com_Lalpha_G1)              = {lhs_v2}\n"
+                f"pairing(βG2, αG1) · pairing(G2, Com_sum_psi_H_TG1) = {rhs_v2}"
+            )
+
+            if lhs_v2 == rhs_v2:
+                st.success("✅ Pairing check passed!  e(A, B) = e(β,α) · e(G2, C)")
             else:
                 st.error("❌ Pairing check failed.")
