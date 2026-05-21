@@ -97,17 +97,16 @@ def run_groth16():
     xLWTxRWT = np.multiply(xLWT, xRWT)
 
     with st.expander("Step 2: Naïve Protocol", expanded=True):
-        with st.expander("Show Matrices: xL, xR, xO", expanded=False):
-            mc1, mc2, mc3 = st.columns(3)
-            with mc1:
-                st.markdown("**xL**")
-                st.code("\n".join(str(list(map(int, row))) for row in xL))
-            with mc2:
-                st.markdown("**xR**")
-                st.code("\n".join(str(list(map(int, row))) for row in xR))
-            with mc3:
-                st.markdown("**xO**")
-                st.code("\n".join(str(list(map(int, row))) for row in xO))
+        mc1, mc2, mc3 = st.columns(3)
+        with mc1:
+            st.markdown("**xL**")
+            st.code("\n".join(str(list(map(int, row))) for row in xL))
+        with mc2:
+            st.markdown("**xR**")
+            st.code("\n".join(str(list(map(int, row))) for row in xR))
+        with mc3:
+            st.markdown("**xO**")
+            st.code("\n".join(str(list(map(int, row))) for row in xO))
 
         col_l, col_r, col_o = st.columns(3)
         with col_l:
