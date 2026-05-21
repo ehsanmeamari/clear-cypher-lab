@@ -10,8 +10,11 @@ def get_field():
     return galois.GF(p), p
 
 
-def compute_commit(poly, trusted_points):
+def compute_commit(poly, trusted_points, FP):
     coeff = poly.coefficients()[::-1]
+    if len(coeff) < len(trusted_points):
+        padding = [FP(0)] * (len(trusted_points) - len(coeff))
+        coeff = list(coeff) + padding
     assert len(coeff) == len(trusted_points), "Polynomial degree mismatch!"
     terms = [multiply(point, int(c)) for point, c in zip(trusted_points, coeff)]
     evaluation = terms[0]
@@ -49,7 +52,7 @@ def run_groth16():
     w_labels = ["1 (const)", "y", "x₁", "x₂", "x₃", "v₁ = x₁²", "v₂ = x₁·x₂", "v₃ = x₂·v₂"]
     w_values = list(map(int, W))
     col_w = st.columns(8)
-    for i, (col, label, val) in enumerate(zip(col_w, w_labels, w_values)):
+    for col, label, val in zip(col_w, w_labels, w_values):
         with col:
             st.metric(label=label, value=str(val))
     st.caption(f"y = x₂·x₃ + x₁² + x₁·x₂ + x₂·(x₁·x₂) + 3 = {int(y)}")
@@ -171,10 +174,10 @@ def run_groth16():
     st.markdown("### Step 5: Proof Generation")
 
     with st.spinner("Computing commitments..."):
-        Com_L_G1       = compute_commit(Lx, SRS_G1)
-        Com_R_G2       = compute_commit(Rx, SRS_G2)
-        Com_O_G1       = compute_commit(Ox, SRS_G1)
-        Com_H_TG1      = compute_commit(Hx, SRS_Ttau_G1)
+        Com_L_G1       = compute_commit(Lx, SRS_G1, FP)
+        Com_R_G2       = compute_commit(Rx, SRS_G2, FP)
+        Com_O_G1       = compute_commit(Ox, SRS_G1, FP)
+        Com_H_TG1      = compute_commit(Hx, SRS_Ttau_G1, FP)
         Com_O_G1_H_TG1 = add(Com_O_G1, Com_H_TG1)
 
     st.code(
