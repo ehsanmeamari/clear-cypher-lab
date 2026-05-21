@@ -30,11 +30,16 @@ def run_groth16():
     st.markdown("### Step 1: Circuit Inputs & Witness Vector")
     col_input, col_witness = st.columns(2)
 
+
     with col_input:
         st.markdown("**Inputs**")
-        x1_val = st.number_input("x₁", min_value=0, max_value=100, value=1, step=1)
-        x2_val = st.number_input("x₂", min_value=0, max_value=100, value=2, step=1)
-        x3_val = st.number_input("x₃", min_value=0, max_value=100, value=2, step=1)
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            x1_val = st.number_input("x₁", min_value=0, max_value=100, value=1)
+        with c2:
+            x2_val = st.number_input("x₂", min_value=0, max_value=100, value=2)
+        with c3:
+            x3_val = st.number_input("x₃", min_value=0, max_value=100, value=2)
 
     x1 = FP(x1_val % p)
     x2 = FP(x2_val % p)
