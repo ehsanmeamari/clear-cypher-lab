@@ -220,6 +220,5 @@ def run_groth16():
 
     if lhs == rhs:
         st.success("✅ Pairing check passed!  e(Com_L, Com_R) = e(G2, Com_O + Com_H·T)")
-        st.balloons()
     else:
         st.error("❌ Pairing check failed.")
