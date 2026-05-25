@@ -47,6 +47,10 @@ def run_groth16():
             "🚀 Open in Google Colab",
             "https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/groth16.ipynb"
         )
+        st.link_button(
+            "🚀 Groth16 - Question 1",
+            "https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/Groth16%20-%20Question%201.ipynb"
+        )
     
     # ── Step 1 ───────────────────────────────────────────────────────────────
     with st.expander("Step 1: Circuit Inputs & Witness Vector", expanded=False):
