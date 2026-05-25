@@ -42,7 +42,7 @@ def run_groth16():
     """, unsafe_allow_html=True)
 
     # ── Step 0 ───────────────────────────────────────────────────────────────
-    with st.expander("Colab", expanded=True):
+    with st.expander("Colab", expanded=False):
         st.link_button(
             "🚀 Open in Google Colab",
             "https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/groth16.ipynb"
@@ -103,7 +103,7 @@ def run_groth16():
     xOWT = np.dot(xO, W)
     xLWTxRWT = np.multiply(xLWT, xRWT)
 
-    with st.expander("Naïve Protocol", expanded=True):
+    with st.expander("Naïve Protocol", expanded=False):
         mc1, mc2, mc3 = st.columns(3)
         with mc1:
             st.markdown("**xL**")
@@ -170,7 +170,7 @@ def run_groth16():
         st.success("✅ L(x)·R(x) − O(x) = H(x)·T(x)  (remainder = 0)")
 
     # ── Step 4 ───────────────────────────────────────────────────────────────
-    with st.expander("Protocol Version 1", expanded=True):
+    with st.expander("Protocol Version 1", expanded=False):
         with st.expander("Trusted Setup (SRS Generation)", expanded=False):
             tau_val = st.slider("Toxic waste τ", min_value=2, max_value=100, value=20, key="tau_v1")
             tau = FP(tau_val)
@@ -194,7 +194,7 @@ def run_groth16():
             st.markdown("**SRS_Ttau_G1**")
             st.code("\n".join(str(normalize(pt)) for pt in SRS_Ttau_G1))
 
-        with st.expander("Proof Generation", expanded=True):
+        with st.expander("Proof Generation", expanded=False):
             with st.spinner("Computing commitments..."):
                 Com_L_G1       = compute_commit(Lx, SRS_G1, FP)
                 Com_R_G2       = compute_commit(Rx, SRS_G2, FP)
@@ -210,7 +210,7 @@ def run_groth16():
                 f"Com_O_G1_H_TG1 = {normalize(Com_O_G1_H_TG1)}"
             )
 
-        with st.expander("Proof Verification", expanded=True):
+        with st.expander("Proof Verification", expanded=False):
             with st.spinner("Computing pairing..."):
                 lhs = pairing(Com_R_G2, Com_L_G1)
                 rhs = pairing(G2, Com_O_G1_H_TG1)
