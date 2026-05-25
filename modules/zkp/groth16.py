@@ -41,8 +41,15 @@ def run_groth16():
         </style>
     """, unsafe_allow_html=True)
 
+    # ── Step 0 ───────────────────────────────────────────────────────────────    
+    with st.expander("Colab", expanded=True):
+    st.link_button(
+        "🚀 Open in Google Colab",
+        "https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/groth16.ipynb"
+    )
+    
     # ── Step 1 ───────────────────────────────────────────────────────────────
-    with st.expander("Step 1: Circuit Inputs & Witness Vector", expanded=True):
+    with st.expander("Step 1: Circuit Inputs & Witness Vector", expanded=False):
         col_input, col_witness = st.columns([1, 2])
 
         with col_input:
@@ -125,7 +132,7 @@ def run_groth16():
         st.success("✅ (xL·W) ∘ (xR·W) = xO·W — R1CS passed!")
 
     # ── Step 3 ───────────────────────────────────────────────────────────────
-    with st.expander("Step 3: QAP — Lagrange Interpolation", expanded=True):
+    with st.expander("Step 3: QAP — Lagrange Interpolation", expanded=False):
         with st.spinner("Computing polynomials..."):
             poly_m = []
             for m in [xL, xR, xO]:
@@ -164,7 +171,7 @@ def run_groth16():
 
     # ── Step 4 ───────────────────────────────────────────────────────────────
     with st.expander("Protocol Version 1", expanded=True):
-        with st.expander("Trusted Setup (SRS Generation)", expanded=True):
+        with st.expander("Trusted Setup (SRS Generation)", expanded=False):
             tau_val = st.slider("Toxic waste τ", min_value=2, max_value=100, value=20, key="tau_v1")
             tau = FP(tau_val)
 
@@ -219,9 +226,9 @@ def run_groth16():
                 st.error("❌ Pairing check failed.")
 
     # ── Step 5 ───────────────────────────────────────────────────────────────
-    with st.expander("Protocol Version 2", expanded=True):
+    with st.expander("Protocol Version 2", expanded=False):
 
-        with st.expander("Trusted Setup (SRS Generation)", expanded=True):
+        with st.expander("Trusted Setup (SRS Generation)", expanded=False):
             ca, cb, cc = st.columns(3)
             with ca:
                 tau_val2 = st.slider("Toxic waste τ", min_value=2, max_value=100, value=20, key="tau_v2")
@@ -272,7 +279,7 @@ def run_groth16():
                 f"psi_G1  = {[normalize(pt) for pt in psi_G1]}"
             )
 
-        with st.expander("Proof Generation", expanded=True):
+        with st.expander("Proof Generation", expanded=False):
             with st.spinner("Computing commitments v2..."):
                 Com_L_G1_v2   = compute_commit(Lx, SRS_G1_v2, FP)
                 Com_R_G2_v2   = compute_commit(Rx, SRS_G2_v2, FP)
@@ -293,7 +300,7 @@ def run_groth16():
                 f"Com_sum_psi + H·T·G1  = {normalize(Com_sum_psi_H_TG1)}"
             )
 
-        with st.expander("Proof Verification", expanded=True):
+        with st.expander("Proof Verification", expanded=False):
             with st.spinner("Computing pairing v2..."):
                 lhs_v2 = pairing(Com_Rbeta_G2, Com_Lalpha_G1)
                 rhs_v2 = pairing(betaG2, alphaG1) * pairing(G2, Com_sum_psi_H_TG1)
