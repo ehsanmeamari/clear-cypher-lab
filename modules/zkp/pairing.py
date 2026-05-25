@@ -67,17 +67,14 @@ ONE_EL = QuadraticFp(1, 0, p)
 TWO    = QuadraticFp(2, 0, p)
 THREE  = QuadraticFp(3, 0, p)
 
-
 def is_on_curve(P, a, b):
     if P is None: return True
     x, y = P
     return (y * y) == (x * x * x + a * x + b)
 
-
 def point_neg(P):
     if P is None: return None
     return (P[0], -P[1])
-
 
 def point_double(P, a):
     if P is None: return None
@@ -87,7 +84,6 @@ def point_double(P, a):
     x3 = slope * slope - TWO * x
     y3 = slope * (x - x3) - y
     return (x3, y3)
-
 
 def point_add(P, Q, a):
     if P is None: return Q
@@ -100,7 +96,6 @@ def point_add(P, Q, a):
     x3 = slope * slope - x1 - x2
     y3 = slope * (x1 - x3) - y1
     return (x3, y3)
-
 
 def scalar_mul(n, P, a):
     if n == 0 or P is None: return None
@@ -115,19 +110,17 @@ def scalar_mul(n, P, a):
         n >>= 1
     return result
 
-
 def point_order(P, a, max_order=20000):
     if P is None: return 1
     current = P
     for k in range(1, max_order + 1):
-        if current is None: return k
+        if current is None:
+            return k
         current = point_add(current, P, a)
     return None
 
-
 def lcm(a, b):
     return a * b // gcd(a, b)
-
 
 def line(T, R, Q, a):
     if Q is None:
@@ -153,14 +146,15 @@ def line(T, R, Q, a):
             l = numerator * denominator.inverse()
             return Q[1] - T[1] - l * (Q[0] - T[0])
 
-
 def miller(P, Q, n, a):
     if Q is None:
         raise ValueError("Q must not be infinity.")
     if n == 0:
         raise ValueError("n must be nonzero.")
+    n_is_negative = False
     if n < 0:
         n = -n
+        n_is_negative = True
     t = ONE_EL
     V = P
     bitt_n = bin(n)[2:]
@@ -179,8 +173,10 @@ def miller(P, Q, n, a):
             t = t * ell * vee.inverse()
             V = S
         i -= 1
+    if n_is_negative:
+        vee = line(V, point_neg(V), Q, a)
+        t = (t * vee).inverse()
     return t
-
 
 def weil_pairing(P, Q, n, a, b):
     if not is_on_curve(P, a, b):
@@ -190,11 +186,12 @@ def weil_pairing(P, Q, n, a, b):
     if P == Q or P is None or Q is None:
         return ONE_EL
     try:
-        fp = miller(P, Q, n, a) * miller(Q, P, n, a).inverse()
-        return fp
+        last_bit = n % 2
+        deno = miller(Q, P, n, a)
+        res = QuadraticFp(-1, 0, p) ** last_bit * (miller(P, Q, n, a) * deno.inverse())
+        return res
     except ZeroDivisionError:
         return ONE_EL
-
 
 def pairing():
     st.markdown("""
@@ -292,6 +289,7 @@ def pairing():
             )
 
     with st.expander("Pairing Computation", expanded=True):
+
         c1, c2, gap, c3, c4, c5, c6, gap2, c7 = st.columns([1, 1, 0.3, 1, 1, 1, 1, 0.3, 4])
 
         with c1: st.markdown("<div class='centered-label'>x<sub>P</sub></div>", unsafe_allow_html=True)
@@ -319,8 +317,10 @@ def pairing():
 
         if not p_on or not q_on:
             with c7:
-                if not p_on: st.error("P not on curve.")
-                if not q_on: st.error("Q not on curve.")
+                if not p_on:
+                    st.error("P not on curve.")
+                if not q_on:
+                    st.error("Q not on curve.")
         else:
             try:
                 ord_P = point_order(P, a)
@@ -351,7 +351,6 @@ def pairing():
             except ZeroDivisionError:
                 with c7:
                     st.warning("Division by zero.")
-
 
 if __name__ == "__main__":
     pairing()
