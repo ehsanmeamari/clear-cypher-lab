@@ -42,7 +42,7 @@ def run_groth16():
     """, unsafe_allow_html=True)
 
     # ── Step 0 ───────────────────────────────────────────────────────────────
-    with st.expander("Colab", expanded=False):
+    with st.expander("Colab", expanded=True):
         st.link_button(
             "🚀 Open in Google Colab",
             "https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/groth16.ipynb"
