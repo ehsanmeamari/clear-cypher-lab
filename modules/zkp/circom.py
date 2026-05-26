@@ -27,19 +27,19 @@ def run_circom():
         st.markdown("**2. Circom**")
         st.link_button("Download Circom", "https://github.com/iden3/circom/releases")
         st.markdown("**3. snarkjs**")
-        st.code("npm install -g snarkjs", language="bash")
+        st.code("npm install -g snarkjs", language="text")
 
     # ── Workflow ─────────────────────────────────────────────────────────────
     with st.expander("Workflow", expanded=False):
 
         st.markdown("**Step 1 — Compile Circuit**")
-        st.code("./circom zkAuction.circom --r1cs --wasm", language="bash")
+        st.code("./circom zkAuction.circom --r1cs --wasm", language="text")
 
         st.markdown("**Step 2 — Generate Witness**")
         st.code(
             "node zkAuction_js/generate_witness.js "
             "zkAuction_js/zkAuction.wasm zkAuction.input.json zkAuction.wtns",
-            language="bash"
+            language="text"
         )
 
         st.markdown("**Step 3 — Trusted Setup**")
@@ -49,12 +49,12 @@ def run_circom():
             "rm tmp.ptau\n"
             "snarkjs groth16 setup zkAuction.r1cs zkAuction.ptau zkAuction.pk\n"
             "snarkjs zkey export verificationkey zkAuction.pk zkAuction.vk",
-            language="bash"
+            language="text"
         )
 
         st.markdown("**Step 4 — Generate & Verify Proof**")
         st.code(
             "snarkjs groth16 prove zkAuction.pk zkAuction.wtns zkAuction.pf zkAuction.inst\n"
             "snarkjs groth16 verify zkAuction.vk zkAuction.inst zkAuction.pf",
-            language="bash"
+            language="text"
         )
