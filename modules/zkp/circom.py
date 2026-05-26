@@ -22,23 +22,6 @@ def run_circom():
         </style>
     """, unsafe_allow_html=True)
 
-    # ── Colab ────────────────────────────────────────────────────────────────
-    with st.expander("Colab", expanded=True):
-        st.markdown(
-            """
-<a href="https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/zkAuction.ipynb" target="_blank">
-<img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-</a>
-<span style="margin-left:8px; font-weight:bold;">zkAuction</span>
-<br><br>
-<a href="https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/zkCredit.ipynb" target="_blank">
-<img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-</a>
-<span style="margin-left:8px; font-weight:bold;">zkCredit</span>
-""",
-            unsafe_allow_html=True,
-        )
-
     # ── Installation ─────────────────────────────────────────────────────────
     with st.expander("Installation", expanded=False):
         st.markdown("""
