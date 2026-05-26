@@ -7,6 +7,8 @@ from modules.zkp.ecc_overFp2 import ecc_fp2
 from modules.zkp.pairing import pairing
 from modules.zkp.lagrange import lagrange_real_ui, lagrange_fp_ui
 from modules.zkp.groth16 import run_groth16
+from modules.zkp.circom import run_circom
+
 
 def render_zkp_tab():
     # --- CSS Styling ---
@@ -30,7 +32,7 @@ def render_zkp_tab():
     if zkp_protocol == "Groth16":
         zkp_module = st.radio(
             label="Module",
-            options=["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation", "Groth16 Implementation"],
+            options=["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation", "Groth16 Implementation", "Circom"],
             key="g16_m", horizontal=True, label_visibility="collapsed"
         )
         st.divider()
@@ -67,3 +69,5 @@ def render_zkp_tab():
                 lagrange_fp_ui()
         elif zkp_module == "Groth16 Implementation":
             run_groth16()
+        elif zkp_module == "Circom":
+            run_circom()
