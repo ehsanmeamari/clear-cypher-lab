@@ -2,14 +2,14 @@ import streamlit as st
 # import galois
 # import numpy as np
 # from py_ecc.optimized_bn128 import multiply, G1, G2, add, pairing, neg, normalize, eq
- 
- 
+
+
 # @st.cache_resource
 # def get_field():
 #     p = 21888242871839275222246405745257275088548364400416034343698204186575808495617
 #     return galois.GF(p), p
- 
- 
+
+
 # def compute_commit(poly, trusted_points, FP):
 #     coeff = poly.coefficients()[::-1]
 #     if len(coeff) < len(trusted_points):
@@ -21,11 +21,11 @@ import streamlit as st
 #     for i in range(1, len(terms)):
 #         evaluation = add(evaluation, terms[i])
 #     return evaluation
- 
- 
+
+
 def run_groth16():
     # FP, p = get_field()
- 
+
     st.markdown("""
         <style>
         div[data-testid="stExpander"] details summary {
@@ -40,27 +40,26 @@ def run_groth16():
         }
         </style>
     """, unsafe_allow_html=True)
- 
+
     # ── Step 0 ───────────────────────────────────────────────────────────────
-        with st.expander("Colab", expanded=True):
-            st.markdown(
-                """
-    <a href="https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/zkAuction.ipynb" target="_blank">
-    <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-    </a>
-    &nbsp;&nbsp;
-    <a href="https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/zkCredit.ipynb" target="_blank">
-    <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-    </a>
-    """,
-                unsafe_allow_html=True,
-            )
-     
- 
+    with st.expander("Colab", expanded=True):
+        st.markdown(
+            """
+<a href="https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/zkAuction.ipynb" target="_blank">
+<img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+&nbsp;&nbsp;
+<a href="https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/zkCredit.ipynb" target="_blank">
+<img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+""",
+            unsafe_allow_html=True,
+        )
+
     # ── Step 1 ───────────────────────────────────────────────────────────────
     # with st.expander("Step 1: Circuit Inputs & Witness Vector", expanded=False):
     #     col_input, col_witness = st.columns([1, 2])
- 
+
     #     with col_input:
     #         st.markdown("**Inputs**")
     #         c1, c2, c3 = st.columns(3)
@@ -70,17 +69,17 @@ def run_groth16():
     #             x2_val = st.number_input("x₂", value=2)
     #         with c3:
     #             x3_val = st.number_input("x₃", value=2)
- 
+
     #     x1 = FP(x1_val % p)
     #     x2 = FP(x2_val % p)
     #     x3 = FP(x3_val % p)
- 
+
     #     v1 = x1 * x1
     #     v2 = x1 * x2
     #     v3 = x2 * v2
     #     y  = x2 * x3 + v1 + v2 + v3 + FP(3)
     #     W  = FP([1, y, x1, x2, x3, v1, v2, v3])
- 
+
     #     with col_witness:
     #         st.markdown("**Witness Vector W = [1, y, x₁, x₂, x₃, v₁, v₂, v₃]**")
     #         w_labels = ["1 (const)", "y", "x₁", "x₂", "x₃", "v₁ = x₁²", "v₂ = x₁·x₂", "v₃ = x₂·v₂"]
@@ -90,28 +89,28 @@ def run_groth16():
     #             with col:
     #                 st.metric(label=label, value=str(val))
     #         st.caption(f"y = x₂·x₃ + x₁² + x₁·x₂ + x₂·(x₁·x₂) + 3 = {int(y)}")
- 
+
     # ── Step 2 ───────────────────────────────────────────────────────────────
     # xL = FP([[0,0,1,0,0,0,0,0],
     #          [0,0,1,0,0,0,0,0],
     #          [0,0,0,1,0,0,0,0],
     #          [0,0,0,1,0,0,0,0]])
- 
+
     # xR = FP([[0,0,1,0,0,0,0,0],
     #          [0,0,0,1,0,0,0,0],
     #          [0,0,0,0,0,0,1,0],
     #          [0,0,0,0,1,0,0,0]])
- 
+
     # xO = FP([[0,0,0,0,0,1,0,0],
     #          [0,0,0,0,0,0,1,0],
     #          [0,0,0,0,0,0,0,1],
     #          [FP(p-3),1,0,0,0,FP(p-1),FP(p-1),FP(p-1)]])
- 
+
     # xLWT = np.dot(xL, W)
     # xRWT = np.dot(xR, W)
     # xOWT = np.dot(xO, W)
     # xLWTxRWT = np.multiply(xLWT, xRWT)
- 
+
     # with st.expander("Naïve Protocol", expanded=False):
     #     mc1, mc2, mc3 = st.columns(3)
     #     with mc1:
@@ -123,7 +122,7 @@ def run_groth16():
     #     with mc3:
     #         st.markdown("**xO**")
     #         st.code("\n".join(str(list(map(int, row))) for row in xO))
- 
+
     #     col_l, col_r, col_o = st.columns(3)
     #     with col_l:
     #         st.markdown("**xL · W**")
@@ -134,12 +133,12 @@ def run_groth16():
     #     with col_o:
     #         st.markdown("**xO · W**")
     #         st.code(str(list(map(int, xOWT))))
- 
+
     #     if not np.all(xLWTxRWT == xOWT):
     #         st.error("❌ R1CS verification failed.")
     #         return
     #     st.success("✅ (xL·W) ∘ (xR·W) = xO·W — R1CS passed!")
- 
+
     # ── Step 3 ───────────────────────────────────────────────────────────────
     # with st.expander("Step 3: QAP — Lagrange Interpolation", expanded=False):
     #     with st.spinner("Computing polynomials..."):
@@ -158,32 +157,32 @@ def run_groth16():
     #                     coef = np.append(coef, np.zeros(m.shape[0] - len(coef), dtype=int))
     #                 poly_list.append(coef)
     #             poly_m.append(FP(poly_list))
- 
+
     #     L_polys, R_polys, O_polys = poly_m
     #     Lx = galois.Poly((W @ L_polys)[::-1])
     #     Rx = galois.Poly((W @ R_polys)[::-1])
     #     Ox = galois.Poly((W @ O_polys)[::-1])
- 
+
     #     Tx = galois.Poly([1, p - 1], field=FP)
     #     for i in range(2, xL.shape[0] + 1):
     #         Tx *= galois.Poly([1, p - i], field=FP)
- 
+
     #     Hx  = (Lx * Rx - Ox) // Tx
     #     rem = (Lx * Rx - Ox) % Tx
- 
+
     #     st.code(f"L(x) = {Lx}\nR(x) = {Rx}\nO(x) = {Ox}\nT(x) = {Tx}\nH(x) = {Hx}")
- 
+
     #     if rem != 0:
     #         st.error(f"❌ Remainder is not zero: {rem}")
     #         return
     #     st.success("✅ L(x)·R(x) − O(x) = H(x)·T(x)  (remainder = 0)")
- 
+
     # ── Step 4 ───────────────────────────────────────────────────────────────
     # with st.expander("Protocol Version 1", expanded=False):
     #     with st.expander("Trusted Setup (SRS Generation)", expanded=False):
     #         tau_val = st.slider("Toxic waste τ", min_value=2, max_value=100, value=20, key="tau_v1")
     #         tau = FP(tau_val)
- 
+
     #         with st.spinner("Computing SRS on BN128 curve..."):
     #             Tx_tau  = Tx(tau)
     #             Lx_tau  = Lx(tau)
@@ -191,18 +190,18 @@ def run_groth16():
     #             Ox_tau  = Ox(tau)
     #             Hx_tau  = Hx(tau)
     #             HTx_tau = Hx_tau * Tx_tau
- 
+
     #             SRS_G1      = [multiply(G1, int(tau**i)) for i in range(Tx.degree)]
     #             SRS_G2      = [multiply(G2, int(tau**i)) for i in range(Tx.degree)]
     #             SRS_Ttau_G1 = [multiply(G1, int(tau**i * Tx_tau)) for i in range(Tx.degree - 1)]
- 
+
     #         st.markdown("**SRS_G1**")
     #         st.code("\n".join(str(normalize(pt)) for pt in SRS_G1))
     #         st.markdown("**SRS_G2**")
     #         st.code("\n".join(str(normalize(pt)) for pt in SRS_G2))
     #         st.markdown("**SRS_Ttau_G1**")
     #         st.code("\n".join(str(normalize(pt)) for pt in SRS_Ttau_G1))
- 
+
     #     with st.expander("Proof Generation", expanded=False):
     #         with st.spinner("Computing commitments..."):
     #             Com_L_G1       = compute_commit(Lx, SRS_G1, FP)
@@ -210,7 +209,7 @@ def run_groth16():
     #             Com_O_G1       = compute_commit(Ox, SRS_G1, FP)
     #             Com_H_TG1      = compute_commit(Hx, SRS_Ttau_G1, FP)
     #             Com_O_G1_H_TG1 = add(Com_O_G1, Com_H_TG1)
- 
+
     #         st.code(
     #             f"Com_L_G1       = {normalize(Com_L_G1)}\n"
     #             f"Com_R_G2       = {normalize(Com_R_G2)}\n"
@@ -218,25 +217,25 @@ def run_groth16():
     #             f"Com_H_TG1      = {normalize(Com_H_TG1)}\n"
     #             f"Com_O_G1_H_TG1 = {normalize(Com_O_G1_H_TG1)}"
     #         )
- 
+
     #     with st.expander("Proof Verification", expanded=False):
     #         with st.spinner("Computing pairing..."):
     #             lhs = pairing(Com_R_G2, Com_L_G1)
     #             rhs = pairing(G2, Com_O_G1_H_TG1)
- 
+
     #         st.code(
     #             f"pairing(Com_R_G2, Com_L_G1)        = {lhs}\n"
     #             f"pairing(G2, Com_O_G1 + Com_H_TG1)  = {rhs}"
     #         )
- 
+
     #         if lhs == rhs:
     #             st.success("✅ Pairing check passed!  e(Com_L, Com_R) = e(G2, Com_O + Com_H·T)")
     #         else:
     #             st.error("❌ Pairing check failed.")
- 
+
     # ── Step 5 ───────────────────────────────────────────────────────────────
     # with st.expander("Protocol Version 2", expanded=False):
- 
+
     #     with st.expander("Trusted Setup (SRS Generation)", expanded=False):
     #         ca, cb, cc = st.columns(3)
     #         with ca:
@@ -245,80 +244,80 @@ def run_groth16():
     #             alpha_val = st.slider("α", min_value=1, max_value=100, value=2, key="alpha_v2")
     #         with cc:
     #             beta_val = st.slider("β", min_value=1, max_value=100, value=3, key="beta_v2")
- 
+
     #         tau2   = FP(tau_val2)
     #         alpha  = FP(alpha_val)
     #         beta   = FP(beta_val)
- 
+
     #         st.code(f"τ = {tau_val2}\nα = {alpha_val}\nβ = {beta_val}")
- 
+
     #         with st.spinner("Computing psi and SRS..."):
     #             beta_L  = beta * L_polys
     #             alpha_R = alpha * R_polys
     #             psi     = beta_L + alpha_R + O_polys
- 
+
     #             def to_poly(mtx):
     #                 return [galois.Poly(mtx[i][::-1]) for i in range(mtx.shape[0])]
- 
+
     #             def evaluate_poly_list(poly_list, x):
     #                 return [poly(x) for poly in poly_list]
- 
+
     #             psi_p    = to_poly(psi)
     #             psi_eval = evaluate_poly_list(psi_p, tau2)
- 
+
     #             alphaG1 = multiply(G1, int(alpha))
     #             betaG2  = multiply(G2, int(beta))
     #             psi_G1  = [multiply(G1, int(k)) for k in psi_eval]
- 
-    #             Tx_tau2     = Tx(tau2)
-    #             SRS_G1_v2   = [multiply(G1, int(tau2**i)) for i in range(Tx.degree)]
-    #             SRS_G2_v2   = [multiply(G2, int(tau2**i)) for i in range(Tx.degree)]
+
+    #             Tx_tau2        = Tx(tau2)
+    #             SRS_G1_v2      = [multiply(G1, int(tau2**i)) for i in range(Tx.degree)]
+    #             SRS_G2_v2      = [multiply(G2, int(tau2**i)) for i in range(Tx.degree)]
     #             SRS_Ttau_G1_v2 = [multiply(G1, int(tau2**i * Tx_tau2)) for i in range(Tx.degree - 1)]
- 
+
     #         st.markdown("**ψ = βL + αR + O**")
     #         st.code("\n".join(f"ψ_{i} = {p_}" for i, p_ in enumerate(psi_p)))
- 
+
     #         st.markdown("**ψ evaluations at τ**")
     #         st.code(str([int(k) for k in psi_eval]))
- 
+
     #         st.markdown("**[α]G1, [β]G2, ψ_G1**")
     #         st.code(
     #             f"[α]G1   = {normalize(alphaG1)}\n"
     #             f"[β]G2   = {normalize(betaG2)}\n"
     #             f"psi_G1  = {[normalize(pt) for pt in psi_G1]}"
     #         )
- 
+
     #     with st.expander("Proof Generation", expanded=False):
     #         with st.spinner("Computing commitments v2..."):
     #             Com_L_G1_v2   = compute_commit(Lx, SRS_G1_v2, FP)
     #             Com_R_G2_v2   = compute_commit(Rx, SRS_G2_v2, FP)
     #             Com_H_TG1_v2  = compute_commit(Hx, SRS_Ttau_G1_v2, FP)
- 
-    #             Com_Lalpha_G1    = add(Com_L_G1_v2, alphaG1)
-    #             Com_Rbeta_G2     = add(Com_R_G2_v2, betaG2)
- 
-    #             psi_G1_terms     = [multiply(pt, int(w)) for pt, w in zip(psi_G1, W)]
-    #             sum_psi_G1       = psi_G1_terms[0]
+
+    #             Com_Lalpha_G1     = add(Com_L_G1_v2, alphaG1)
+    #             Com_Rbeta_G2      = add(Com_R_G2_v2, betaG2)
+
+    #             psi_G1_terms      = [multiply(pt, int(w)) for pt, w in zip(psi_G1, W)]
+    #             sum_psi_G1        = psi_G1_terms[0]
     #             for i in range(1, len(psi_G1_terms)):
-    #                 sum_psi_G1   = add(sum_psi_G1, psi_G1_terms[i])
+    #                 sum_psi_G1    = add(sum_psi_G1, psi_G1_terms[i])
     #             Com_sum_psi_H_TG1 = add(Com_H_TG1_v2, sum_psi_G1)
- 
+
     #         st.code(
     #             f"Com_Lalpha_G1         = {normalize(Com_Lalpha_G1)}\n"
     #             f"Com_Rbeta_G2          = {normalize(Com_Rbeta_G2)}\n"
     #             f"Com_sum_psi + H·T·G1  = {normalize(Com_sum_psi_H_TG1)}"
     #         )
- 
+
     #     with st.expander("Proof Verification", expanded=False):
     #         with st.spinner("Computing pairing v2..."):
     #             lhs_v2 = pairing(Com_Rbeta_G2, Com_Lalpha_G1)
     #             rhs_v2 = pairing(betaG2, alphaG1) * pairing(G2, Com_sum_psi_H_TG1)
- 
+
     #         st.code(
-    #             f"pairing(Com_Rbeta_G2, Com_Lalpha_G1)              = {lhs_v2}\n"
+    #             f"pairing(Com_Rbeta_G2, Com_Lalpha_G1)                = {lhs_v2}\n"
     #             f"pairing(βG2, αG1) · pairing(G2, Com_sum_psi_H_TG1) = {rhs_v2}"
     #         )
- 
+
     #         if lhs_v2 == rhs_v2:
     #             st.success("✅ Pairing check passed!  e(A, B) = e(β,α) · e(G2, C)")
     #         else:
