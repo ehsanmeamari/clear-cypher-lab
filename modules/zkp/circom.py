@@ -47,18 +47,23 @@ def run_circom():
             "snarkjs powersoftau new bn128 12 tmp.ptau\n"
             "snarkjs powersoftau prepare phase2 tmp.ptau zkAuction.ptau\n"
             "rm tmp.ptau\n"
-            "snarkjs groth16 setup zkAuction.r1cs zkAuction.ptau zkAuction.pk\n"
+            "snarkjs groth16 setup zkAuction.r1cs zkAuction.ptau zkAuction.pk",
+            language="text"
+        )
+
+        st.markdown("**Step 4 — Export Verification Key**")
+        st.code(
             "snarkjs zkey export verificationkey zkAuction.pk zkAuction.vk",
             language="text"
         )
 
-        st.markdown("**Step 4 — Proof Generation**")
+        st.markdown("**Step 5 — Proof Generation**")
         st.code(
             "snarkjs groth16 prove zkAuction.pk zkAuction.wtns zkAuction.pf zkAuction.inst",
             language="text"
         )
 
-        st.markdown("**Step 5 — Proof Verification**")
+        st.markdown("**Step 6 — Proof Verification**")
         st.code(
             "snarkjs groth16 verify zkAuction.vk zkAuction.inst zkAuction.pf",
             language="text"
