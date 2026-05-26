@@ -46,21 +46,19 @@ def run_groth16():
     """, unsafe_allow_html=True)
 
     # ── Step 0 ───────────────────────────────────────────────────────────────
-        with st.expander("Colab", expanded=True):
-            st.markdown(
-                """
-    <a href="https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/zkAuction.ipynb" target="_blank">
-    <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-    </a>
-    <span style="margin-left:8px; font-weight:bold;">zkAuction</span>
-    <br><br>
-    <a href="https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/zkCredit.ipynb" target="_blank">
-    <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
-    </a>
-    <span style="margin-left:8px; font-weight:bold;">zkCredit</span>
-    """,
-                unsafe_allow_html=True,
-            )
+    with st.expander("Colab", expanded=True):
+        st.markdown(
+            """
+<a href="https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/zkAuction.ipynb" target="_blank">
+<img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+&nbsp;&nbsp;
+<a href="https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/zkCredit.ipynb" target="_blank">
+<img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+""",
+            unsafe_allow_html=True,
+        )
 
     # ── Step 1 ───────────────────────────────────────────────────────────────
     # with st.expander("Step 1: Circuit Inputs & Witness Vector", expanded=False):
