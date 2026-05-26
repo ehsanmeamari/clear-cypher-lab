@@ -48,8 +48,8 @@ def run_groth16():
             "https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/zkAuction.ipynb"
         )
         st.link_button(
-            "🚀 Question 1",
-            "https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/Groth16%20-%20Question%201.ipynb"
+            "🚀 zkCredit",
+            "https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/zkCredit.ipynb"
         )
  
     # ── Step 1 ───────────────────────────────────────────────────────────────
