@@ -32,17 +32,15 @@ def run_circom():
     # ── Workflow ─────────────────────────────────────────────────────────────
     with st.expander("Workflow", expanded=False):
 
-        st.markdown("**Step 1 — Compile Circuit**")
-        st.code("./circom zkAuction.circom --r1cs --wasm", language="text")
-
-        st.markdown("**Step 2 — Generate Witness**")
+        st.markdown("**Step 1 — Compile Circuit & Generate Witness**")
         st.code(
+            "./circom zkAuction.circom --r1cs --wasm\n"
             "node zkAuction_js/generate_witness.js "
             "zkAuction_js/zkAuction.wasm zkAuction.input.json zkAuction.wtns",
             language="text"
         )
 
-        st.markdown("**Step 3 — Trusted Setup**")
+        st.markdown("**Step 2 — Trusted Setup**")
         st.code(
             "snarkjs powersoftau new bn128 12 tmp.ptau\n"
             "snarkjs powersoftau prepare phase2 tmp.ptau zkAuction.ptau\n"
@@ -50,20 +48,20 @@ def run_circom():
             language="text"
         )
 
-        st.markdown("**Step 4 — Generate Proving & Verification Key**")
+        st.markdown("**Step 3 — Generate Proving & Verification Key**")
         st.code(
             "snarkjs groth16 setup zkAuction.r1cs zkAuction.ptau zkAuction.pk\n"
             "snarkjs zkey export verificationkey zkAuction.pk zkAuction.vk",
             language="text"
         )
 
-        st.markdown("**Step 5 — Proof Generation**")
+        st.markdown("**Step 4 — Proof Generation**")
         st.code(
             "snarkjs groth16 prove zkAuction.pk zkAuction.wtns zkAuction.pf zkAuction.inst",
             language="text"
         )
 
-        st.markdown("**Step 6 — Proof Verification**")
+        st.markdown("**Step 5 — Proof Verification**")
         st.code(
             "snarkjs groth16 verify zkAuction.vk zkAuction.inst zkAuction.pf",
             language="text"
