@@ -38,6 +38,10 @@ def run_groth16():
             border-radius: 5px;
             background-color: transparent;
         }
+        div[data-testid="stExpander"] div[data-testid="stExpanderDetails"] {
+            padding: 15px;
+            min-height: 60px;
+        }
         </style>
     """, unsafe_allow_html=True)
 
