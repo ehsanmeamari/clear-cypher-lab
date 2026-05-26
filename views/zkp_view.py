@@ -32,7 +32,7 @@ def render_zkp_tab():
     if zkp_protocol == "Groth16":
         zkp_module = st.radio(
             label="Module",
-            options=["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation", "Groth16 Implementation", "Circom"],
+            options=["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation", "Colab Implementation", "Circom"],
             key="g16_m", horizontal=True, label_visibility="collapsed"
         )
         st.divider()
@@ -67,7 +67,7 @@ def render_zkp_tab():
                 lagrange_real_ui()
             else:
                 lagrange_fp_ui()
-        elif zkp_module == "Groth16 Implementation":
+        elif zkp_module == "Colab Implementation":
             run_groth16()
         elif zkp_module == "Circom":
             run_circom()
