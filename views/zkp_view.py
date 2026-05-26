@@ -30,7 +30,7 @@ def render_zkp_tab():
     if zkp_protocol == "Groth16":
         zkp_module = st.radio(
             label="Module",
-            options=["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation", "Groth16"],
+            options=["Modular Arithmetic", "Extension Field", "ECC", "Weil Pairing", "Lagrange Interpolation", "Groth16 Implementation"],
             key="g16_m", horizontal=True, label_visibility="collapsed"
         )
         st.divider()
