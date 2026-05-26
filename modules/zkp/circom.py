@@ -1,8 +1,6 @@
 import streamlit as st
 
-
 def run_circom():
-
     st.markdown("""
         <style>
         div[data-testid="stExpander"] details summary {
@@ -24,36 +22,39 @@ def run_circom():
 
     # ── Installation ─────────────────────────────────────────────────────────
     with st.expander("Installation", expanded=False):
-        st.markdown("""
-**1. Node.js**
-""")
+        st.markdown("**1. Node.js**")
         st.link_button("Download Node.js", "https://nodejs.org")
-
-        st.markdown("""
-**2. Circom**
-""")
+        st.markdown("**2. Circom**")
         st.link_button("Download Circom", "https://github.com/iden3/circom/releases")
-
-        st.markdown("""
-**3. snarkjs**
-""")
+        st.markdown("**3. snarkjs**")
         st.code("npm install -g snarkjs", language="bash")
 
     # ── Workflow ─────────────────────────────────────────────────────────────
     with st.expander("Workflow", expanded=False):
+
         st.markdown("**Step 1 — Compile Circuit**")
-        st.code("circom zkAuction.circom --r1cs --wasm --sym", language="bash")
+        st.code("./circom zkAuction.circom --r1cs --wasm", language="bash")
 
         st.markdown("**Step 2 — Generate Witness**")
-        st.code("node zkAuction_js/generate_witness.js zkAuction_js/zkAuction.wasm zkAuction.input.json zkAuction.wtns", language="bash")
+        st.code(
+            "node zkAuction_js/generate_witness.js "
+            "zkAuction_js/zkAuction.wasm zkAuction.input.json zkAuction.wtns",
+            language="bash"
+        )
 
         st.markdown("**Step 3 — Trusted Setup**")
-        st.code("""snarkjs powersoftau new bn128 12 pot12_0000.ptau
-snarkjs powersoftau contribute pot12_0000.ptau pot12_0001.ptau
-snarkjs powersoftau prepare phase2 pot12_0001.ptau pot12_final.ptau
-snarkjs groth16 setup zkAuction.r1cs pot12_final.ptau zkAuction_0000.zkey
-snarkjs zkey contribute zkAuction_0000.zkey zkAuction.zkey""", language="bash")
+        st.code(
+            "snarkjs powersoftau new bn128 12 tmp.ptau\n"
+            "snarkjs powersoftau prepare phase2 tmp.ptau zkAuction.ptau\n"
+            "rm tmp.ptau\n"
+            "snarkjs groth16 setup zkAuction.r1cs zkAuction.ptau zkAuction.pk\n"
+            "snarkjs zkey export verificationkey zkAuction.pk zkAuction.vk",
+            language="bash"
+        )
 
         st.markdown("**Step 4 — Generate & Verify Proof**")
-        st.code("""snarkjs groth16 prove zkAuction.zkey zkAuction.wtns zkAuction.pf zkAuction.inst
-snarkjs groth16 verify zkAuction.vk zkAuction.inst zkAuction.pf""", language="bash")
+        st.code(
+            "snarkjs groth16 prove zkAuction.pk zkAuction.wtns zkAuction.pf zkAuction.inst\n"
+            "snarkjs groth16 verify zkAuction.vk zkAuction.inst zkAuction.pf",
+            language="bash"
+        )
