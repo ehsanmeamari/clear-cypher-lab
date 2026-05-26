@@ -43,15 +43,18 @@ def run_groth16():
  
     # ── Step 0 ───────────────────────────────────────────────────────────────
         with st.expander("Colab", expanded=True):
-            st.markdown("""
+                st.markdown(
+                    """
         <a href="https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/zkAuction.ipynb" target="_blank">
-          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+        <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
         </a>
         &nbsp;&nbsp;
         <a href="https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/zkCredit.ipynb" target="_blank">
-          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+        <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
         </a>
-        """, unsafe_allow_html=True)
+        """,
+                    unsafe_allow_html=True,
+                )
      
  
     # ── Step 1 ───────────────────────────────────────────────────────────────
