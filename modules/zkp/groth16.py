@@ -45,7 +45,7 @@ def run_groth16():
     with st.expander("Colab", expanded=True):
         st.link_button(
             "🚀 ZKAuction",
-            "https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/groth16.ipynb"
+            "https://colab.research.google.com/github/ehsanmeamari/clear-cypher-lab/blob/main/modules/zkp/zkAuction.ipynb"
         )
         st.link_button(
             "🚀 Question 1",
