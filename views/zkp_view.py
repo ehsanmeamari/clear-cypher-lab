@@ -65,5 +65,5 @@ def render_zkp_tab():
                 lagrange_real_ui()
             else:
                 lagrange_fp_ui()
-        elif zkp_module == "Groth16":
+        elif zkp_module == "Groth16 Implementation":
             run_groth16()
