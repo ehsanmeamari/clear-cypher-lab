@@ -40,7 +40,7 @@ def render_header_view():
                         <div style="background-color: #24292e; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.7em; width: 95px; text-align: center;">💻 GITHUB</div>
                     </a>
                     <a href="https://t.me/ClearCypherLab" target="_blank" style="text-decoration: none;">
-                        <div style="background-color: #26A5E4; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.7em; width: 95px; text-align: center;">✈️ TELEGRAM</div>
+                        <div style="background-color: #26A5E4; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.7em; width: 95px; text-align: center; white-space: nowrap;">✈️ TELEGRAM</div>
                     </a>
                 </div>
             </div>
