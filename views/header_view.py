@@ -8,11 +8,9 @@ def render_header_view():
             .custom-hr { margin-top: 5px !important; margin-bottom: 10px !important; opacity: 0.15; }
         </style>
     """, unsafe_allow_html=True)
-
     st.markdown('<div class="header-wrapper">', unsafe_allow_html=True)
     
     col_left, col_center, col_right = st.columns([1, 2.5, 1.2])
-
     with col_center:
         # Central Logo and Slogan
         st.markdown(
@@ -26,7 +24,6 @@ def render_header_view():
             """, 
             unsafe_allow_html=True
         )
-
     with col_right:
         # Social Media buttons container
         st.markdown("""
@@ -41,6 +38,9 @@ def render_header_view():
                     </a>
                     <a href="https://github.com/ehsanmeamari/clear-cypher-lab" target="_blank" style="text-decoration: none;">
                         <div style="background-color: #24292e; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.7em; width: 95px; text-align: center;">💻 GITHUB</div>
+                    </a>
+                    <a href="https://t.me/ClearCypherLab" target="_blank" style="text-decoration: none;">
+                        <div style="background-color: #26A5E4; color: white; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 0.7em; width: 95px; text-align: center;">✈️ TELEGRAM</div>
                     </a>
                 </div>
             </div>
