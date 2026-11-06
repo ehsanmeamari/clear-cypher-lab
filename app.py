@@ -182,7 +182,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-nav1, nav2, nav3, nav4 = st.columns(5)
+nav1, nav2, nav3, nav4 = st.columns(4)
 
 
 with nav1:
@@ -243,8 +243,6 @@ with nav4:
     ):
         st.session_state.active_section = "ZKP"
         st.rerun()
-
-with nav5:
     
 # =========================================================
 # Navigation Divider
