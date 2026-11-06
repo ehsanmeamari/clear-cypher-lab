@@ -182,7 +182,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-nav1, nav2, nav3, nav4 = st.columns(4)
+nav1, nav2, nav3, nav4 = st.columns(14)
 
 
 with nav1:
