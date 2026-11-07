@@ -11,41 +11,11 @@ from views.zkp_view import render_zkp_tab
 
 
 # =========================================================
-# Visitor Counter
+# Visitor Counter (Simplified)
 # =========================================================
 
 def get_visitor_count():
-    try:
-        auth = requests.post(
-            "http://localhost:3000/api/auth/login",
-            json={
-                "username": "admin",
-                "password": "umami"
-            },
-            timeout=3
-        )
-
-        auth.raise_for_status()
-        token = auth.json()["token"]
-
-        stats = requests.get(
-            "http://localhost:3000/api/websites/1f6c16b1-f990-4972-85d9-a691bd71badd/stats",
-            headers={
-                "Authorization": f"Bearer {token}"
-            },
-            params={
-                "startAt": 0,
-                "endAt": 9999999999999
-            },
-            timeout=3
-        )
-
-        stats.raise_for_status()
-
-        return stats.json()["visitors"]
-
-    except Exception:
-        return None
+    return None
 
 
 # =========================================================
@@ -292,20 +262,3 @@ else:
             <div style="
                 font-size: 20px;
                 font-weight: 600;
-                margin-bottom: 8px;
-            ">
-                Welcome to Clear Cypher Lab
-            </div>
-
-            <div style="font-size: 14px;">
-                Select a section to get started.
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-
-
-# =========================================================
-# Footer Divider
-# =========================================================
-
-st.divider()
