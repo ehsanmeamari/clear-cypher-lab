@@ -1,6 +1,6 @@
 Check out our website for more practice exercises.
 
-ClearCypherLab.com
+www.ClearCypherLab.com
 
 
 You can also watch our tutorial videos on YouTube at @ClearCypherLab.
