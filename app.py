@@ -45,7 +45,7 @@ if count is not None:
 else:
     st.caption("👥 Unique Visitors: 350+")
 
-tab1, tab2, tab3, tab4 = st.tabs(["💻 Cryptography", "🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
+tab1, tab2, tab3, tab4 = st.tabs(["💻 Computer", "🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
 
 with tab1:
     render_computer_tab()
