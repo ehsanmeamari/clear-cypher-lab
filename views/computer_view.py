@@ -2,8 +2,6 @@ import streamlit as st
 
 def render_computer_tab():
 
-    st.markdown("## 💻 Computer")
-
     computer_module = st.radio(
         "Select Module",
         options=["OSI Model", "Computer Networks"],
