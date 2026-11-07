@@ -23,22 +23,33 @@ def get_visitor_count():
         return None
 
 
-# Initial page configuration
+# =========================================================
+# Page Configuration
+# =========================================================
+
 st.set_page_config(
     page_title="Clear Cypher Lab",
     page_icon="logo.png",
     layout="wide"
 )
 
-# Render site header
+# =========================================================
+# Website Header & Visitor Count
+# =========================================================
+
 render_header_view()
 
-# Show visitor count
+# Show visitor count right below header
 count = get_visitor_count()
 if count is not None:
     st.caption(f"👥 {count:,} unique visitors")
+else:
+    st.caption("👥 Visitor counter active")
 
-# Create main navigation tabs
+# =========================================================
+# Main Navigation Tabs
+# =========================================================
+
 tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
 
 with tab1:
