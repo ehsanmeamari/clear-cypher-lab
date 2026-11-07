@@ -22,7 +22,6 @@ def get_visitor_count():
             )
             if stats.status_code == 200:
                 data = stats.json()
-                # بررسی کلیدهای مختلف ساختار پاسخ در umami
                 if "visitors" in data:
                     v = data["visitors"]
                     return v.get("value") if isinstance(v, dict) else v
@@ -31,33 +30,19 @@ def get_visitor_count():
     return None
 
 
-# =========================================================
-# Page Configuration
-# =========================================================
-
 st.set_page_config(
     page_title="Clear Cypher Lab",
     page_icon="logo.png",
     layout="wide"
 )
 
-# =========================================================
-# Website Header & Visitor Count
-# =========================================================
-
 render_header_view()
 
-# Show visitor count
 count = get_visitor_count()
 if count is not None:
     st.caption(f"👥 Unique Visitors: {count:,}")
 else:
-    # نمایش مقدار واقعی پنل برای جلوگیری از خالی ماندن
     st.caption("👥 Unique Visitors: 350+")
-
-# =========================================================
-# Main Navigation Tabs
-# =========================================================
 
 tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
 
