@@ -3,6 +3,7 @@ import requests
 
 from modules.zkp.styles import apply_styles
 from views.header_view import render_header_view
+from views.computer_view import render_computer_tab
 from views.cryptography_view import render_cryptography_tab
 from views.blockchain_view import render_blockchain_tab
 from views.zkp_view import render_zkp_tab
@@ -44,13 +45,16 @@ if count is not None:
 else:
     st.caption("👥 Unique Visitors: 350+")
 
-tab1, tab2, tab3 = st.tabs(["🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
+tab1, tab2, tab3, tab4 = st.tabs(["💻 Cryptography", "🌐 Cryptography", "⛓️ Blockchain", "🔐 ZKP"])
 
 with tab1:
-    render_cryptography_tab()
+    render_computer_tab()
 
 with tab2:
-    render_blockchain_tab()
+    render_cryptography_tab()
 
 with tab3:
+    render_blockchain_tab()
+
+with tab4:
     render_zkp_tab()
