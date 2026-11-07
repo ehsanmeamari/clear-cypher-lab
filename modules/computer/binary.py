@@ -3,7 +3,6 @@ import streamlit as st
 def render_binary_tab():
     st.subheader("Binary Simulators & Converters")
     
-    # انتخاب نوع تبدیل
     mode = st.radio(
         "Select Converter Type",
         options=["Decimal to Binary (16-bit)", "Text to Binary (ASCII)"],
@@ -27,7 +26,8 @@ def render_binary_tab():
         binary_val = format(decimal_val, '016b')
         formatted_binary = " ".join([binary_val[i:i+4] for i in range(0, 16, 4)])
         
-        st.text_input("16-bit Binary Representation:", value=formatted_binary, disabled=True)
+        st.markdown("16-bit Binary Representation:")
+        st.code(formatted_binary, language="text")
         
         st.write("Bit Visualization:")
         cols = st.columns(16)
@@ -38,16 +38,15 @@ def render_binary_tab():
     else:
         st.markdown("### Text to Binary Converter (ASCII)")
         
-        text_val = st.text_input("Enter Text:", value="Hello")
+        text_val = st.text_input("Enter Text:", value="You good?")
         
         if text_val:
-            # تبدیل هر کاراکتر به کد اسکی و سپس به باینری ۸ بیتی
             binary_chars = [format(ord(char), '08b') for char in text_val]
             full_binary = " ".join(binary_chars)
             
-            st.text_input("ASCII Binary Representation:", value=full_binary, disabled=True)
+            st.markdown("ASCII Binary Representation:")
+            st.code(full_binary, language="text")
             
-            # نمایش جدول‌وار یا تفکیک‌شده برای هر کاراکتر
             st.write("Character Breakdown:")
             for char, b_code in zip(text_val, binary_chars):
                 cols = st.columns(2)
