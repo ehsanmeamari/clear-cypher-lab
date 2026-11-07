@@ -1,5 +1,4 @@
 import streamlit as st
-import requests
 
 from modules.zkp.styles import apply_styles
 
@@ -116,16 +115,6 @@ apply_styles()
 # =========================================================
 
 render_header_view()
-
-
-# =========================================================
-# Visitor Count
-# =========================================================
-
-count = get_visitor_count()
-
-if count is not None:
-    st.caption(f"👥 {count:,} unique visitors")
 
 
 # =========================================================
@@ -262,3 +251,20 @@ else:
             <div style="
                 font-size: 20px;
                 font-weight: 600;
+                margin-bottom: 8px;
+            ">
+                Welcome to Clear Cypher Lab
+            </div>
+
+            <div style="font-size: 14px;">
+                Select a section to get started.
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+
+# =========================================================
+# Footer Divider
+# =========================================================
+
+st.divider()
