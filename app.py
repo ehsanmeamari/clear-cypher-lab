@@ -50,10 +50,10 @@ render_header_view()
 # Show visitor count
 count = get_visitor_count()
 if count is not None:
-    st.caption(f"👥 Total Visitors: {count:,}")
+    st.caption(f"👥 Unique Visitors: {count:,}")
 else:
     # نمایش مقدار واقعی پنل برای جلوگیری از خالی ماندن
-    st.caption("👥 Total Visitors: 350+")
+    st.caption("👥 Unique Visitors: 350+")
 
 # =========================================================
 # Main Navigation Tabs
