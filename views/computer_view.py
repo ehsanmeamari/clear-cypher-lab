@@ -1,7 +1,7 @@
 import streamlit as st
+from modules.computer.binary import render_binary_tab
 
 def render_computer_tab():
-
     computer_module = st.radio(
         "Select Module",
         options=["Binary", "OSI Model", "Computer Networks"],
@@ -11,8 +11,9 @@ def render_computer_tab():
     )
 
     st.divider()
+    
     if computer_module == "Binary":
-        st.info("Binary Simulator will be implemented here.")
+        render_binary_tab()
     elif computer_module == "OSI Model":
         st.info("OSI Model Simulator will be implemented here.")
     elif computer_module == "Computer Networks":
